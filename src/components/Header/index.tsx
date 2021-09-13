@@ -1,9 +1,5 @@
-import { Text } from 'components/Text'
+import Text from "components/Text";
 
 export default function Header() {
-
-  return (
-    <Text>Header</Text>
-
-    )
+  return <Text text={"Header"} />;
 }

@@ -5,7 +5,7 @@ import { NetworkContextName } from 'config/constants'
 import { ChainId } from 'config/constants/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { setupNetwork } from 'utils/wallet'
+import { setupEthereumNetwork } from 'utils/wallet'
 import { injected } from '../connectors'
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
@@ -27,7 +27,7 @@ export function useEagerConnect() {
 
         activate(injected, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
-            const hasSetup = await setupNetwork()
+            const hasSetup = await setupEthereumNetwork()
             if (hasSetup) {
               activate(injected)
             }
@@ -43,7 +43,7 @@ export function useEagerConnect() {
 
           activate(injected, async (error: Error) => {
             if (error instanceof UnsupportedChainIdError) {
-              const hasSetup = await setupNetwork()
+              const hasSetup = await setupEthereumNetwork()
               if (hasSetup) {
                 activate(injected)
               }

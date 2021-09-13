@@ -10,8 +10,3 @@ export const getAddress = (address: Address): string => {
 export const getMulticallAddress = () => {
   return getAddress(addresses.multiCall)
 }
-
-export const getCGChefAddress = () => {
-  return getAddress(addresses.cgChef)
-}
-
