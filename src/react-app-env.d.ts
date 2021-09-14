@@ -9,3 +9,10 @@ interface Window {
   }
   web3?: Record<string, unknown>
 }
+
+interface WindowChain {
+  ethereum?: {
+    isMetaMask?: true
+    request?: (...args: any[]) => void
+  }
+}

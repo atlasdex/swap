@@ -1,5 +1,5 @@
 
-import { Colors, Breakpoints, MediaQueries, Spacing, Shadows, Radii, ZIndices } from "./types";
+import { Colors, Breakpoints, MediaQueries, Spacing, Shadows, Radii, ZIndices, Fonts, Gradients } from "./types";
 
 export interface ApplicationTheme {
   siteWidth: number;
@@ -11,6 +11,8 @@ export interface ApplicationTheme {
   shadows: Shadows;
   radii: Radii;
   zIndices: ZIndices;
+  fonts: Fonts;
+  gradients : Gradients;
 }
 
 export { default as dark } from "./dark";

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import useWeb3 from 'hooks/useWeb3'
 import {
   getBep20Contract,
-  getCGChefContract
+  // getCGChefContract
 
 } from 'utils/contractHelpers'
 
@@ -11,10 +11,10 @@ import {
  */
 
 
-export const useCGChef = () => {
-  const web3 = useWeb3()
-  return useMemo(() => getCGChefContract(web3), [web3])
-}
+// export const useCGChef = () => {
+//   const web3 = useWeb3()
+//   return useMemo(() => getCGChefContract(web3), [web3])
+// }
 
 export const useERC20 = (address: string) => {
   const web3 = useWeb3()

@@ -3,13 +3,12 @@ import styled from "styled-components";
 import Flex from "../../components/Box/Flex";
 import { Box } from "../../components/Box";
 import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
-import { IconButton } from "../../components/Button";
+import  IconButton  from "../../components/Button/IconButton";
 import { ModalProps } from "./types";
 
 export const ModalHeader = styled.div<{ background?: string }>`
   align-items: center;
   background: ${({ background }) => background || "transparent"};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.borderColor};
   display: flex;
   padding: 12px 24px;
 `;
@@ -43,7 +42,6 @@ export const ModalContainer = styled(Box)<{ minWidth: string }>`
   overflow: hidden;
   background: ${({ theme }) => theme.colors.backgroundAlt};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid ${({ theme }) => theme.colors.borderColor};
   border-radius: 32px;
   width: 100%;
   z-index: ${({ theme }) => theme.zIndices.modal};
