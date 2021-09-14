@@ -30,3 +30,10 @@ export const formatNumber = (number: number, minPrecision = 2, maxPrecision = 2)
   }
   return number.toLocaleString(undefined, options)
 }
+
+
+//sol balance formatter 
+export const solBalanceFormat = ( balance: number , decimals = 9, decimalsToAppear:number = 4) => {
+  const bigBalance = new BigNumber(balance)
+  return Number (bigBalance.dividedBy(BIG_TEN.pow(decimals)).toFixed(decimalsToAppear));
+ }

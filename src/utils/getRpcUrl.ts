@@ -10,3 +10,7 @@ const getNodeUrl = (): string => {
 }
 
 export default getNodeUrl
+
+export const getEndpoint = () => {
+  return  "https://api.testnet.solana.com";
+}

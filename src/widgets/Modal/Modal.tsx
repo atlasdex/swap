@@ -1,5 +1,4 @@
 import React from "react";
-import Heading from "../../components/Heading/Heading";
 import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, ModalBackButton } from "./styles";
 import { ModalProps } from "./types";
 
@@ -18,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({
     <ModalHeader background={headerBackground}>
       <ModalTitle>
         {onBack && <ModalBackButton onBack={onBack} />}
-        <Heading>{title}</Heading>
+        <h3>{title}</h3>
       </ModalTitle>
       {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
     </ModalHeader>

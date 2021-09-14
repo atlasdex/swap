@@ -5,8 +5,6 @@ import web3NoAccount from 'utils/web3'
 // ABI
 import bep20Abi from 'config/abi/erc20.json'
 import lpTokenAbi from 'config/abi/lpToken.json'
-import cgChefAbi from 'config/abi/cgChef.json'
-import { getCGChefAddress } from './addressHelpers'
 
 const getContract = (abi: any, address: string, web3?: Web3) => {
   const _web3 = web3 ?? web3NoAccount
@@ -20,6 +18,4 @@ export const getBep20Contract = (address: string, web3?: Web3) => {
 export const getLpContract = (address: string, web3?: Web3) => {
   return getContract(lpTokenAbi, address, web3)
 }
-export const getCGChefContract = (web3?: Web3) => {
-  return getContract(cgChefAbi, getCGChefAddress(), web3)
-}
+

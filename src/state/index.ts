@@ -1,14 +1,17 @@
 import { configureStore, } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import blockReducer from './block'
-
+import ModalReducer from './modal'
+import WalletReducer from './wallet'
 
 const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
-    block: blockReducer,
+    modal : ModalReducer,
+    wallet: WalletReducer
   },
 })
+
 
 /**
  * @see https://redux-toolkit.js.org/usage/usage-with-typescript#getting-the-dispatch-type
