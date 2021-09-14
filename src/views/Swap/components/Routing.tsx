@@ -5,7 +5,7 @@ import Image from "components/Image";
 
 import Rlogo from "assets/images/R-Icon.svg";
 import Solanalogo from "assets/images/Solana-Icon.svg";
-import { ArrowRightIcon ,LightRightArrow , VerticalLine }  from "components/Svg";
+import { ArrowRightIcon, LightRightArrow, VerticalLine } from "components/Svg";
 
 import useTheme from "hooks/useTheme";
 
@@ -15,7 +15,7 @@ const StyledRouting = styled.div`
   }
   .middle-content-section {
     width: 80%;
-    overflow: auto;
+    // overflow: auto;
     .display-setting {
       display: inline-flex;
     }
@@ -29,7 +29,7 @@ const StyledRouting = styled.div`
   .main-routing-coin-div {
     background: ${(props) =>
       props.theme.isDark
-        ? props.theme.colors.seeGreen
+        ? 'transparent'
         : props.theme.gradients.buttonBorderLight};
     border-radius: 13.2692px;
     width: 50vw;
@@ -44,6 +44,7 @@ const StyledRouting = styled.div`
       margin-bottom: 15px;
     }
     .percentage-div {
+      width : 25%;
       background: ${(props) =>
         props.theme.isDark
           ? props.theme.colors.seeGreen
@@ -121,18 +122,18 @@ export const Routing: React.FC = () => {
         </Flex>
 
         <Flex className={"d-flex"}>
-          <Flex className="left-image d-flex align-items-center">
+          <Flex className="right-image d-flex align-items-center justify-content-end">
             <Image src={Rlogo} width="fit" />
-            <Image src={VerticalLine} width="fit" classes={"ml-4"} />
+            {/* <VerticalLine className={"ml-4"} /> */}
           </Flex>
 
           <Flex className="middle-content-section ">
             <Flex className={"display-setting"}>
-              <Image
-                src={isDark ? ArrowRightIcon : LightRightArrow}
-                classes={"right-arrow"}
-                width="15px"
-              ></Image>
+              {isDark ? (
+                <ArrowRightIcon height={20} className="right-arrow" />
+              ) : (
+                <LightRightArrow className="right-arrow" />
+              )}
 
               <Flex className={`main-routing-coin-div`}>
                 <Flex className={`inner-routing-coin-div`}>
@@ -145,17 +146,21 @@ export const Routing: React.FC = () => {
                       classes="pl-4"
                     />
                   </Flex>
-                  <Flex className="percentage-div w-50">
+                  <Flex className="percentage-div">
                     <Text
                       text="SOLANA 100%"
                       color={colors.white}
-                      size={fonts.fontSize21}
+                      size={fonts.fontSize14}
                     ></Text>
                   </Flex>
                 </Flex>
               </Flex>
-              {isDark? <ArrowRightIcon className="right-arrow"/> : <LightRightArrow className="right-arrow"/>}
- 
+              {isDark ? (
+                <ArrowRightIcon height={20} className="right-arrow" />
+              ) : (
+                <LightRightArrow className="right-arrow" />
+              )}
+
               {/* <Div classes={`main-routing-coin-div`}>
                 <Div classes={`inner-routing-coin-div`}>
                   <Div classes="d-flex align-items-center header">
@@ -184,8 +189,8 @@ export const Routing: React.FC = () => {
             </Flex>
           </Flex>
 
-          <Flex className="right-image d-flex align-items-center justify-content-end">
-            <VerticalLine className={'mr-4'}/>
+          <Flex className="right-image mb-3 d-flex align-items-center">
+            {/* <VerticalLine className={"mr-4"} /> */}
             <Image src={Solanalogo} width="fit" />
           </Flex>
         </Flex>

@@ -121,9 +121,9 @@ const Exchange: React.FC = () => {
             </Flex>
           </Flex>
         </Flex>
-        {/* <Flex className="Routing-row mb-5">
+        <Flex className="Routing-row mb-5">
           <Routing />
-        </Flex> */}
+        </Flex>
       </ControlContainer>
     </>
   );
