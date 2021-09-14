@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import useTheme from "./../../hooks/useTheme";
-import Div from "./../DivComponent";
+import { Flex } from "./../Box";
 import Image from "./../Image";
 import Button from "./../Button";
 import Text from "./../Text";
@@ -60,25 +60,25 @@ const AccountInfo: React.FC = () => {
 
   return (
     <AccountStyle>
-      <Div classes="account-info-div row m-0 align-items-center mb-4 d-flex">
+      <Flex className="account-info-div row m-0 align-items-center mb-4 d-flex">
         {/* this is for small screen */}
-        <Div classes={"col-3 d-block d-lg-none"}>
+        <Flex className={"col-3 d-block d-lg-none"}>
           <Image
             src={SolletIcon}
             width="83px"
             height="83px"
             classes={"mr-4 image-wallet-icon"}
           />
-        </Div>
-        <Div classes="col-9 d-block d-lg-none">
-          <Div classes="col-9 col-lg-5 d-flex align-items-center ">
+        </Flex>
+        <Flex className="col-9 d-block d-lg-none">
+          <Flex className="col-9 col-lg-5 d-flex align-items-center ">
             <Image
               src={SolletIcon}
               width="83px"
               height="83px"
               classes={"mr-4 image-wallet-icon d-none d-lg-block"}
             />
-            <Div classes="text-div">
+            <Flex className="text-div">
               <Text
                 text={"Balance"}
                 color={colors.white}
@@ -93,10 +93,10 @@ const AccountInfo: React.FC = () => {
                 weight={700}
                 classes={"line-height-27"}
               />
-            </Div>
-          </Div>
-          <Div classes="col-9 col-lg-3  d-flex align-items-center">
-            <Div classes="text-div">
+            </Flex>
+          </Flex>
+          <Flex className="col-9 col-lg-3  d-flex align-items-center">
+            <Flex className="text-div">
               <Text
                 text={"Network"}
                 color={colors.white}
@@ -111,10 +111,10 @@ const AccountInfo: React.FC = () => {
                 weight={700}
                 classes={"line-height-27"}
               />
-            </Div>
-          </Div>
-          <Div classes="col-9 col-lg-4  d-flex align-items-center">
-            <Div classes="text-div">
+            </Flex>
+          </Flex>
+          <Flex className="col-9 col-lg-4  d-flex align-items-center">
+            <Flex className="text-div">
               <Text
                 text={"Wallet"}
                 color={colors.white}
@@ -129,18 +129,18 @@ const AccountInfo: React.FC = () => {
                 weight={700}
                 classes={"line-height-27"}
               />
-            </Div>
-          </Div>
-        </Div>
+            </Flex>
+          </Flex>
+        </Flex>
         {/* this is for large screen */}
-        <Div classes="col-9 col-lg-5  d-none d-lg-flex align-items-center">
+        <Flex className="col-9 col-lg-5  d-none d-lg-flex align-items-center">
           <Image
             src={SolletIcon}
             width="83px"
             height="83px"
             classes={"mr-4 image-wallet-icon"}
           />
-          <Div classes="text-div">
+          <Flex className="text-div">
             <Text
               text={"Balance"}
               color={colors.white}
@@ -155,10 +155,10 @@ const AccountInfo: React.FC = () => {
               weight={700}
               classes={"line-height-27"}
             />
-          </Div>
-        </Div>
-        <Div classes="col-9 col-lg-3  d-none d-lg-flex  align-items-center">
-          <Div classes="text-div">
+          </Flex>
+        </Flex>
+        <Flex className="col-9 col-lg-3  d-none d-lg-flex  align-items-center">
+          <Flex className="text-div">
             <Text
               text={"Network"}
               color={colors.white}
@@ -173,10 +173,10 @@ const AccountInfo: React.FC = () => {
               weight={700}
               classes={"line-height-27"}
             />
-          </Div>
-        </Div>
-        <Div classes="col-9 col-lg-4  d-none d-lg-flex align-items-center">
-          <Div classes="text-div">
+          </Flex>
+        </Flex>
+        <Flex className="col-9 col-lg-4  d-none d-lg-flex align-items-center">
+          <Flex className="text-div">
             <Text
               text={"Wallet"}
               color={colors.white}
@@ -191,9 +191,9 @@ const AccountInfo: React.FC = () => {
               weight={700}
               classes={"line-height-27"}
             />
-          </Div>
-        </Div>
-      </Div>
+          </Flex>
+        </Flex>
+      </Flex>
 
       <Button
         icon={
@@ -216,9 +216,9 @@ const AccountInfo: React.FC = () => {
         btnClasses={"d-block d-lg-none  mb-4"}
       />
 
-      <Div classes="row m-0 account-btn-row">
-        <Div
-          classes="col-12 col-lg-4 text-center py-2 cursor-pointer"
+      <Flex className="row m-0 account-btn-row">
+        <Flex
+          className="col-12 col-lg-4 text-center py-2 cursor-pointer"
           onClick={() => {
             copyToClipboard(walletState?.publicKey);
           }}
@@ -252,8 +252,8 @@ const AccountInfo: React.FC = () => {
             classes={"line-height-20 pt-3"}
             weight={400}
           ></Text>
-        </Div>
-        <Div classes="col-12 col-lg-4  text-center py-2 cursor-pointer">
+        </Flex>
+        <Flex className="col-12 col-lg-4  text-center py-2 cursor-pointer">
           <svg
             width="16"
             height="21"
@@ -298,9 +298,9 @@ const AccountInfo: React.FC = () => {
             classes={"line-height-20 pt-3"}
             weight={400}
           ></Text>
-        </Div>
-        <Div
-          classes="col-12 col-lg-4  text-center py-2 cursor-pointer"
+        </Flex>
+        <Flex
+          className="col-12 col-lg-4  text-center py-2 cursor-pointer"
           onClick={() => {
             logout();
           }}
@@ -341,8 +341,8 @@ const AccountInfo: React.FC = () => {
             classes={"line-height-20 pt-3"}
             weight={400}
           ></Text>
-        </Div>
-      </Div>
+        </Flex>
+      </Flex>
     </AccountStyle>
   );
 };

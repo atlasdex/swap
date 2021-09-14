@@ -21,7 +21,7 @@ const Modal: React.FC<ModalProps> = ({
       </ModalTitle>
       {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
     </ModalHeader>
-    <ModalBody p={bodyPadding}>{children}</ModalBody>
+    <ModalBody >{children}</ModalBody>
   </ModalContainer>
 );
 

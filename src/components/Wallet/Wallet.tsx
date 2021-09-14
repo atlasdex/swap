@@ -1,4 +1,4 @@
-import Div from "components/DivComponent"
+import { Flex } from "components/Box"
 import styled from "styled-components";
 import Button from "components/Button";
 import Text from "components/Text";
@@ -62,82 +62,82 @@ const WalletComponent: React.FC<WalletConnectProps>= (props) => {
 
     return (
         <StyledWallet>
-            <Div classes={'mb-4'}>
-                <Div classes={'d-flex term-and-condition-row'}>
-                    <Div classes={'width-47 mr-3'}>
+            <Flex className={'mb-4'}>
+                <Flex className={'d-flex term-and-condition-row'}>
+                    <Flex className={'width-47 mr-3'}>
                         <Button title={"1"} width={'47px'} height={'47px'} innerHeight = "43px" innerWidth="43px" size={fonts.fontSize18} weight={400} innerRadius="50px" outerRadius="50px" classes="text-center justify-content-center" />
-                    </Div>
-                    <Div classes={'d-flex align-items-center text-div'}>
+                    </Flex>
+                    <Flex className={'d-flex align-items-center text-div'}>
                         <Text text={"Accept"} color={colors.white} size={fonts.fontSize18} weight={400} />
                         <Link text={'Terms of Service'} />
                         <Text text={"and"} color={colors.white} size={fonts.fontSize18} weight={400} />
                         <Link text={'Privacy Policy'} />
-                    </Div>
-                </Div>
+                    </Flex>
+                </Flex>
 
-                <Div classes={'d-flex term-and-condition-row'}>
-                    <Div classes={'width-47 mr-3'}>
-                    </Div>
-                    <Div classes={''}>
-                        <Div classes={'d-flex align-items-center cursor-class'}  onClick={() => { setTermAndCondition(!teamAndCondition) }}>
+                <Flex className={'d-flex term-and-condition-row'}>
+                    <Flex className={'width-47 mr-3'}>
+                    </Flex>
+                    <Flex className={''}>
+                        <Flex className={'d-flex align-items-center cursor-class'}  onClick={() => { setTermAndCondition(!teamAndCondition) }}>
                             <input type="checkbox" className={'mr-2 cursor-class'} checked = {teamAndCondition} />
                             <Text text={"I read and accept"} color={colors.white} size={fonts.fontSize16} classes = {"cursor-class"}></Text>
-                        </Div>
-                    </Div>
-                </Div>
-            </Div>
+                        </Flex>
+                    </Flex>
+                </Flex>
+            </Flex>
 
-            <Div classes={'network-main-row mb-4'}>
-                <Div classes={'d-flex'}>
-                    <Div classes={'width-47 mr-3'}>
+            <Flex className={'network-main-row mb-4'}>
+                <Flex className={'d-flex'}>
+                    <Flex className={'width-47 mr-3'}>
                         <Button title={"2"} width={'47px'} height={'47px'} innerHeight = "43px" innerWidth="43px" size={fonts.fontSize18} weight={400} innerRadius="50px" outerRadius="50px" classes="text-center justify-content-center" />
-                    </Div>
-                    <Div classes={'d-flex align-items-center text-div'}>
+                    </Flex>
+                    <Flex className={'d-flex align-items-center text-div'}>
                         <Text text={"Choose Network"} color={colors.white} size={fonts.fontSize18} />
-                    </Div>
-                </Div>
-                <Div classes={'d-flex'}>
-                    <Div classes={'width-47 mr-3 '}>
-                    </Div>
-                    <Div classes={'row w-100'}>
+                    </Flex>
+                </Flex>
+                <Flex className={'d-flex'}>
+                    <Flex className={'width-47 mr-3 '}>
+                    </Flex>
+                    <Flex className={'row w-100'}>
 
                         {
                             Networks.map((network, index) => (
-                                <Div classes={`padding-for-row text-center py-2  ${network.disabled && 'disabled-with-opacity'} ${!teamAndCondition && "disabled-with-opacity"}`} key={index}>
+                                <Flex className={`padding-for-row text-center py-2  ${network.disabled && 'disabled-with-opacity'} ${!teamAndCondition && "disabled-with-opacity"}`} key={index}>
                                     <Image src={network.selectIcon} width="52px" height="52px" classes="mb-2" />
                                     <Text text={network.name} color={colors.white} size={fonts.fontSize18}></Text>
-                                </Div>
+                                </Flex>
                             ))
                         }
 
-                    </Div>
-                </Div>
-            </Div>
-            <Div classes={'wallet-main-row mb-4'}>
-                <Div classes={'d-flex'}>
-                    <Div classes={'width-47 mr-3'}>
+                    </Flex>
+                </Flex>
+            </Flex>
+            <Flex className={'wallet-main-row mb-4'}>
+                <Flex className={'d-flex'}>
+                    <Flex className={'width-47 mr-3'}>
                         <Button title={"3"} width={'47px'} height={'47px'} innerHeight = "43px" innerWidth="43px" size={fonts.fontSize18} weight={400} innerRadius="50px" outerRadius="50px" classes="text-center justify-content-center" />
-                    </Div>
-                    <Div classes={'d-flex align-items-center text-div'}>
+                    </Flex>
+                    <Flex className={'d-flex align-items-center text-div'}>
                         <Text text={"Choose Wallet"} color={colors.white} size={fonts.fontSize18} />
-                    </Div>
-                </Div>
-                <Div classes={'d-flex'}>
-                    <Div classes={'width-47 mr-3 '}>
-                    </Div>
-                    <Div classes={'row w-100'}>
+                    </Flex>
+                </Flex>
+                <Flex className={'d-flex'}>
+                    <Flex className={'width-47 mr-3 '}>
+                    </Flex>
+                    <Flex className={'row w-100'}>
                         {
                             WalletList.map((network, index) => (
-                                <Div classes={`padding-for-row text-center py-2 ${!teamAndCondition && "disabled-with-opacity"}`} key={index} onClick={()=>onClick(network.url)}>
+                                <Flex className={`padding-for-row text-center py-2 ${!teamAndCondition && "disabled-with-opacity"}`} key={index} onClick={()=>onClick(network.url)}>
                                     <Image src={network.icon} width="52px" height="52px" classes="mb-2" />
                                     <Text text={network.name} color={colors.white} size={fonts.fontSize18}></Text>
-                                </Div>
+                                </Flex>
                             ))
                         }
 
-                    </Div>
-                </Div>
-            </Div>
+                    </Flex>
+                </Flex>
+            </Flex>
         </StyledWallet>
     )
 }

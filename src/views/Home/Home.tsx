@@ -4,7 +4,7 @@ import React from "react";
 
 const Home: React.FC = () => {
   return (
-    <Flex flexDirection="column" mr={["8px", 0]}>
+    <Flex >
       <Text text="Hello Body" />
     </Flex>
   );
