@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import Div from "components/DivComponent"
+import { Flex} from "components/Box"
 interface GradientLayoutInterface {
     padding?: string;
     borderRadius?: string;
@@ -8,7 +8,7 @@ interface GradientLayoutInterface {
 }
 
 const StyledGardientBorder = styled.div<GradientLayoutInterface>`
-    padding: ${(props)=> props.padding ? props.padding : "2px"};
+    padding: ${(props)=> props.padding ? props.padding : ""};
     background: ${(props) => props.theme.isDark ? props.theme.gradients.multiColor : props.theme.gradients.buttonBorderDark};
     border-radius: 10.7692px !important;
     border: none !important;
@@ -22,9 +22,9 @@ const GradientLayout: React.FC<GradientLayoutInterface> = ({ children ,...props}
     const { padding , borderRadius, broderGradient, backgroundGradient } = props;
     return (
         <StyledGardientBorder padding = {padding} borderRadius = {borderRadius}  broderGradient ={broderGradient} backgroundGradient={backgroundGradient}>
-            <Div classes = "inner-gradient-div ">
+            <Flex className = "inner-gradient-div ">
                 {children}
-            </Div>
+            </Flex>
         </StyledGardientBorder>
     )
 }

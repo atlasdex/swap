@@ -1,11 +1,21 @@
 import styled from "styled-components";
-import { flexbox } from "styled-system";
-import Box from "./Box";
-import { FlexProps } from "./types";
+import { DivPropsInterface} from "./types";
 
-const Flex = styled(Box)<FlexProps>`
-  display: flex;
-  ${flexbox}
-`;
+const FlexWapper = styled.div``;
+
+const Flex: React.FC<DivPropsInterface> = ({children, ...props}) => {
+  const { className, onClick } = props
+
+  console.log('className',className);
+  
+  return (
+      <FlexWapper
+          className={className }
+          onClick = {onClick}  
+      >
+          {children}
+      </FlexWapper>
+  )
+}
 
 export default Flex;

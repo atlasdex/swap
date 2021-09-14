@@ -10,3 +10,9 @@ export interface BoxProps
     HTMLAttributes<HTMLDivElement> {}
 
 export interface FlexProps extends BoxProps, FlexboxProps {}
+
+
+export interface DivPropsInterface {
+  onClick?: () => void;
+  className?: string;
+}
