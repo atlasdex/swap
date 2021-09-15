@@ -26,4 +26,4 @@ export { default as BinanceIcon } from "./Icons/swap/Binance";
 export { default as EthereumIcon } from "./Icons/swap/Ethereum";
 export { default as SwapIcon } from "./Icons/swap/Swap";
 export { default as WalletIcon } from "./Icons/swap/Wallet";
-
+export { default as SolonaIcon } from "./Icons/swap/Solana";

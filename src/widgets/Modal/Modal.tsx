@@ -1,8 +1,15 @@
 import React from "react";
-import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, ModalBackButton } from "./styles";
+import {
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalContainer,
+  ModalCloseButton,
+  ModalBackButton,
+} from "./styles";
 import { ModalProps } from "./types";
 
-const Modal: React.FC<ModalProps> = ({
+const ModalComponent: React.FC<ModalProps> = ({
   title,
   onDismiss,
   onBack,
@@ -12,17 +19,18 @@ const Modal: React.FC<ModalProps> = ({
   headerBackground = "transparent",
   minWidth = "320px",
   ...props
-}) => (
-  <ModalContainer minWidth={minWidth} {...props}>
-    <ModalHeader background={headerBackground}>
-      <ModalTitle>
-        {onBack && <ModalBackButton onBack={onBack} />}
-        <h3>{title}</h3>
-      </ModalTitle>
-      {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
-    </ModalHeader>
-    <ModalBody >{children}</ModalBody>
-  </ModalContainer>
-);
-
-export default Modal;
+}) => {
+  return (
+      <ModalContainer minWidth={minWidth} {...props}>
+        <ModalHeader background={headerBackground}>
+          <ModalTitle>
+            {onBack && <ModalBackButton onBack={onBack} />}
+            <h3>{title}</h3>
+          </ModalTitle>
+          {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
+        </ModalHeader>
+        <ModalBody>{children}</ModalBody>
+      </ModalContainer>
+  );
+};
+export default ModalComponent;

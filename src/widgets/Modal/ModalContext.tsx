@@ -2,7 +2,9 @@ import React, { createContext, useState } from "react";
 import styled from "styled-components";
 import Overlay from "../../components/Overlay/Overlay";
 import { Handler } from "./types";
-
+import { ModalCloseButton } from "./styles";
+import { Flex } from "components/Box";
+import { IoMdCloseCircle } from "react-icons/io";
 interface ModalsContext {
   onPresent: (node: React.ReactNode, key?: string) => void;
   onDismiss: Handler;
@@ -20,6 +22,27 @@ const ModalWrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
+`;
+
+const ModalBodyWrapper = styled.div`
+  border-radius: 10px;
+  position: relative;
+  padding: 30px 98px;
+  padding-top : 50px;
+  z-index: ${({ theme }) => theme.zIndices.modal + 1};
+  background: ${(props) =>
+    props.theme.isDark
+      ? props.theme.gradients.marketCard
+      : props.theme.gradients.whiteGrayGradient};
+  .close-icon {
+    font-size: 30px;
+    position: absolute;
+    color: white;
+    top: 5px;
+    right: 20px;
+    color: white;
+    z-index: ${({ theme }) => theme.zIndices.modal + 1};
+  }
 `;
 
 export const Context = createContext<ModalsContext>({
@@ -60,10 +83,14 @@ const ModalProvider: React.FC = ({ children }) => {
       {isOpen && (
         <ModalWrapper>
           <Overlay show onClick={handleOverlayDismiss} />
-          {React.isValidElement(modalNode) &&
-            React.cloneElement(modalNode, {
-              onDismiss: handleDismiss,
-            })}
+          <ModalBodyWrapper>
+            <Flex onClick={handleDismiss} className={"close-icon"}>
+              <IoMdCloseCircle />
+            </Flex>
+
+            {React.isValidElement(modalNode) &&
+              React.cloneElement(modalNode)}
+          </ModalBodyWrapper>
         </ModalWrapper>
       )}
       {children}

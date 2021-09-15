@@ -41,6 +41,6 @@ export const darkColors: Colors = {
   secondary: "#9A6AFF",
   background: "linear-gradient(298.7deg, #361539 -47.38%, #04050A 49.52%, #022A32 127.93%);",
   backgroundDisabled: "#3c3742",
-  backgroundAlt: "#27262c",
+  backgroundAlt: "rgb(29, 41, 87)",
   primaryDark: "#0098A1",
 };

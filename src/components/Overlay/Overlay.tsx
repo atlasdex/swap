@@ -6,10 +6,11 @@ const Overlay = styled.div.attrs({ role: "presentation" })<OverlayProps>`
   top: 0px;
   left: 0px;
   width: 100%;
+  overflow : hidden;
   height: 100%;
-  background-color: #452a7a;
+  background-color: #0D163A;
   transition: opacity 0.4s;
-  opacity: ${({ show }) => (show ? 0.6 : 0)};
+  opacity: ${({ show }) => (show ? .8 : 0)};
   z-index: ${({ zIndex }) => zIndex};
   pointer-events: ${({ show }) => (show ? "initial" : "none")};
 `;

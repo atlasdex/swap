@@ -13,7 +13,6 @@ import useAccountInfo from "hooks/useAccountInfo";
 import copyToClipboard from "utils/copyToClipboard";
 
 const AccountStyle = styled.div`
-  padding: 4% 5%;
   .account-info-div {
     background: ${(props) =>
       props.theme.isDark

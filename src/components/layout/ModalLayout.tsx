@@ -1,4 +1,4 @@
-import { Modal } from "widgets/Modal";
+import { ModalComponent } from "widgets/Modal";
 import {
   useNetworkModal,
   useWalletModal,
@@ -20,7 +20,7 @@ export const ModalLayout = () => {
 
   return (
     <>
-      <Modal
+      <ModalComponent
         show={useWalletModal()}
         onDismiss={() => {
           setWalletModalState();
@@ -38,8 +38,8 @@ export const ModalLayout = () => {
             }}
           />
         )}
-      </Modal>
-      <Modal
+      </ModalComponent>
+      <ModalComponent
         show={useNetworkModal()}
         onDismiss={() => {
           setNetworkModalState();
@@ -68,7 +68,7 @@ export const ModalLayout = () => {
             </Flex>
           ))}
         </Flex>
-      </Modal>
+      </ModalComponent>
     </>
   );
 };

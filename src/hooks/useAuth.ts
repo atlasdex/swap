@@ -102,7 +102,7 @@ const useAuth = () => {
     // eslint-disable-next-line
   }, [wallet]);
 
-  return { login, logout };
+  return { login, logout ,  SolonaWalletConnect , disconnectWallet };
 };
 
 export default useAuth;

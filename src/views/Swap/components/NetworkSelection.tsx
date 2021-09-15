@@ -23,13 +23,13 @@ export const NetworkSelection: React.FC = () => {
     <StyledNetworkSection className="">
       <Flex className={"mx-0 network-row "}>
         <NetworkItems>
-          <img className={'solona-icon'} src={SolanaIcon} width={22} height={22} alt="solona" />
+          <img className={'solona-icon'} src={SolanaIcon} width={30} height={30} alt="solona" />
         </NetworkItems>
         <NetworkItems>
-          <EthereumIcon />
+          <EthereumIcon width={30}/>
         </NetworkItems>
         <NetworkItems>
-          <BinanceIcon />
+          <BinanceIcon  width={30}/>
         </NetworkItems>
       </Flex>
     </StyledNetworkSection>

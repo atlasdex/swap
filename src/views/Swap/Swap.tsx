@@ -7,11 +7,15 @@ import Image from "components/Image";
 import { Routing, Market } from "./components";
 import GradientLayout from "components/layout/GradientLayout";
 import Button from "components/Button";
-import {WalletIcon} from "components/Svg";
+import { WalletIcon } from "components/Svg";
 import useTheme from "hooks/useTheme";
 import { useGetWalletState, useModalState } from "state/hooks";
 import useSolBalance from "hooks/useSolBalance";
 import { NetworkSelection } from "./components/NetworkSelection";
+import { useModal } from "widgets/Modal";
+import AccountInfo from "components/Account";
+import WalletComponent from "components/Wallet";
+import useAuth from "hooks/useAuth";
 
 const Exchange: React.FC = () => {
   let walletState = useGetWalletState();
@@ -24,6 +28,21 @@ const Exchange: React.FC = () => {
   const [historyTabs, setHistoryTabs] = React.useState<boolean>(false);
   const [marketingTab, setMarketingTab] = React.useState<boolean>(true);
 
+  const { login , SolonaWalletConnect } = useAuth();
+
+  const [onPresentCallback, onDismiss] = useModal(
+    walletState.connected ? (
+      <AccountInfo />
+    ) : (
+      <WalletComponent
+        onClick={(url) => {
+          SolonaWalletConnect(url);
+        }}
+      />
+    ),
+    true
+  );
+
   const AddressAndBalance = () => {
     return (
       <Flex className={"d-flex align-items-center "}>
@@ -34,9 +53,7 @@ const Exchange: React.FC = () => {
           classes={"btn-custom-padding width-110"}
         />
         <Button
-          icon={
-            <WalletIcon className="mr-3"/>
-          }
+          icon={<WalletIcon className="mr-3" />}
           classes={"btn-custom-padding bg-btn-color"}
           btnClasses="mb-md-0 mr-0 connected-btn-padding"
           title={`${walletState.publicKey.slice(0, 10)}...`}
@@ -82,9 +99,7 @@ const Exchange: React.FC = () => {
                 />
               ) : (
                 <Button
-                  icon={
-                    <WalletIcon className="mr-3"/>
-                  }
+                  icon={<WalletIcon className="mr-3" />}
                   classes={"btn-custom-padding"}
                   btnClasses="mb-3 mb-md-0"
                   title={"Connect Wallet"}
@@ -92,7 +107,7 @@ const Exchange: React.FC = () => {
                   weight={400}
                   width={"fit-content"}
                   onClick={() => {
-                    setWalletModalState();
+                    onPresentCallback();
                   }}
                 />
               )}

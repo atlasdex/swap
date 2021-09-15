@@ -20,7 +20,7 @@ const App: React.FC = () => {
     <Router history={history}>
       <GlobalStyle />
       <SuspenseWithChunkError fallback={<PageLoader />}>
-        <Header />
+        {/* <Header /> */}
         <Web3ReactManager>
           <MainLayout>
             <Switch>

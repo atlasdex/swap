@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { SvgProps } from "../../components/Svg/types";
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { ReactNode } from "react";
@@ -88,6 +88,7 @@ export interface PoolConfig {
 
 export type Login = (connectorId: ConnectorNames) => void;
 
+
 export type NetworksType = {
   name: string;
   icon: ReactNode;
@@ -107,4 +108,11 @@ export interface Config {
   title: string;
   icon: FC<SvgProps>;
   connectorId: ConnectorNames;
+}
+
+export interface ImageProps {
+  onClick?: () => void;
+  width?: string;
+  height?: string;
+  classes?: string
 }

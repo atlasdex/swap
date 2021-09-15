@@ -1,15 +1,15 @@
-import { createGlobalStyle } from 'styled-components'
-
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
   // scroll style 
   * {
   scrollbar-width: thin;
-  scrollbar-color: ${(props)=>props.theme.colors.purple} ${(props)=>props.theme.colors.purple};
+  scrollbar-color: ${(props) => props.theme.colors.purple} ${(props) =>
+  props.theme.colors.purple};
   }
   *::-webkit-scrollbar-track
   {
-    border: 1px solid ${(props)=>props.theme.colors.background};
+    border: 1px solid ${(props) => props.theme.colors.background};
     background: ${(props) => props.theme.colors.background};
   }
 
@@ -53,9 +53,15 @@ const GlobalStyle = createGlobalStyle`
         border-radius: 13.2692px;
         padding:2px;
         border: unset;
-        background : ${(props) => props.theme.isDark ? props.theme.gradients.multiColor2 : props.theme.gradients.buttonBorderLight} !important;
+        background : ${(props) =>
+          props.theme.isDark
+            ? props.theme.gradients.marketCard
+            : props.theme.gradients.whiteGrayGradient} !important;
         .modal-bg{
-          background : ${(props) => props.theme.isDark ? props.theme.colors.modalBackground :  props.theme.colors.white} !important;
+          background : ${(props) =>
+            props.theme.isDark
+              ? props.theme.colors.modalBackground
+              : props.theme.colors.white} !important;
           border-radius : 12px;
         }
       }
@@ -65,11 +71,17 @@ const GlobalStyle = createGlobalStyle`
             font-weight: 500;
             font-size: 23.8846px;
             width: 100%;
-            color: ${(props) => props.theme.isDark ? props.theme.colors.white : props.theme.colors.primary};
+            color: ${(props) =>
+              props.theme.isDark
+                ? props.theme.colors.white
+                : props.theme.colors.primary};
           }
           border-bottom: unset;
           .close {
-              color: ${(props) => props.theme.isDark ? props.theme.colors.white : props.theme.colors.primary};
+              color: ${(props) =>
+                props.theme.isDark
+                  ? props.theme.colors.white
+                  : props.theme.colors.primary};
               width: 25px;
               height: 25px;
               border-radius: 14px;
@@ -92,6 +104,6 @@ const GlobalStyle = createGlobalStyle`
     //modal styled
 
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;
