@@ -93,6 +93,8 @@ export type Fonts = {
   md: number;
   lg: number;
   xl: number;
+  fontSize11: number;
+  fontSize12: number;
   fontSize13: number;
   fontSize14: number;
   fontSize15: number;

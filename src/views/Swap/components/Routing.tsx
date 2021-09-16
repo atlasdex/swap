@@ -8,15 +8,100 @@ import Solanalogo from "assets/images/Solana-Icon.svg";
 import { ArrowRightIcon, LightRightArrow, VerticalLine } from "components/Svg";
 
 import useTheme from "hooks/useTheme";
+import { useState } from "react";
+import StaticQuote from "config/constants/staticQuote";
+
+export const Routing: React.FC = () => {
+  const { theme, isDark } = useTheme();
+  const [quoteRoute, setQuoteRoute] = useState(StaticQuote);
+  console.log("Static quoteRoute", quoteRoute);
+
+  const { colors, fonts } = theme;
+  return (
+    <StyledRouting className="row m-0 ">
+      <Flex className={"col-12 py-5"}>
+        <Flex className={"d-flex"}>
+          <Flex className="right-image d-flex align-items-center justify-content-end">
+            <Image src={quoteRoute.fromToken.logoURI} width="44" />
+            {/* <VerticalLine className={"ml-4"} /> */}
+          </Flex>
+          <Flex className="middle-content-section border-xy">
+            {quoteRoute.protocols.map((item, index) => {
+              return (
+                <Flex key={index} className={"display-setting"}>
+                  {isDark ? (
+                    <Flex className="right-arrow d-flex">
+                      {/* <Text
+                        text={"100%"}
+                        size={fonts.fontSize11}
+                        color={colors.white}
+                        classes={"percentage-text"}
+                      /> */}
+                      <ArrowRightIcon className="icon-svg" />
+                    </Flex>
+                  ) : (
+                    <LightRightArrow height={20} className="right-arrow" />
+                  )}
+                  <Flex className={`main-routing-coin-div`}>
+                    {item.map((elment, index) => {
+                      return (
+                        <Flex className={`inner-routing-coin-div`}>
+                          <Flex className="d-flex align-items-center header">
+                            <Image src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`} width="32px" />
+                            <Text
+                              text={"SOL"}
+                              size={fonts.fontSize16}
+                              color={colors.white}
+                              classes="pl-3"
+                            />
+                          </Flex>
+                          {elment.map((exchangesNode, index) => {
+                            return (
+                              <Flex key={index} className="percentage-div mb-1">
+                                <Text
+                                  text={`${exchangesNode.name} ${exchangesNode.part}%`}
+                                  color={colors.white}
+                                  size={fonts.fontSize11}
+                                ></Text>
+                              </Flex>
+                            );
+                          })}
+                        </Flex>
+                      );
+                    })}
+                  </Flex>
+
+                  {isDark ? (
+                    <ArrowRightIcon height={20} className="right-arrow" />
+                  ) : (
+                    <LightRightArrow className="right-arrow" />
+                  )}
+                </Flex>
+              );
+            })}
+          </Flex>
+
+          <Flex className="right-image d-flex align-items-center">
+            {/* <VerticalLine className={"mr-4"} /> */}
+            <Image src={quoteRoute.toToken.logoURI} width="44" />
+          </Flex>
+        </Flex>
+      </Flex>
+    </StyledRouting>
+  );
+};
 
 const StyledRouting = styled.div`
   .left-image {
     width: 10%;
   }
   .middle-content-section {
-    width: 80%;
+    display: flex;
+    flex-direction: column;
     // overflow: auto;
+    width: -webkit-fill-available;
     .display-setting {
+      margin: 10px 0px;
       display: inline-flex;
     }
   }
@@ -24,54 +109,68 @@ const StyledRouting = styled.div`
     width: 10%;
   }
   .right-arrow {
-    margin: 0 48px;
+    margin: 0 40px;
+    .icon-svg {
+      font-size: 21px;
+      margin-top: 5px;
+      margin-left: 6px;
+    }
+    .percentage-text {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .border-xy {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    margin: 0px 30px;
   }
   .main-routing-coin-div {
+    display: flex;
+    flex-direction: row;
+
     background: ${(props) =>
       props.theme.isDark
-        ? 'transparent'
+        ? "transparent"
         : props.theme.gradients.buttonBorderLight};
     border-radius: 13.2692px;
-    width: 50vw;
+    width: -webkit-fill-available;
     padding: 2px;
     .inner-routing-coin-div {
       background: ${(props) =>
         props.theme.isDark ? "#261A83" : props.theme.gradients.buttonLight};
       padding: 20px 26px;
       border-radius: 11.2692px;
+      width: inherit;
+      margin: 0px 12px;
     }
     .header {
       margin-bottom: 15px;
     }
     .percentage-div {
-      width : 25%;
+      width: 150px;
       background: ${(props) =>
         props.theme.isDark
           ? props.theme.colors.seeGreen
           : props.theme.colors.lightFailure};
       border-radius: 10.7843px;
       div {
-        padding: 7px 27px;
+        padding: 4px 10px;
       }
     }
   }
 
   ${(props) => props.theme.mediaQueries.maxWidthXS} {
     .middle-content-section {
-      width: 300px;
       overflow: auto;
     }
   }
-  @media screen and (max-width: 1600px) and (min-width: 1400px) {
-    .main-routing-coin-div {
-      width: 300px;
-    }
-  }
+
   @media screen and (max-width: 1400px) and (min-width: 1250px) {
     .main-routing-coin-div {
-      width: 250px;
       .inner-routing-coin-div {
-        padding: 10px 16px;
+        padding: 3% 5%;
       }
       img {
         width: 35px;
@@ -83,10 +182,6 @@ const StyledRouting = styled.div`
   }
   @media screen and (max-width: 1250px) {
     .main-routing-coin-div {
-      width: 200px;
-      .inner-routing-coin-div {
-        padding: 5px 8px;
-      }
       img {
         width: 35px;
       }
@@ -105,96 +200,3 @@ const StyledRouting = styled.div`
     }
   }
 `;
-
-export const Routing: React.FC = () => {
-  const { theme, isDark } = useTheme();
-  const { colors, fonts } = theme;
-  return (
-    <StyledRouting className="row m-0">
-      <Flex className={"col-12"}>
-        <Flex>
-          <Text
-            text="Routing"
-            color={colors.white}
-            size={fonts.fontSize24}
-            weight={500}
-          ></Text>
-        </Flex>
-
-        <Flex className={"d-flex"}>
-          <Flex className="right-image d-flex align-items-center justify-content-end">
-            <Image src={Rlogo} width="fit" />
-            {/* <VerticalLine className={"ml-4"} /> */}
-          </Flex>
-
-          <Flex className="middle-content-section ">
-            <Flex className={"display-setting"}>
-              {isDark ? (
-                <ArrowRightIcon height={20} className="right-arrow" />
-              ) : (
-                <LightRightArrow className="right-arrow" />
-              )}
-
-              <Flex className={`main-routing-coin-div`}>
-                <Flex className={`inner-routing-coin-div`}>
-                  <Flex className="d-flex align-items-center header">
-                    <Image src={Solanalogo} width="46px" />
-                    <Text
-                      text={"SOL"}
-                      size={fonts.fontSize26}
-                      color={colors.white}
-                      classes="pl-4"
-                    />
-                  </Flex>
-                  <Flex className="percentage-div">
-                    <Text
-                      text="SOLANA 100%"
-                      color={colors.white}
-                      size={fonts.fontSize14}
-                    ></Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-              {isDark ? (
-                <ArrowRightIcon height={20} className="right-arrow" />
-              ) : (
-                <LightRightArrow className="right-arrow" />
-              )}
-
-              {/* <Div classes={`main-routing-coin-div`}>
-                <Div classes={`inner-routing-coin-div`}>
-                  <Div classes="d-flex align-items-center header">
-                    <Image src={Solanalogo} width="46px" />
-                    <Text
-                      text={"SOL"}
-                      size={fonts.fontSize26}
-                      color={colors.white}
-                      classes="pl-4"
-                    />
-                  </Div>
-                  <Div classes="percentage-div">
-                    <Text
-                      text="SOLANA 100%"
-                      color={colors.white}
-                      size={fonts.fontSize21}
-                    ></Text>
-                  </Div>
-                </Div>
-              </Div>
-              <Image
-                src={isDark ? RightArrow : LightRightArrow}
-                classes={"right-arrow"}
-                width="15px"
-              ></Image> */}
-            </Flex>
-          </Flex>
-
-          <Flex className="right-image mb-3 d-flex align-items-center">
-            {/* <VerticalLine className={"mr-4"} /> */}
-            <Image src={Solanalogo} width="fit" />
-          </Flex>
-        </Flex>
-      </Flex>
-    </StyledRouting>
-  );
-};

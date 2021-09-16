@@ -28,7 +28,7 @@ const Exchange: React.FC = () => {
   const [historyTabs, setHistoryTabs] = React.useState<boolean>(false);
   const [marketingTab, setMarketingTab] = React.useState<boolean>(true);
 
-  const { login , SolonaWalletConnect } = useAuth();
+  const { login, SolonaWalletConnect } = useAuth();
 
   const [onPresentCallback, onDismiss] = useModal(
     walletState.connected ? (
@@ -137,7 +137,14 @@ const Exchange: React.FC = () => {
           </Flex>
         </Flex>
         <Flex className="Routing-row mb-5">
-          <Routing />
+          <GradientLayout
+            padding={''}
+            borderRadius={""}
+            backgroundGradient={gradients.blue}
+            broderGradient={gradients.multiColor}
+          >
+            <Routing />
+          </GradientLayout>
         </Flex>
       </ControlContainer>
     </>

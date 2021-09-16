@@ -59,6 +59,8 @@ const fonts: Fonts = {
   md: 14,
   lg: 18,
   xl: 60,
+  fontSize11: 11,
+  fontSize12: 12,
   fontSize13: 13,
   fontSize14: 14,
   fontSize15: 15,
