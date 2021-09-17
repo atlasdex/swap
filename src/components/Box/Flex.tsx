@@ -5,7 +5,8 @@ const FlexWapper = styled.div``;
 
 const Flex: React.FC<DivPropsInterface> = ({children, ...props}) => {
   const { className, onClick } = props
-  
+
+ 
   return (
       <FlexWapper
           className={className }

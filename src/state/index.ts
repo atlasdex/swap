@@ -3,13 +3,17 @@ import { useDispatch } from 'react-redux'
 import blockReducer from './block'
 import ModalReducer from './modal'
 import WalletReducer from './wallet'
+import TokenReducer from './token' 
+import RatesReducer from './rates'
 
 const store = configureStore({
-  devTools: process.env.NODE_ENV !== 'production',
-  reducer: {
-    modal : ModalReducer,
-    wallet: WalletReducer
-  },
+    devTools: process.env.NODE_ENV !== 'production',
+    reducer: {
+        modal: ModalReducer,
+        wallet: WalletReducer,
+        tokenReducer: TokenReducer,
+        ratesReducer: RatesReducer
+    },
 })
 
 
