@@ -5,7 +5,7 @@ import Text from "components/Text";
 import Input from "components/Input";
 import Button, { ButtonSeeGreen } from "components/Button";
 import useTheme from "hooks/useTheme";
-import { useGetRatesState, useGetSelectedFromTokenState, useGetSelectedToTokenState, useGetTokenState, useGetWalletState, useSetFromAmountState, useSetSelectedFromTokenState, useSetSelectedToTokenState } from "state/hooks";
+import { useGetFromAmountState, useGetRatesState, useGetSelectedFromTokenState, useGetSelectedToTokenState, useGetToAmountState, useGetTokenState, useGetWalletState, useSetFromAmountState, useSetSelectedFromTokenState, useSetSelectedToTokenState } from "state/hooks";
 import { useModalState } from "state/hooks";
 import { useState } from "react";
 import CustomDropdown from "components/Dropdown";
@@ -248,6 +248,8 @@ export const Market: React.FC = () => {
     const { setSelectedFromTokenState } = useSetSelectedFromTokenState();
     const { setSelectedToTokenState } = useSetSelectedToTokenState();
     const { setFromAmountState } = useSetFromAmountState();
+    let fromAmount = useGetFromAmountState();
+    let toAmount = useGetToAmountState(); 
 
 
     // console.log("selectedFromToken=>", selectedFromToken);
@@ -292,6 +294,7 @@ export const Market: React.FC = () => {
                                 <Input
                                     placeholder={"0.0"}
                                     size={fonts.fontSize20}
+                                    value={fromAmount}
                                     weight={400}
                                     handleChange={(value) => { 
                                         setFromAmountState({fromAmount:value})  
@@ -337,6 +340,7 @@ export const Market: React.FC = () => {
                                 />
                                 <Input
                                     placeholder={"0.0"}
+                                    value={toAmount}
                                     size={fonts.fontSize20}
                                     weight={400}
                                     handleChange={(value) => { 
