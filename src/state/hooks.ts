@@ -180,7 +180,7 @@ export const useSetRatesState = () => {
 }
 //get Rates state 
 export const useGetQuoteState = () => {
-    const { quotes } = useSelector((state: QuoteInitialState) => state);
+    const { quotes } = useSelector((state:any) => state.quoteReducer);
     return quotes
 }
 export const useSetQuoteState = () => {

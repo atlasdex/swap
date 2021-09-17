@@ -44,5 +44,8 @@ export interface RateInitialState {
 }
 
 export interface QuoteInitialState {
+    fromToken?: any;
+    protocols?: any;
+    toToken?: any;
     quotes: any
 }

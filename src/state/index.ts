@@ -5,6 +5,7 @@ import ModalReducer from './modal'
 import WalletReducer from './wallet'
 import TokenReducer from './token' 
 import RatesReducer from './rates'
+import QuoteReducer from './quote'
 
 const store = configureStore({
     devTools: process.env.NODE_ENV !== 'production',
@@ -12,7 +13,8 @@ const store = configureStore({
         modal: ModalReducer,
         wallet: WalletReducer,
         tokenReducer: TokenReducer,
-        ratesReducer: RatesReducer
+        ratesReducer: RatesReducer,
+        quoteReducer:QuoteReducer
     },
 })
 

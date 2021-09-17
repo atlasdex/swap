@@ -9,84 +9,92 @@ import { ArrowRightIcon, LightRightArrow, VerticalLine } from "components/Svg";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 import useTheme from "hooks/useTheme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StaticQuote from "config/constants/staticQuote";
 import { IoMdPie } from "react-icons/io";
 
+import { useGetQuoteState, useGetTokenState } from "state/hooks";
+import { QuoteInitialState } from "state/types";
+
 export const Routing: React.FC = () => {
   const { theme, isDark } = useTheme();
-  const [quoteRoute, setQuoteRoute] = useState(StaticQuote);
-  console.log("Static quoteRoute", quoteRoute);
+  const quotes = useGetQuoteState();
 
   const { colors, fonts } = theme;
   return (
-    <StyledRouting className="row m-0 ">
-      <Flex className={"col-12 py-5"}>
-        <Flex className={"d-flex"}>
-          <Flex className="right-image d-flex align-items-center justify-content-end">
-            <Image src={quoteRoute.fromToken.logoURI} width="44" />
-            {/* <VerticalLine className={"ml-4"} /> */}
-          </Flex>
-          <Flex className="middle-content-section border-xy">
-            {quoteRoute.protocols.map((item, index) => {
-              return (
-                <Flex key={index} className={"display-setting"}>
-                  <Flex className="right-arrow d-flex">
-                    {/* <Text
+    quotes !== undefined && (
+      <StyledRouting className="row m-0 ">
+        <Flex className={"col-12 py-5"}>
+          <Flex className={"d-flex"}>
+            <Flex className="right-image d-flex align-items-center justify-content-end">
+              <Image src={quotes.fromToken?.logoURI} width="44" />
+              {/* <VerticalLine className={"ml-4"} /> */}
+            </Flex>
+            <Flex className="middle-content-section border-xy">
+              {quotes &&
+                quotes.protocols.map((item, index) => {
+                  return (
+                    <Flex key={index} className={"display-setting"}>
+                      <Flex className="right-arrow d-flex">
+                        {/* <Text
                         text={"100%"}
                         size={fonts.fontSize11}
                         color={colors.white}
                         classes={"percentage-text"}
                       /> */}
-                    <MdKeyboardArrowRight className="icon-svg" />
-                  </Flex>
-                  <Flex className={`main-routing-coin-div`}>
-                    {item.map((elment, index) => {
-                      return (
-                        <Flex className={`inner-routing-coin-div`}>
-                          <Flex className="d-flex align-items-center header">
-                            <Image
-                              src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`}
-                              width="32px"
-                            />
-                            <Text
-                              text={"SOL"}
-                              size={fonts.fontSize16}
-                              color={colors.white}
-                              classes="pl-3"
-                            />
-                          </Flex>
-                          {elment.map((exchangesNode, index) => {
-                            return (
-                              <Flex key={index} className="percentage-div mb-1">
+                        <MdKeyboardArrowRight className="icon-svg" />
+                      </Flex>
+                      <Flex className={`main-routing-coin-div`}>
+                        {item.map((elment, index) => {
+                          return (
+                            <Flex className={`inner-routing-coin-div`}>
+                              <Flex className="d-flex align-items-center header">
+                                <Image
+                                  src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`}
+                                  width="32px"
+                                />
                                 <Text
-                                  text={`${exchangesNode.name} ${exchangesNode.part}%`}
+                                  // text={fetchToken(elment[0].toTokenAddress)}
+                                  text={""}
+                                  size={fonts.fontSize16}
                                   color={colors.white}
-                                  size={fonts.fontSize11}
-                                ></Text>
+                                  classes="pl-3"
+                                />
                               </Flex>
-                            );
-                          })}
-                        </Flex>
-                      );
-                    })}
-                  </Flex>
-                  <Flex className="right-arrow d-flex">
+                              {elment.map((exchangesNode, index) => {
+                                return (
+                                  <Flex
+                                    key={index}
+                                    className="percentage-div mb-1"
+                                  >
+                                    <Text
+                                      text={`${exchangesNode.name} ${exchangesNode.part}%`}
+                                      color={colors.white}
+                                      size={fonts.fontSize11}
+                                    ></Text>
+                                  </Flex>
+                                );
+                              })}
+                            </Flex>
+                          );
+                        })}
+                      </Flex>
+                      <Flex className="right-arrow d-flex">
+                        <MdKeyboardArrowRight className="icon-svg" />
+                      </Flex>
+                    </Flex>
+                  );
+                })}
+            </Flex>
 
-                    <MdKeyboardArrowRight className="icon-svg" />
-                  </Flex>
-                </Flex>
-              );
-            })}
-          </Flex>
-
-          <Flex className="right-image d-flex align-items-center">
-            {/* <VerticalLine className={"mr-4"} /> */}
-            <Image src={quoteRoute.toToken.logoURI} width="44" />
+            <Flex className="right-image d-flex align-items-center">
+              {/* <VerticalLine className={"mr-4"} /> */}
+              <Image src={quotes.toToken.logoURI} width="44" />
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
-    </StyledRouting>
+      </StyledRouting>
+    )
   );
 };
 

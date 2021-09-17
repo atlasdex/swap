@@ -27,7 +27,7 @@ async function getRates() {
     }
 
 }
-async function getQuote(fromTokenAddress: string, toTokenAddress: string, amount: number) {
+async function getQuote(fromTokenAddress: string, toTokenAddress: string, amount: string) {
     try {  
         
         const result = await HttpClient.get(`quote?fromTokenAddress=${fromTokenAddress}&toTokenAddress=${toTokenAddress}&amount=${amount}`);
