@@ -16,7 +16,6 @@ export default connectors;
 export const NetworkContextName = 'NETWORK'
  
 
-export const BASE_URL="https://api.1inch.exchange/v3.0/1/";
-
+export const BASE_URL="https://api.1inch.exchange/v3.0/1/";    
 
   
