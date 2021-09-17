@@ -6,10 +6,12 @@ import Image from "components/Image";
 import Rlogo from "assets/images/R-Icon.svg";
 import Solanalogo from "assets/images/Solana-Icon.svg";
 import { ArrowRightIcon, LightRightArrow, VerticalLine } from "components/Svg";
+import { MdKeyboardArrowRight } from "react-icons/md";
 
 import useTheme from "hooks/useTheme";
 import { useState } from "react";
 import StaticQuote from "config/constants/staticQuote";
+import { IoMdPie } from "react-icons/io";
 
 export const Routing: React.FC = () => {
   const { theme, isDark } = useTheme();
@@ -29,25 +31,24 @@ export const Routing: React.FC = () => {
             {quoteRoute.protocols.map((item, index) => {
               return (
                 <Flex key={index} className={"display-setting"}>
-                  {isDark ? (
-                    <Flex className="right-arrow d-flex">
-                      {/* <Text
+                  <Flex className="right-arrow d-flex">
+                    {/* <Text
                         text={"100%"}
                         size={fonts.fontSize11}
                         color={colors.white}
                         classes={"percentage-text"}
                       /> */}
-                      <ArrowRightIcon className="icon-svg" />
-                    </Flex>
-                  ) : (
-                    <LightRightArrow height={20} className="right-arrow" />
-                  )}
+                    <MdKeyboardArrowRight className="icon-svg" />
+                  </Flex>
                   <Flex className={`main-routing-coin-div`}>
                     {item.map((elment, index) => {
                       return (
                         <Flex className={`inner-routing-coin-div`}>
                           <Flex className="d-flex align-items-center header">
-                            <Image src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`} width="32px" />
+                            <Image
+                              src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`}
+                              width="32px"
+                            />
                             <Text
                               text={"SOL"}
                               size={fonts.fontSize16}
@@ -70,12 +71,10 @@ export const Routing: React.FC = () => {
                       );
                     })}
                   </Flex>
+                  <Flex className="right-arrow d-flex">
 
-                  {isDark ? (
-                    <ArrowRightIcon height={20} className="right-arrow" />
-                  ) : (
-                    <LightRightArrow className="right-arrow" />
-                  )}
+                    <MdKeyboardArrowRight className="icon-svg" />
+                  </Flex>
                 </Flex>
               );
             })}
@@ -109,10 +108,12 @@ const StyledRouting = styled.div`
     width: 10%;
   }
   .right-arrow {
-    margin: 0 40px;
+    margin: 0 30px;
     .icon-svg {
       font-size: 21px;
-      margin-top: 5px;
+      margin-top: auto;
+      margin-bottom: auto;
+      color: white;
       margin-left: 6px;
     }
     .percentage-text {
@@ -138,6 +139,7 @@ const StyledRouting = styled.div`
     width: -webkit-fill-available;
     padding: 2px;
     .inner-routing-coin-div {
+      height: fit-content;
       background: ${(props) =>
         props.theme.isDark ? "#261A83" : props.theme.gradients.buttonLight};
       padding: 20px 26px;
