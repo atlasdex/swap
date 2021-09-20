@@ -1,42 +1,36 @@
 
 
+import { useGetNetworkChainState } from 'state/hooks';
 import HttpClient from './HttpClient'
-
-async function getTokens() {
-
+async function getTokens() {  
+   // let chainId = useGetNetworkChainState();
     try {
-        const result = await HttpClient.get('tokens');
-
-        return result.data.tokens;
+        const result = await HttpClient.get('/tokens?chainId=1'); 
+        return result;
     } catch (error) {
-        console.log(error);
-
+        console.log(error); 
     }
 
 }
-async function getRates() {
-
-    try {
-
-        const result = await HttpClient.get('https://token-prices.1inch.io/v1.1/1');
-        
+async function getRates() { 
+    try { 
+        const result = await HttpClient.get('https://token-prices.1inch.io/v1.1/1'); 
         return result.data;
     } catch (error) {
-        console.log(error);
-
+        console.log(error); 
     }
 
 }
 async function getQuote(fromTokenAddress: string, toTokenAddress: string, amount: string) {
-    try {  
-        
-        const result = await HttpClient.get(`quote?fromTokenAddress=${fromTokenAddress}&toTokenAddress=${toTokenAddress}&amount=${amount}`);
-        
+    try { 
+        //let chainId = useGetNetworkChainState();
+        const result = await HttpClient.get(`tokens/quote?chainId=1&fromTokenAddress=${fromTokenAddress}&toTokenAddress=${toTokenAddress}&amount=${amount}`);
+
         return result.data;
     } catch (error) {
         console.log(error);
-    }
-
+    } 
+ 
 }
 export {
     getTokens,

@@ -11,12 +11,11 @@ const useTokens = async () => {
     useQuotes()
     useEffect(() => {
         const GetToken = async () => {
-            const result = await getTokens();
-            const tokenList: IToken[] = Object.values(result); 
+            const result = await getTokens(); 
+            const tokenList: IToken[] = Object.values(result.data); 
             setTokenState({ tokens: tokenList })
             setSelectedFromTokenState({ selectedFromToken: tokenList[0] }) 
-            setSelectedToTokenState({ selectedToToken: tokenList[1] })
-            
+            setSelectedToTokenState({ selectedToToken: tokenList[1] }) 
         }
         GetToken()
     }, [])

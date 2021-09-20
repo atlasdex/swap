@@ -239,17 +239,19 @@ export const Market: React.FC = () => {
     const { setWalletModalState } = useModalState();
     const walletState = useGetWalletState();
     const [lowGas, setLowGas] = useState(false);
-    
+
 
     let tokens = useGetTokenState();
 
-    let selectedFromToken = useGetSelectedFromTokenState(); 
+    let selectedFromToken = useGetSelectedFromTokenState();
     let selectedToToken = useGetSelectedToTokenState();
     const { setSelectedFromTokenState } = useSetSelectedFromTokenState();
     const { setSelectedToTokenState } = useSetSelectedToTokenState();
     const { setFromAmountState } = useSetFromAmountState();
     let fromAmount = useGetFromAmountState();
-    let toAmount = useGetToAmountState(); 
+    let toAmount = useGetToAmountState();
+
+    const [fromAmountInput, setfromAmountInput] = useState(0);
 
 
     // console.log("selectedFromToken=>", selectedFromToken);
@@ -259,16 +261,25 @@ export const Market: React.FC = () => {
     // console.log("tokenState tokens len=>",tokenState.tokens.length);
 
     const [tokenOptions, setTokenOptions] = useState([]);
-     
+
+    const [searchQuery, setSearchQuery] = useState(0);
 
     useEffect(() => {
-        setTokenOptions(tokens); 
+        setTokenOptions(tokens);
 
     }, [tokens])
 
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            console.log("searchQuery==>", searchQuery);
+            //setfromAmountInput(searchQuery)
+            setFromAmountState({ fromAmount: searchQuery })
+        }, 200)
 
-    const revertTokenSelection = ()=>{
-        let temp = selectedFromToken ;
+        return () => clearTimeout(delayDebounceFn)
+    }, [searchQuery])
+    const revertTokenSelection = () => {
+        let temp = selectedFromToken;
         setSelectedFromTokenState({ selectedFromToken: selectedToToken })
         setSelectedToTokenState({ selectedToToken: temp })
     }
@@ -294,13 +305,15 @@ export const Market: React.FC = () => {
                                 <Input
                                     placeholder={"0.0"}
                                     size={fonts.fontSize20}
-                                    value={fromAmount}
+                                    value={fromAmountInput.toString()}
                                     weight={400}
-                                    handleChange={(value) => { 
-                                        setFromAmountState({fromAmount:value})  
-                                        
+                                    handleChange={(value) => {
+                                        setfromAmountInput(value)
+                                        setSearchQuery(value)
                                     }}
                                 />
+
+
                             </Flex>
 
                             <Flex className={"d-flex align-items-center"}>
@@ -319,7 +332,7 @@ export const Market: React.FC = () => {
                     </Flex>
                 </Flex>
                 <Flex className={"convert-icon-div"}>
-                    <RiSwapFill style={{ fontSize: '35px', color: 'rgba(255, 255, 255, 0.1)' }} onClick={()=>{
+                    <RiSwapFill style={{ fontSize: '35px', color: 'rgba(255, 255, 255, 0.1)' }} onClick={() => {
                         revertTokenSelection()
                     }} />
                     {/* <Image src={ConvertedIcon} width="30px" /> */}
@@ -343,7 +356,7 @@ export const Market: React.FC = () => {
                                     value={toAmount}
                                     size={fonts.fontSize20}
                                     weight={400}
-                                    handleChange={(value) => { 
+                                    handleChange={(value) => {
                                     }}
                                     disabled={true}
                                 />

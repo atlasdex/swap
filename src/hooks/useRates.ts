@@ -16,7 +16,7 @@ const useRates = () => {
                 }
                 return item;
             }); 
-            console.log("arrayOfObj=",arrayOfObj);
+           // console.log("arrayOfObj=",arrayOfObj);
             
             setRateState({ rates: arrayOfObj }) 
         }

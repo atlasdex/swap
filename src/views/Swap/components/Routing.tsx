@@ -19,6 +19,7 @@ import { QuoteInitialState } from "state/types";
 export const Routing: React.FC = () => {
   const { theme, isDark } = useTheme();
   const quotes = useGetQuoteState();
+  
 
   const { colors, fonts } = theme;
   return (
@@ -31,7 +32,7 @@ export const Routing: React.FC = () => {
               {/* <VerticalLine className={"ml-4"} /> */}
             </Flex>
             <Flex className="middle-content-section border-xy">
-              {quotes &&
+              {quotes && quotes.protocols &&
                 quotes.protocols.map((item, index) => {
                   return (
                     <Flex key={index} className={"display-setting"}>
@@ -89,7 +90,7 @@ export const Routing: React.FC = () => {
 
             <Flex className="right-image d-flex align-items-center">
               {/* <VerticalLine className={"mr-4"} /> */}
-              <Image src={quotes.toToken.logoURI} width="44" />
+              <Image src={quotes && quotes.toToken && quotes.toToken.logoURI} width="44" />
             </Flex>
           </Flex>
         </Flex>

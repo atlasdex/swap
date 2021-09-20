@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NetworkChainId } from "config/constants/types";
 import { IToken } from "interfaces/IToken";
 import { useSetTokenState } from "state/hooks";
 import { TokenInitialState } from "state/types";
@@ -19,7 +20,8 @@ const initialState: TokenInitialState = {
         logoURI: ""
     },
     fromAmount: 0,
-    toAmount: 0
+    toAmount: 0, 
+    networkChain:NetworkChainId.ETHEREUM
 };
 
 export const tokenSlice = createSlice({
@@ -36,16 +38,19 @@ export const tokenSlice = createSlice({
             state.selectedToToken = action.payload 
         },
         setFromAmount: (state, action: PayloadAction<number>) => {
-            console.log("in Reducer=",action.payload); 
+          //  console.log("in Reducer=",action.payload); 
             state.fromAmount = action.payload
         },
         setToAmount: (state, action: PayloadAction<number>) => {
             state.toAmount = action.payload
+        },
+        setNetworkChainId: (state, action: PayloadAction<number>) => {
+            state.networkChain = action.payload
         }
     }
 
 });
 
-export const { setTokens, setSelectedFromToken, setSelectedToToken, setFromAmount, setToAmount } = tokenSlice.actions;
+export const { setTokens, setSelectedFromToken, setSelectedToToken, setFromAmount, setToAmount,setNetworkChainId } = tokenSlice.actions;
 
 export default tokenSlice.reducer;
