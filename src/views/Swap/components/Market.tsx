@@ -347,7 +347,7 @@ export const Market: React.FC = () => {
                                 />
                                 <Input
                                     placeholder={"0.0"}
-                                    value={toAmount}
+                                    value={toAmount.toFixed(5)}
                                     size={fonts.fontSize20}
                                     weight={400}
                                     handleChange={(value) => {
@@ -376,7 +376,7 @@ export const Market: React.FC = () => {
                 {/* currency rates section */}
                 <Flex className="d-flex justify-content-around my-3 mt-5">
                     <Text
-                        text={`1  ${selectedFromToken.symbol}= 100 ${selectedToToken.symbol}`}
+                        text={`1  ${selectedFromToken.symbol}= ${toAmount} ${selectedToToken.symbol}`}
                         size={fonts.fontSize16}
                         weight={500}
                         color={colors.white}

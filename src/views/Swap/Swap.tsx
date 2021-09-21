@@ -32,7 +32,7 @@ const Exchange: React.FC = () => {
     let quotes = useGetQuoteState();
     console.log("quotes123", JSON.stringify(quotes));
     console.log(quotes.protocols);
-    
+
 
 
     const [onPresentCallback, onDismiss] = useModal(
@@ -141,20 +141,22 @@ const Exchange: React.FC = () => {
                         </Flex>
                     </Flex>
                 </Flex>
-                <Flex className="Routing-row mb-5">
-                    <GradientLayout
-                        padding={''}
-                        borderRadius={""}
-                        backgroundGradient={gradients.blue}
-                        broderGradient={gradients.multiColor}
-                    >
+                {quotes && quotes.protocols &&
+                    <Flex className="Routing-row mb-5">
+                        <GradientLayout
+                            padding={''}
+                            borderRadius={""}
+                            backgroundGradient={gradients.blue}
+                            broderGradient={gradients.multiColor}
+                        >
 
-                        {quotes != null &&
-                            <Routing /> 
-                        }
 
-                    </GradientLayout>
-                </Flex>
+                            <Routing />
+
+
+                        </GradientLayout>
+                    </Flex>
+                }
             </ControlContainer>
         </>
     );

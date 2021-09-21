@@ -18,7 +18,7 @@ const useQuotes = () => {
     const { setToAmountState } = useSetToAmountState();
     let chainId = useGetNetworkChainState();
     console.log(chainId);
-    
+
     const { setQuoteState } = useSetQuoteState();
 
     function toPlainString(num) {
@@ -34,26 +34,36 @@ const useQuotes = () => {
 
     useEffect(() => {
         const getQuotes = async () => {
-            const amount = toPlainString(
-                fromAmount * 10 ** selectedFromToken.decimals
-            );
-            const result = await getQuote(
-                selectedFromToken.address,
-                selectedToToken.address,
-                amount,
-                chainId
-            );
+            try {
+                const amount = toPlainString(
+                    fromAmount * 10 ** selectedFromToken.decimals
+                );
+                const result = await getQuote(
+                    selectedFromToken.address,
+                    selectedToToken.address,
+                    amount,
+                    chainId
+                );
+                console.log("result", result);
+                let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
+                console.log("toamount", toamount);
 
-            let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
-            setToAmountState({ toAmount: +toamount.toFixed(5)||0});
-            // console.log("quotes=>", result);
-            setQuoteState({ quotes: result });
+                toamount = isNaN(toamount) ? 0 : toamount
+
+                setToAmountState({ toAmount: +toamount.toFixed(5) });
+                // console.log("quotes=>", result);
+                setQuoteState({ quotes: result });
+            } catch (error) {
+                console.log(error);
+
+            }
+
         };
         if (fromAmount > 0) {
             getQuotes();
         }
 
-    }, [fromAmount, selectedFromToken, selectedToToken,chainId]);
+    }, [fromAmount, selectedFromToken, selectedToToken, chainId]);
 };
 
 export default useQuotes;
