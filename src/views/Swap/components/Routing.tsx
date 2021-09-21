@@ -2,19 +2,10 @@ import { Flex } from "components/Box";
 import styled from "styled-components";
 import Text from "components/Text";
 import Image from "components/Image";
-
-import Rlogo from "assets/images/R-Icon.svg";
-import Solanalogo from "assets/images/Solana-Icon.svg";
-import { ArrowRightIcon, LightRightArrow, VerticalLine } from "components/Svg";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 import useTheme from "hooks/useTheme";
-import { useEffect, useState } from "react";
-import StaticQuote from "config/constants/staticQuote";
-import { IoMdPie } from "react-icons/io";
-
 import { useGetQuoteState, useGetTokenState } from "state/hooks";
-import { QuoteInitialState } from "state/types";
 
 export const Routing: React.FC = () => {
   const { theme, isDark } = useTheme();
@@ -30,9 +21,9 @@ export const Routing: React.FC = () => {
               <Image src={quotes.fromToken?.logoURI} width="44" />
               {/* <VerticalLine className={"ml-4"} /> */}
             </Flex>
-            <Flex className="middle-content-section border-xy">
-              {quotes &&
-                quotes.protocols.map((item, index) => {
+            {quotes.protocols ? (
+              <Flex className="middle-content-section border-xy">
+                {quotes.protocols.map((item, index) => {
                   return (
                     <Flex key={index} className={"display-setting"}>
                       <Flex className="right-arrow d-flex">
@@ -85,11 +76,14 @@ export const Routing: React.FC = () => {
                     </Flex>
                   );
                 })}
-            </Flex>
+              </Flex>
+            ) : (
+              ""
+            )}
 
             <Flex className="right-image d-flex align-items-center">
               {/* <VerticalLine className={"mr-4"} /> */}
-              <Image src={quotes.toToken.logoURI} width="44" />
+              <Image src={quotes?.toToken?.logoURI} width="44" />
             </Flex>
           </Flex>
         </Flex>
