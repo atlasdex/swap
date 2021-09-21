@@ -4,7 +4,8 @@ import { Flex } from "components/Box";
 import { BinanceIcon, EthereumIcon, GreenTick, SolonaIcon } from "components/Svg";
 import Networks from "config/constants/network";
 import Image from "components/Image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetNetworkChainState } from "state/hooks";
 
 const StyledNetworkSection = styled.section`
   padding: 16px;
@@ -22,30 +23,36 @@ const NetworkItems = styled.div`
 `;
 
 export const NetworkSelection: React.FC = () => {
-   const [ selectedNetwork , setSelectedNetwork ] = useState(Networks[0]);
-   console.log(selectedNetwork);
+    const [selectedNetwork, setSelectedNetwork] = useState(Networks[0]);
+    console.log(selectedNetwork);
+    const { setNetworkChainState } = useSetNetworkChainState();
 
-  return (
-    <StyledNetworkSection className="">
-      <Flex className={"mx-0 network-row "}>
-        {Networks.map((network, index) => (
-          <Flex
-            className={`text-center position-relative py-2`}
-            key={index}
-            onClick={()=>{
-              setSelectedNetwork(network)
-
-            }}
-          >
-            <Image
-              src={network.icon}
-              width="30px"
-              height="30px"
-            />
-            {network.name === selectedNetwork.name && <GreenTick className={"tick-icon"}/>}
-          </Flex>
-        ))}
-      </Flex>
-    </StyledNetworkSection>
-  );
+    useEffect(() => {
+        function setChainId() {
+            setNetworkChainState({ networkChain: selectedNetwork.chainId })
+        }
+        setChainId();
+    }, [selectedNetwork])
+    return (
+        <StyledNetworkSection className="">
+            <Flex className={"mx-0 network-row "}>
+                {Networks.map((network, index) => (
+                    <Flex
+                        className={`text-center position-relative py-2`}
+                        key={index}
+                        onClick={() => {
+                            setSelectedNetwork(network)
+                        }}
+                    >
+                        <Image
+                            src={network.icon}
+                            width="30px"
+                            height="30px"
+                        />
+                        {network.name === selectedNetwork.name && <GreenTick className={"tick-icon"} />}
+                    </Flex>
+                ))}
+            </Flex>
+        </StyledNetworkSection>
+    );
 };

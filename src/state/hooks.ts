@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { getWeb3NoAccount } from 'utils/web3'
 import { setNetworkModal, setWalletConnectModal } from "./actions"
 import { setWalletReducer } from './wallet'
-import { setFromAmount, setSelectedFromToken, setSelectedToToken, setToAmount, setTokens } from './token'
+import { setFromAmount, setNetworkChainId, setSelectedFromToken, setSelectedToToken, setToAmount, setTokens } from './token'
 import { WalletInitialState } from './types'
 import { setRates } from './rates'
 import { setQuotes } from './quote'
@@ -134,13 +134,13 @@ export const useSetSelectedToTokenState = () => {
     return { setSelectedToTokenState }
 }
 export const useGetFromAmountState = () => {
-    const {fromAmount} = useSelector((state:any) => state.tokenReducer);  
+    const { fromAmount } = useSelector((state: any) => state.tokenReducer);
     return fromAmount
 }
 export const useSetFromAmountState = () => {
-    const dispatch = useAppDispatch(); 
-    const setFromAmountState = useCallback((token: TokenInitialState) => { 
-        
+    const dispatch = useAppDispatch();
+    const setFromAmountState = useCallback((token: TokenInitialState) => {
+
         dispatch(setFromAmount(token.fromAmount));
         // eslint-disable-next-line
     }, []);
@@ -162,6 +162,21 @@ export const useSetToAmountState = () => {
 
     return { setToAmountState }
 }
+export const useGetNetworkChainState = () => {
+    const { networkChain } = useSelector((state: any) => state.tokenReducer);
+    return networkChain
+}
+export const useSetNetworkChainState = () => {
+    const dispatch = useAppDispatch();
+
+    const setNetworkChainState = useCallback((token: TokenInitialState) => {
+
+        dispatch(setNetworkChainId(token.networkChain));
+        // eslint-disable-next-line
+    }, []);
+
+    return { setNetworkChainState }
+}
 //get Rates state 
 export const useGetRatesState = () => {
     const { rates } = useSelector((state: RateInitialState) => state);
@@ -180,7 +195,7 @@ export const useSetRatesState = () => {
 }
 //get Rates state 
 export const useGetQuoteState = () => {
-    const { quotes } = useSelector((state:any) => state.quoteReducer);
+    const { quotes } = useSelector((state: any) => state.quoteReducer);
     return quotes
 }
 export const useSetQuoteState = () => {

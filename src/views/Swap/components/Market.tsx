@@ -27,7 +27,7 @@ import RayIcon from "assets/images/R-Icon.svg";
 import { useEffect } from "react";
 import useTokens from "hooks/useTokens";
 import useQuotes from "hooks/useQuotes";
-import Select from 'react-select';
+import { IToken } from "interfaces/IToken";
 
 const StyledMarketingSection = styled.section`
   padding: 46px;
@@ -251,38 +251,42 @@ export const Market: React.FC = () => {
 
   let tokens = useGetTokenState();
 
-  let selectedFromToken = useGetSelectedFromTokenState();
-  let selectedToToken = useGetSelectedToTokenState();
+  let selectedFromToken: IToken = useGetSelectedFromTokenState();
+  let selectedToToken: IToken = useGetSelectedToTokenState();
   const { setSelectedFromTokenState } = useSetSelectedFromTokenState();
   const { setSelectedToTokenState } = useSetSelectedToTokenState();
   const { setFromAmountState } = useSetFromAmountState();
   let fromAmount = useGetFromAmountState();
   let toAmount = useGetToAmountState();
 
-  // console.log("selectedFromToken=>", selectedFromToken);
-  // console.log("selectedToToken=>", selectedToToken);
-
-  // console.log("tokenState Tokens =>", tokenState.tokens);
-  // console.log("tokenState tokens len=>",tokenState.tokens.length);
+  const [fromAmountInput, setfromAmountInput] = useState(0);
 
   const [tokenOptions, setTokenOptions] = useState([]);
+
+  const [searchQuery, setSearchQuery] = useState(0);
 
   useEffect(() => {
     setTokenOptions(tokens);
   }, [tokens]);
 
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      console.log("searchQuery==>", searchQuery);
+      //setfromAmountInput(searchQuery)
+      setFromAmountState({ fromAmount: searchQuery });
+    }, 200);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
   const revertTokenSelection = () => {
     let temp = selectedFromToken;
     setSelectedFromTokenState({ selectedFromToken: selectedToToken });
     setSelectedToTokenState({ selectedToToken: temp });
   };
 
-
-
   return (
     <StyledMarketingSection className="">
       <Flex className={"mx-0 payment-row mb-4"}>
-
         <Flex className={"pay-div-parent"}>
           <Flex
             className={
@@ -300,10 +304,11 @@ export const Market: React.FC = () => {
                 <Input
                   placeholder={"0.0"}
                   size={fonts.fontSize20}
-                  value={fromAmount}
+                  value={fromAmountInput.toString()}
                   weight={400}
                   handleChange={(value) => {
-                    setFromAmountState({ fromAmount: value });
+                    setfromAmountInput(value);
+                    setSearchQuery(value);
                   }}
                 />
               </Flex>
@@ -347,7 +352,7 @@ export const Market: React.FC = () => {
                 />
                 <Input
                   placeholder={"0.0"}
-                  value={toAmount}
+                  value={toAmount.toFixed(5)}
                   size={fonts.fontSize20}
                   weight={400}
                   handleChange={(value) => {}}
@@ -373,7 +378,7 @@ export const Market: React.FC = () => {
         {/* currency rates section */}
         <Flex className="d-flex justify-content-around my-3 mt-5">
           <Text
-            text={"1 SOL = 3.6533137 RAY"}
+            text={`1  ${selectedFromToken.symbol}= ${toAmount} ${selectedToToken.symbol}`}
             size={fonts.fontSize16}
             weight={500}
             color={colors.white}

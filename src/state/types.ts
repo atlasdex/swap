@@ -37,7 +37,8 @@ export interface TokenInitialState {
     selectedFromToken?: IToken,
     selectedToToken?: IToken,
     fromAmount?:number,
-    toAmount?:number
+    toAmount?:number,
+    networkChain?:number
 }
 export interface RateInitialState {
     rates: IRate[]
