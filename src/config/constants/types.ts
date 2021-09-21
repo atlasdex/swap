@@ -98,6 +98,7 @@ export type NetworksType = {
     icon: ReactNode;
     selectIcon?: ReactNode;
     disabled: boolean;
+    chainId:number
 };
 
 export type WalletTypeArray = {

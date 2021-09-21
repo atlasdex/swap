@@ -4,6 +4,7 @@ import { IToken } from "interfaces/IToken";
 import { useEffect } from "react";
 import {
     useGetFromAmountState,
+    useGetNetworkChainState,
     useGetSelectedFromTokenState,
     useGetSelectedToTokenState,
     useGetToAmountState,
@@ -12,11 +13,12 @@ import {
 } from "state/hooks";
 const useQuotes = () => {
     let fromAmount = useGetFromAmountState() || 0;
-    let toAmount = useGetToAmountState();
     let selectedFromToken: IToken = useGetSelectedFromTokenState();
     let selectedToToken: IToken = useGetSelectedToTokenState();
     const { setToAmountState } = useSetToAmountState();
-
+    let chainId = useGetNetworkChainState();
+    console.log(chainId);
+    
     const { setQuoteState } = useSetQuoteState();
 
     function toPlainString(num) {
@@ -38,11 +40,12 @@ const useQuotes = () => {
             const result = await getQuote(
                 selectedFromToken.address,
                 selectedToToken.address,
-                amount
+                amount,
+                chainId
             );
 
             let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
-            setToAmountState({ toAmount: +toamount.toFixed(5) });
+            setToAmountState({ toAmount: +toamount.toFixed(5)||0});
             // console.log("quotes=>", result);
             setQuoteState({ quotes: result });
         };
@@ -50,7 +53,7 @@ const useQuotes = () => {
             getQuotes();
         }
 
-    }, [fromAmount, selectedFromToken, selectedToToken]);
+    }, [fromAmount, selectedFromToken, selectedToToken,chainId]);
 };
 
 export default useQuotes;

@@ -16,6 +16,7 @@ import RayIcon from "assets/images/R-Icon.svg";
 import { useEffect } from "react";
 import useTokens from "hooks/useTokens";
 import useQuotes from "hooks/useQuotes";
+import { IToken } from "interfaces/IToken";
 
 const StyledMarketingSection = styled.section`
   padding: 46px;
@@ -243,22 +244,15 @@ export const Market: React.FC = () => {
 
     let tokens = useGetTokenState();
 
-    let selectedFromToken = useGetSelectedFromTokenState();
-    let selectedToToken = useGetSelectedToTokenState();
+    let selectedFromToken:IToken = useGetSelectedFromTokenState();
+    let selectedToToken:IToken = useGetSelectedToTokenState();
     const { setSelectedFromTokenState } = useSetSelectedFromTokenState();
     const { setSelectedToTokenState } = useSetSelectedToTokenState();
     const { setFromAmountState } = useSetFromAmountState();
     let fromAmount = useGetFromAmountState();
     let toAmount = useGetToAmountState();
 
-    const [fromAmountInput, setfromAmountInput] = useState(0);
-
-
-    // console.log("selectedFromToken=>", selectedFromToken);
-    // console.log("selectedToToken=>", selectedToToken);
-
-    // console.log("tokenState Tokens =>", tokenState.tokens);
-    // console.log("tokenState tokens len=>",tokenState.tokens.length);
+    const [fromAmountInput, setfromAmountInput] = useState(0); 
 
     const [tokenOptions, setTokenOptions] = useState([]);
 
@@ -382,7 +376,7 @@ export const Market: React.FC = () => {
                 {/* currency rates section */}
                 <Flex className="d-flex justify-content-around my-3 mt-5">
                     <Text
-                        text={"1 SOL = 3.6533137 RAY"}
+                        text={`1  ${selectedFromToken.symbol}= 100 ${selectedToToken.symbol}`}
                         size={fonts.fontSize16}
                         weight={500}
                         color={colors.white}
