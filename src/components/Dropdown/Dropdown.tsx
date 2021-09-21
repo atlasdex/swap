@@ -68,22 +68,26 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
   } = props;
 
   const [filterData, setFilterDate] = useState(options);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setFilterDate(options);
   }, [options]);
 
-  const FilterData = (str) => {
-    let newArray = [];
-    if (options.length > 0) {
-      newArray = options.filter((item, index) => {
-        if (item.symbol.toUpperCase().includes(str)) {
-          return item;
-        }
-      });
-    }
-    setFilterDate(newArray);
-  };
+  useEffect(() => {
+    const FilterData = () => {
+      let newArray = [];
+      if (options.length > 0) {
+         newArray = options.filter((item, index) => {
+          if (item.symbol.toUpperCase().includes(search)) {
+            return item;
+          }
+        });
+      }
+      setFilterDate(newArray);
+    };
+    FilterData();
+  }, [search]);
 
   return (
     <StyleDropDown>
@@ -128,9 +132,10 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
         <Dropdown.Menu>
           <SearchInput
             type="text"
+            value={search}
             name=""
             onChange={(e) => {
-              FilterData(e.target.value.toUpperCase());
+              setSearch(e.target.value.toUpperCase());
             }}
             id=""
           />
