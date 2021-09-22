@@ -66,22 +66,26 @@ const useAuth = () => {
   }, []);
 
   //Wallet Connector For Ethereum and Binance Blockchain wallet
-  const login = useCallback(() => {
-    activate(injected, async (error: Error) => {
-      if (error instanceof UnsupportedChainIdError) {
-        activate(injected);
-        // const hasSetup = await setupNetwork();
-        // if (hasSetup) {
-        //   activate(injected);
-        // }
-      } else {
-        if (error instanceof NoEthereumProviderError) {
-          console.log("Provider Error", "No provider was found");
-        } else {
-          console.log(error.name, error.message);
-        }
-      }
-    });
+  const login = useCallback(async(chainID) => {
+    const hasSetup = await setupNetwork(chainID);
+    if (hasSetup) {
+      activate(injected);
+    }
+    // activate(injected, async (error: Error) => {
+      
+    //   if (error instanceof UnsupportedChainIdError) {
+    //     const hasSetup = await setupNetwork(chainID);
+    //     if (hasSetup) {
+    //       activate(injected);
+    //     }
+    //   } else {
+    //     if (error instanceof NoEthereumProviderError) {
+    //       console.log("Provider Error", "No provider was found");
+    //     } else {
+    //       console.log(error.name, error.message);
+    //     }
+    //   }
+    // });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

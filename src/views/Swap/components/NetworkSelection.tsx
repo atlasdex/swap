@@ -10,7 +10,7 @@ import {
 import Networks from "config/constants/network";
 import Image from "components/Image";
 import { useEffect, useState } from "react";
-import { useSetNetworkChainState } from "state/hooks";
+import { useGetWalletState, useSetNetworkChainState } from "state/hooks";
 import { setupNetwork } from "utils/wallet";
 import { useWeb3React } from "@web3-react/core";
 import { NetworksType } from "config/constants/types";
@@ -26,8 +26,9 @@ const StyledNetworkSection = styled.section`
   }
 `;
 
-
 export const NetworkSelection: React.FC = () => {
+  //fetch current Wallet state
+  let walletState = useGetWalletState();
 
   const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
   //object destructuring of useWeb3React web3 for context fetching and cahinID
@@ -40,7 +41,7 @@ export const NetworkSelection: React.FC = () => {
   useEffect(() => {
     function setChainId() {
       setNetworkChainState({ networkChain: selectedNetwork?.chainId });
-      setupNetwork(selectedNetwork?.chainId);
+      walletState.connected && setupNetwork(selectedNetwork?.chainId);
     }
     setChainId();
   }, [selectedNetwork]);
@@ -50,6 +51,9 @@ export const NetworkSelection: React.FC = () => {
     Networks.map((item, index) => {
       if (+item.chainId === chainId) {
         setSelectedNetwork(item); // selected network detail hook
+      }else{
+        setSelectedNetwork(Networks[0]); // selected network detail hook
+        setNetworkChainState({ networkChain: Networks[0]?.chainId });
       }
     });
   }, [chainId]);
@@ -57,20 +61,21 @@ export const NetworkSelection: React.FC = () => {
   return (
     <StyledNetworkSection className="">
       <Flex className={"mx-0 network-row "}>
-        {Networks && Networks.map((network, index) => (
-          <Flex
-            className={`text-center position-relative py-2`}
-            key={index}
-            onClick={() => {
-              setSelectedNetwork(network);
-            }}
-          >
-            <Image src={network.icon} width="30px" height="30px" />
-            {network.name === selectedNetwork?.name && (
-              <GreenTick className={"tick-icon"} width={14}/>
-            )}
-          </Flex>
-        ))}
+        {Networks &&
+          Networks.map((network, index) => (
+            <Flex
+              className={`text-center position-relative py-2`}
+              key={index}
+              onClick={() => {
+                setSelectedNetwork(network);
+              }}
+            >
+              <Image src={network.icon} width="30px" height="30px" />
+              {network.name === selectedNetwork?.name && (
+                <GreenTick className={"tick-icon"} width={14} />
+              )}
+            </Flex>
+          ))}
       </Flex>
     </StyledNetworkSection>
   );
