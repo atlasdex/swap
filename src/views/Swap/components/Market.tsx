@@ -378,14 +378,19 @@ export const Market: React.FC = () => {
         {/* currency rates section */}
         <Flex className="d-flex justify-content-around my-3 mt-5">
           <Text
-            text={`1  ${selectedFromToken.symbol} ~ ${(toAmount/fromAmount).toFixed(2)} ${selectedToToken.symbol}`}
+            text={`1  ${selectedFromToken.symbol} ~ ${(
+              toAmount / fromAmount
+            ).toFixed(2)} ${selectedToToken.symbol}`}
             size={fonts.fontSize16}
             weight={500}
             color={colors.white}
           />
 
           <Text
-            text={`1  ${selectedToToken.symbol} ~ ${(1/(toAmount/fromAmount)).toFixed(2)} ${selectedFromToken.symbol}`}
+            text={`1  ${selectedToToken.symbol} ~ ${(
+              1 /
+              (toAmount / fromAmount)
+            ).toFixed(2)} ${selectedFromToken.symbol}`}
             size={fonts.fontSize16}
             weight={500}
             color={colors.white}

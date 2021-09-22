@@ -1,79 +1,66 @@
 // Set of helper functions to facilitate wallet setup
 
-import { nodes } from './getRpcUrl'
+import { nodes } from "./getRpcUrl";
+import Networks from "config/constants/network";
 
 /**
- * Prompt the user to add Ethereum as a network on Metamask, 
+ * Prompt the user to add BSC nad etherum as a network on Metamask, or switch to BSC if the wallet is on a different network
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
-export const setupEthereumNetwork = async () => {
-  const provider = (window as Window).ethereum
-  if (provider) {
-    const chainId = parseInt(process.env.REACT_APP_CHAIN_ID as string, 10)
-    try {
-      await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${chainId.toString(16)}`,
-            chainName: 'Ethereum Mainnet',
-            nativeCurrency: {
-              name: 'ETHEREUM',
-              symbol: 'ETH',
-              decimals: 18,
-            },
-            rpcUrls: nodes,
-            blockExplorerUrls: ['https://etherscan.com/'],
-          },
-        ],
-      })
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
+export const setupNetwork = async (chainID) => {
+  const provider = (window as WindowChain).ethereum;
+  const networkDetail = await fetchNetworkDetail(chainID); // network detail from dataUrl.ts file
+  if (networkDetail !== undefined) {
+    if (provider) {
+      const chainId = parseInt(chainID as string, 10);
+      try {
+        await provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: `0x${chainId.toString(16)}` }],
+        });
+      } catch (switchError : any) {
+        if (switchError?.code === 4902) {
+          try {
+            await provider.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainId: `0x${chainId.toString(16)}`,
+                  chainName: networkDetail.chainName,
+                  nativeCurrency: networkDetail.nativeCurrency,
+                  rpcUrls: networkDetail.rpcUrls,
+                  blockExplorerUrls: networkDetail.blockExplorerUrls,
+                },
+              ],
+            });
+            return true;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        }
+        // handle other "switch" errors
+      }
+    } else {
+      console.error(
+        "Can't setup the BSC network on metamask because window.ethereum is undefined"
+      );
+      return false;
     }
   } else {
-    console.error("Can't setup the ETH network on metamask because window.ethereum is undefined")
-    return false
+    console.log("Network undefined");
   }
-}
+};
 
-/**
- * Prompt the user to add BSC as a network on Metamask, or switch to BSC if the wallet is on a different network
- * @returns {boolean} true if the setup succeeded, false otherwise
- */
- export const setupBinanceNetwork = async () => {
-  const provider = (window as WindowChain).ethereum
-  if (provider) {
-    const chainId = parseInt(process.env.REACT_APP_CHAIN_ID as string, 10)
-    try {
-      await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-          {
-            chainId: `0x${chainId.toString(16)}`,
-            chainName: 'Binance Smart Chain Mainnet',
-            nativeCurrency: {
-              name: 'BNB',
-              symbol: 'bnb',
-              decimals: 18,
-            },
-            rpcUrls: nodes,
-            blockExplorerUrls: ['https://bscscan.com/'],
-          },
-        ],
-      })
-      return true
-    } catch (error) {
-      console.error(error)
-      return false
+export const fetchNetworkDetail = (chainID) => {
+  let selectedNetwork;
+  Networks.map((item, index) => {
+    if (item.chainId === chainID) {
+      selectedNetwork = item;
     }
-  } else {
-    console.error("Can't setup the BSC network on metamask because window.ethereum is undefined")
-    return false
-  }
-}
-
+  });
+  return selectedNetwork;
+};
 
 /**
  * Prompt the user to add a custom token to metamask
@@ -87,12 +74,12 @@ export const registerToken = async (
   tokenAddress: string,
   tokenSymbol: string,
   tokenDecimals: number,
-  tokenImage: string,
+  tokenImage: string
 ) => {
   const tokenAdded = await (window as Window).ethereum.request({
-    method: 'wallet_watchAsset',
+    method: "wallet_watchAsset",
     params: {
-      type: 'ERC20',
+      type: "ERC20",
       options: {
         address: tokenAddress,
         symbol: tokenSymbol,
@@ -100,7 +87,7 @@ export const registerToken = async (
         image: tokenImage,
       },
     },
-  })
+  });
 
-  return tokenAdded
-}
+  return tokenAdded;
+};

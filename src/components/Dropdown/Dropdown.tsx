@@ -133,11 +133,12 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
           <SearchInput
             type="text"
             value={search}
+            autoFocus={true}
             name=""
             onChange={(e) => {
               setSearch(e.target.value.toUpperCase());
             }}
-            id=""
+            id="search-input"
           />
           {filterData ? (
             filterData.map((option: any, index) => (

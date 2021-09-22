@@ -5,7 +5,8 @@ import { NetworkContextName } from 'config/constants'
 import { ChainId } from 'config/constants/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { setupEthereumNetwork } from 'utils/wallet'
+import { useGetNetworkChainState } from 'state/hooks'
+import { setupNetwork } from 'utils/wallet'
 import { injected } from '../connectors'
 
 export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & { chainId?: ChainId } {
@@ -17,7 +18,7 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & 
 export function useEagerConnect() {
   const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-
+  const networkChain = useGetNetworkChainState()
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {
@@ -27,7 +28,7 @@ export function useEagerConnect() {
 
         activate(injected, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
-            const hasSetup = await setupEthereumNetwork()
+            const hasSetup = await setupNetwork(networkChain)
             if (hasSetup) {
               activate(injected)
             }
@@ -43,7 +44,7 @@ export function useEagerConnect() {
 
           activate(injected, async (error: Error) => {
             if (error instanceof UnsupportedChainIdError) {
-              const hasSetup = await setupEthereumNetwork()
+              const hasSetup = await setupNetwork(networkChain)
               if (hasSetup) {
                 activate(injected)
               }

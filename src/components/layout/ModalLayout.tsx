@@ -63,7 +63,6 @@ export const ModalLayout = () => {
                 title={network.name}
                 classes={"py-1 px-2"}
                 width="inherit"
-                disabled={network.disabled}
               />
             </Flex>
           ))}

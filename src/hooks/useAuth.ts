@@ -1,7 +1,7 @@
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 import { useCallback, useState } from "react";
-import { setupEthereumNetwork } from "utils/wallet";
+import { setupNetwork } from "utils/wallet";
 import { injected } from "../connectors";
 import { WalletAdapter } from "wallet-adapters";
 import Wallet from "@project-serum/sol-wallet-adapter";
@@ -69,10 +69,11 @@ const useAuth = () => {
   const login = useCallback(() => {
     activate(injected, async (error: Error) => {
       if (error instanceof UnsupportedChainIdError) {
-        const hasSetup = await setupEthereumNetwork();
-        if (hasSetup) {
-          activate(injected);
-        }
+        activate(injected);
+        // const hasSetup = await setupNetwork();
+        // if (hasSetup) {
+        //   activate(injected);
+        // }
       } else {
         if (error instanceof NoEthereumProviderError) {
           console.log("Provider Error", "No provider was found");

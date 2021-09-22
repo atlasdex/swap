@@ -97,8 +97,16 @@ export type NetworksType = {
     name: string;
     icon: ReactNode;
     selectIcon?: ReactNode;
-    disabled: boolean;
-    chainId:number
+    chainId:number;
+    rpcUrls: string[];
+    chainName : string;
+    nativeCurrency: {
+      name: string,
+      symbol: string,
+      decimals: number,
+    };
+    blockExplorerUrls: string[];
+    address: string,
 };
 
 export type WalletTypeArray = {
