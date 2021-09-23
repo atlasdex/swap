@@ -83,7 +83,7 @@ export const useNetworkModal = () => {
 }
 //get Wallet state 
 export const useGetWalletState = () => {
-    const wallet = useSelector((state: WalletInitialState) => state);
+    const wallet = useSelector((state: WalletInitialState) => state.wallet);
     return wallet
 }
 

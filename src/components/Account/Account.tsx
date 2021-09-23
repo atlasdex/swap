@@ -48,13 +48,14 @@ const AccountStyle = styled.div`
     }
   }
 `;
-const AccountInfo: React.FC = () => {
+const AccountInfo: React.FC = (props) => {
+
   const { theme } = useTheme();
   const { colors, fonts, isDark } = theme;
   const walletState = useGetWalletState();
   const { logout } = useAuth();
 
-  const { solBalance } = useSolBalance();
+  // const { solBalance } = useSolBalance();
   const { accountInfo } = useAccountInfo();
 
   return (
@@ -86,7 +87,7 @@ const AccountInfo: React.FC = () => {
                 classes={"line-height-20 "}
               />
               <Text
-                text={solBalance + " SOL"}
+                text={'solBalance' + " SOL"}
                 color={colors.white}
                 size={fonts.fontSize22}
                 weight={700}
@@ -148,7 +149,7 @@ const AccountInfo: React.FC = () => {
               classes={"line-height-20 "}
             />
             <Text
-              text={solBalance + " SOl"}
+              text={'' + " SOl"}
               color={colors.white}
               size={fonts.fontSize22}
               weight={700}
