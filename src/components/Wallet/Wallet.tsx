@@ -10,7 +10,7 @@ import WalletList from "config/constants/walletProviders";
 import useTheme from "hooks/useTheme";
 import { useWeb3React } from "@web3-react/core";
 import { useGetNetworkChainState, useGetWalletState, useSetNetworkChainState } from "state/hooks";
-import { NetworksType } from "config/constants/types";
+import { NetworkChainId, NetworksType } from "config/constants/types";
 import { setupNetwork } from "utils/wallet";
 import { GreenTick } from "components/Svg";
 import useAuth from "hooks/useAuth";
@@ -85,8 +85,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
 
   //Set Chain id state and call setup or switch network function
   useEffect(() => {
-    function setChainId() {
-      
+    function setChainId() { 
       setNetworkChainState({ networkChain: selectedNetwork?.chainId });
       walletState.connected && setupNetwork(selectedNetwork?.chainId);
     }
@@ -263,7 +262,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                 }`}
                 key={index}
                 onClick={() => {
-                  if(chainID === 0){
+                  if(chainID === NetworkChainId.SOLANA){
                     onClick(network.url);
                   }else{
                     login(chainID)

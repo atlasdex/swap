@@ -8,17 +8,13 @@ import SuspenseWithChunkError from "./components/SuspenseWithChunkError";
 import Header from "components/Header";
 import Web3ReactManager from "components/Web3ReactManager";
 import { useFetchPublicData } from "state/hooks";
-import MainLayout from 'components/layout/MainLayout'
-import useTokens from "hooks/useTokens";
-import useRates from "hooks/useRates";
-import useQuotes from "hooks/useQuotes";
+import MainLayout from 'components/layout/MainLayout' 
 
 const Swap = lazy(() => import("./views/Swap"));
 const PageNotFound = lazy(() => import("./views/PageNotFound"));
 
 const App: React.FC = () => {
-  useFetchPublicData();
-  useTokens(); 
+  useFetchPublicData(); 
   return (
     <Router history={history}>
       <GlobalStyle />
