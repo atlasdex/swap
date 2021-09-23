@@ -24,7 +24,7 @@ import useQuotes from "hooks/useQuotes";
 import { IToken } from "interfaces/IToken";
 import { getQuote, getTokens } from "gateways/TokenApis";
 import { NetworkChainId } from "config/constants/types";
-
+  
 const StyledMarketingSection = styled.section`
   padding: 46px;
   .payment-row {
