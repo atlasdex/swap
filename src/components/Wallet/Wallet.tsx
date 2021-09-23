@@ -65,16 +65,20 @@ const StyledWallet = styled.div`
   }
 `;
 const WalletComponent: React.FC<WalletConnectProps> = (props) => {
-    const { onClick } = props;
-    const { theme } = useTheme();
-    const { colors, fonts } = theme;
-    const [teamAndCondition, setTermAndCondition] = useState(false);
 
-    //fetch login function 
-    const { login } = useAuth();
+  const { onClick } = props;
+  const { theme } = useTheme();
+  const { colors, fonts } = theme;
+  const [teamAndCondition, setTermAndCondition] = useState(false);
 
-    //fetch current Wallet state
-    let walletState = useGetWalletState();
+  //fetch login function
+  const { login } = useAuth();
+
+
+
+
+  //fetch current Wallet state
+  let walletState = useGetWalletState();
 
     const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
 
@@ -286,5 +290,6 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
         </StyledWallet>
     );
 };
+
 
 export default WalletComponent;

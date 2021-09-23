@@ -3,8 +3,8 @@ import { NetworkChainId } from "config/constants/types";
 import { stat } from "fs";
 import { WalletInitialState } from "state/types";
 
-const initialState: WalletInitialState = {
-    connected: false,
+const initialState : WalletInitialState = {
+    connected: localStorage.getItem('wallet-status') === 'true' ? true : false ,
     wallet: localStorage.getItem('wallet') ? JSON.parse(localStorage.getItem('wallet')) : null,
     providerUrl: localStorage.getItem('providerUrl') ? localStorage.getItem('providerUrl') : "",
     endpoint: localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : "",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Text from "components/Text";
 import { Flex } from "components/Box";
@@ -13,6 +13,7 @@ import {
   useGetQuoteState,
   useGetWalletState,
   useModalState,
+  useWalletState,
 } from "state/hooks";
 import useSolBalance from "hooks/useSolBalance";
 import { NetworkSelection } from "./components/NetworkSelection";
@@ -20,10 +21,22 @@ import { useModal } from "widgets/Modal";
 import AccountInfo from "components/Account";
 import WalletComponent from "components/Wallet";
 import useAuth from "hooks/useAuth";
+import { useWeb3React } from "@web3-react/core";
+import { injected } from "connectors";
 
 const Exchange: React.FC = () => {
   let walletState = useGetWalletState();
-  const { setNetworkModalState, setWalletModalState } = useModalState();
+  const { setWalletState } = useWalletState();
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    if (account !== undefined && walletState.connected === true) {
+      setWalletState({
+        connected: true,
+        publicKey: account,
+      });
+    }
+  }, [account]);
 
   const { theme, isDark } = useTheme();
   const { colors, fonts, gradients } = theme;
@@ -39,7 +52,7 @@ const Exchange: React.FC = () => {
 
   const [onPresentCallback, onDismiss] = useModal(
     walletState.connected ? (
-      <AccountInfo/>
+      <AccountInfo />
     ) : (
       <WalletComponent
         onClick={(url) => {
