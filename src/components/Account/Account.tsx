@@ -66,8 +66,8 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
 
     return (
         <AccountStyle>
-            <Flex className="account-info-div row m-0 align-items-center mb-4 d-flex">
-                {/* this is for small screen */}
+            {/* <Flex className="account-info-div row m-0 align-items-center mb-4 d-flex">
+               
                 <Flex className={"col-3 d-block d-lg-none"}>
                     <Image
                         src={SolletIcon}
@@ -138,7 +138,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
                         </Flex>
                     </Flex>
                 </Flex>
-                {/* this is for large screen */}
+             
                 <Flex className="col-9 col-lg-5  d-none d-lg-flex align-items-center">
                     <Image
                         src={SolletIcon}
@@ -199,12 +199,12 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
                         />
                     </Flex>
                 </Flex>
-            </Flex>
+            </Flex> */}
 
             <Button
-                icon={
-                    <Image src={SolletIcon} width="27px" height="27px" classes={"mr-4"} />
-                }
+                // icon={
+                //     <Image src={SolletIcon} width="27px" height="27px" classes={"mr-4"} />
+                // }
                 title={walletState.publicKey}
                 classes={"address-btn-padding"}
                 weight={400}
@@ -212,9 +212,9 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
                 btnClasses={"d-none d-lg-block  mb-4"}
             />
             <Button
-                icon={
-                    <Image src={SolletIcon} width="27px" height="27px" classes={"mr-4"} />
-                }
+                // icon={
+                //     <Image src={SolletIcon} width="27px" height="27px" classes={"mr-4"} />
+                // }
                 title={abbreviateAddress(walletState.publicKey, 7)}
                 classes={"address-btn-padding"}
                 weight={400}
