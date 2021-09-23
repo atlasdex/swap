@@ -11,7 +11,7 @@ import { getEndpoint } from "utils/getRpcUrl";
 import { SolanaWeb3Class } from "utils/solanaWeb3";
 
 const useAuth = () => {
-  const { activate, deactivate } = useWeb3React();
+  const { activate, deactivate, account } = useWeb3React();
 
   // Fetch endpoint
   const endpoint = getEndpoint();
@@ -64,15 +64,20 @@ const useAuth = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log("accout", account);
 
   //Wallet Connector For Ethereum and Binance Blockchain wallet
-  const login = useCallback(async(chainID) => {
+  const login = useCallback(async (chainID) => {
     const hasSetup = await setupNetwork(chainID);
-    if (hasSetup) {
-      activate(injected);
-    }
+
+    activate(injected);
+    setWalletState({
+      connected: true,
+      publicKey: account,
+    });
+
     // activate(injected, async (error: Error) => {
-      
+
     //   if (error instanceof UnsupportedChainIdError) {
     //     const hasSetup = await setupNetwork(chainID);
     //     if (hasSetup) {
@@ -93,6 +98,11 @@ const useAuth = () => {
   //Disconnect Ethereum and Binance chain wallets
   const logout = useCallback(() => {
     deactivate();
+    setWalletState({
+      connected: false,
+      publicKey: '',
+    });
+
   }, [deactivate]);
 
   //Disconnect Solona wallets
@@ -107,7 +117,7 @@ const useAuth = () => {
     // eslint-disable-next-line
   }, [wallet]);
 
-  return { login, logout ,  SolonaWalletConnect , disconnectWallet };
+  return { login, logout, SolonaWalletConnect, disconnectWallet };
 };
 
 export default useAuth;

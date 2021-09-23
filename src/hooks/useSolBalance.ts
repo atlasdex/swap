@@ -10,9 +10,9 @@ const useSolBalance = () => {
     useEffect (()=>{
         if (walletState.connected) {
             try {
-              SolanaWeb3Class.getBalance().then((res)=>{
-                  setSolBalance(solBalanceFormat(res));
-              })
+            //   SolanaWeb3Class.getBalance().then((res)=>{
+            //       setSolBalance(solBalanceFormat(res));
+            //   })
             } catch (error) {
                 console.log("Use SOl Balance error ",error);
             }
