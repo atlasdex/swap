@@ -264,11 +264,12 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                                 className={`padding-for-row text-center py-2 ${!teamAndCondition && "disabled-with-opacity"
                                     }`}
                                 key={index}
-                                onClick={() => {
+                                onClick={async() => {
                                     if (chainId === NetworkChainId.SOLANA) {
                                         onClick(network.url);
                                     } else {
-                                        login(chainId)
+                                       await login(chainId)
+                                       onDismiss()
                                     }
                                 }}
                             >
