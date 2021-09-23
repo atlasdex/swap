@@ -10,10 +10,10 @@ import Button from "components/Button";
 import { WalletIcon } from "components/Svg";
 import useTheme from "hooks/useTheme";
 import {
-  useGetQuoteState,
-  useGetWalletState,
-  useModalState,
-  useWalletState,
+    useGetQuoteState,
+    useGetWalletState,
+    useModalState,
+    useWalletState,
 } from "state/hooks";
 import useSolBalance from "hooks/useSolBalance";
 import { NetworkSelection } from "./components/NetworkSelection";
@@ -25,76 +25,90 @@ import { useWeb3React } from "@web3-react/core";
 import { injected } from "connectors";
 
 const Exchange: React.FC = () => {
-  let walletState = useGetWalletState();
-  const { setWalletState } = useWalletState();
-  const { account } = useWeb3React();
+    let walletState = useGetWalletState();
+    const { setWalletState } = useWalletState();
+    const { account } = useWeb3React();
 
-  useEffect(() => {
-    if (account !== undefined && walletState.connected === true) {
-      setWalletState({
-        connected: true,
-        publicKey: account,
-      });
-    }
-  }, [account]);
+    useEffect(() => {
+        if (account !== undefined) {
+            localStorage.setItem("publicKey", account);
+            setWalletState({
+                connected: true,
+                publicKey: account,
+            });
+        } else {
+            setWalletState({
+                connected: false,
+                publicKey: "",
+            });
+        }
+    }, [account]);
 
-  const { theme, isDark } = useTheme();
-  const { colors, fonts, gradients } = theme;
+    const { theme, isDark } = useTheme();
+    const { colors, fonts, gradients } = theme;
 
-  const { solBalance } = useSolBalance();
-  const [marketingTab, setMarketingTab] = React.useState<boolean>(true);
+    const { solBalance } = useSolBalance();
+    const [marketingTab, setMarketingTab] = React.useState<boolean>(true);
 
-  const { login, SolonaWalletConnect } = useAuth();
-  let quotes = useGetQuoteState();
-//   console.log("quotes123", JSON.stringify(quotes));
-//   console.log(quotes.protocols);
-  console.log("walletState", walletState.connected);
+    const { login, SolonaWalletConnect } = useAuth();
+    let quotes = useGetQuoteState();
+    //   console.log("quotes123", JSON.stringify(quotes));
+    //   console.log(quotes.protocols);
+    console.log("walletState", walletState);
+    //console.log("walletState", );
 
-  const [onPresentCallback, onDismiss] = useModal(
-    walletState.connected ? (
-      <AccountInfo />
-    ) : (
-      <WalletComponent
-        onClick={(url) => {
-          SolonaWalletConnect(url);
-        }}
-      />
-    ),
-    true
-  );
+    const [onPresentCallback, onDismiss] = useModal(
+        walletState.connected ? (
+            <AccountInfo onDismiss={() => {
+                onDismiss();
+            }} />
+        ) : (
+            <WalletComponent
+                onClick={(url) => {
+                    SolonaWalletConnect(url);
 
-  const AddressAndBalance = () => {
-    return (
-      <Flex className={"d-flex align-items-center "}>
-        <Text
-          text={solBalance + " ETH"}
-          color={colors.white}
-          size={fonts.fontSize15}
-          classes={"btn-custom-padding width-110"}
-        />
-        <Button
-          icon={<WalletIcon className="mr-3" />}
-          classes={"btn-custom-padding bg-btn-color"}
-          btnClasses="mb-md-0 mr-0 connected-btn-padding"
-          title={`${walletState?.publicKey?.slice(0, 10)}...`}
-          size={fonts.fontSize15}
-          weight={400}
-          width={"fit-content"}
-        />
-      </Flex>
+                }}
+                onDismiss={() => {
+                    onDismiss();
+                }} />
+        ),
+        true
     );
-  };
-  return (
-    <>
-      <ControlContainer>
-        <Flex className={"market-section mx-0 mb-5"}>
-          <Flex className={"market-tab"}>
-            <Flex
-              className={
-                "wallet-btn-section d-block d-md-flex align-items-center justify-content-end py-md-4"
-              }
-            >
-              {/* <Button
+
+
+
+    const AddressAndBalance = () => {
+        return (
+            <Flex className={"d-flex align-items-center "}>
+                <Text
+                    text={solBalance + " ETH"}
+                    color={colors.white}
+                    size={fonts.fontSize15}
+                    classes={"btn-custom-padding width-110"}
+                />
+                <Button
+                    icon={<WalletIcon className="mr-3" />}
+                    classes={"btn-custom-padding bg-btn-color"}
+                    btnClasses="mb-md-0 mr-0 connected-btn-padding"
+                    title={`${walletState?.publicKey?.slice(0, 10)}...`}
+                    size={fonts.fontSize15}
+                    weight={400}
+                    width={"fit-content"}
+                />
+            </Flex>
+        );
+    };
+    return (
+        <>
+            <ControlContainer>
+                <Flex className={"market-section mx-0 mb-5"}>
+                    <Flex className={"market-tab"}>
+                        <Flex
+                            className={
+                                "wallet-btn-section d-block d-md-flex align-items-center justify-content-end py-md-4"
+                            }
+                        >
+                            {/* <Button
             icon={<Image src={SolanaIcon} width="34.78px" classes="mr-3" />}
             classes={"btn-custom-padding"}
             btnClasses="mb-3 mb-md-0"
@@ -105,72 +119,72 @@ const Exchange: React.FC = () => {
             innerWidth="154px"
             onClick={() => setNetworkModalState()}
           /> */}
-              {walletState.connected ? (
-                <Button
-                  classes={""}
-                  btnClasses="mb-1 mb-md-0"
-                  title={<AddressAndBalance />}
-                  size={fonts.fontSize15}
-                  weight={400}
-                  width={"fit-content"}
-                  onClick={() => {
-                    onPresentCallback();
-                  }}
-                />
-              ) : (
-                <Button
-                  icon={<WalletIcon className="mr-3" />}
-                  classes={"btn-custom-padding"}
-                  btnClasses="mb-3 mb-md-0"
-                  title={"Connect Wallet"}
-                  size={fonts.fontSize15}
-                  weight={400}
-                  width={"fit-content"}
-                  onClick={() => {
-                    onPresentCallback();
-                  }}
-                />
-              )}
-            </Flex>
-            <Flex className={"d-flex"}>
-              <GradientLayout
-                padding={""}
-                borderRadius={""}
-                backgroundGradient={gradients.blue}
-                broderGradient={gradients.multiColor}
-              >
-                <NetworkSelection />
-              </GradientLayout>
-              <GradientLayout
-                padding={""}
-                borderRadius={""}
-                backgroundGradient={gradients.blue}
-                broderGradient={gradients.multiColor}
-              >
-                <Flex className={"historyTabContent"}>
-                  <Flex className={""}>
-                    {marketingTab ? <Market /> : <Market />}
-                  </Flex>
+                            {walletState.connected ? (
+                                <Button
+                                    classes={""}
+                                    btnClasses="mb-1 mb-md-0"
+                                    title={<AddressAndBalance />}
+                                    size={fonts.fontSize15}
+                                    weight={400}
+                                    width={"fit-content"}
+                                    onClick={() => {
+                                        onPresentCallback();
+                                    }}
+                                />
+                            ) : (
+                                <Button
+                                    icon={<WalletIcon className="mr-3" />}
+                                    classes={"btn-custom-padding"}
+                                    btnClasses="mb-3 mb-md-0"
+                                    title={"Connect Wallet"}
+                                    size={fonts.fontSize15}
+                                    weight={400}
+                                    width={"fit-content"}
+                                    onClick={() => {
+                                        onPresentCallback();
+                                    }}
+                                />
+                            )}
+                        </Flex>
+                        <Flex className={"d-flex"}>
+                            <GradientLayout
+                                padding={""}
+                                borderRadius={""}
+                                backgroundGradient={gradients.blue}
+                                broderGradient={gradients.multiColor}
+                            >
+                                <NetworkSelection />
+                            </GradientLayout>
+                            <GradientLayout
+                                padding={""}
+                                borderRadius={""}
+                                backgroundGradient={gradients.blue}
+                                broderGradient={gradients.multiColor}
+                            >
+                                <Flex className={"historyTabContent"}>
+                                    <Flex className={""}>
+                                        {marketingTab ? <Market /> : <Market />}
+                                    </Flex>
+                                </Flex>
+                            </GradientLayout>
+                        </Flex>
+                    </Flex>
                 </Flex>
-              </GradientLayout>
-            </Flex>
-          </Flex>
-        </Flex>
-        {quotes && quotes.protocols && (
-          <Flex className="Routing-row mb-5">
-            <GradientLayout
-              padding={""}
-              borderRadius={""}
-              backgroundGradient={gradients.blue}
-              broderGradient={gradients.multiColor}
-            >
-              <Routing />
-            </GradientLayout>
-          </Flex>
-        )}
-      </ControlContainer>
-    </>
-  );
+                {quotes && quotes.protocols && (
+                    <Flex className="Routing-row mb-5">
+                        <GradientLayout
+                            padding={""}
+                            borderRadius={""}
+                            backgroundGradient={gradients.blue}
+                            broderGradient={gradients.multiColor}
+                        >
+                            <Routing />
+                        </GradientLayout>
+                    </Flex>
+                )}
+            </ControlContainer>
+        </>
+    );
 };
 
 export default Exchange;
@@ -188,17 +202,17 @@ const ControlContainer = styled.div`
   .historyBorderGradient {
     padding: 1px;
     background: ${(props) =>
-      props.theme.isDark
-        ? props.theme.gradients.multiColor
-        : props.theme.gradients.buttonBorderDark};
+        props.theme.isDark
+            ? props.theme.gradients.multiColor
+            : props.theme.gradients.buttonBorderDark};
     border-radius: 10.7692px !important;
     border: none !important;
     height: 100%;
     .table-parent-div {
       background: ${(props) =>
         props.theme.isDark
-          ? props.theme.gradients.blue
-          : props.theme.gradients.whiteGrayGradient};
+            ? props.theme.gradients.blue
+            : props.theme.gradients.whiteGrayGradient};
       border-radius: 10.2px;
       height: 100%;
 
@@ -212,9 +226,9 @@ const ControlContainer = styled.div`
           color: rgba(170, 170, 170, 1);
           &.active {
             color: ${(props) =>
-              props.theme.isDark
-                ? props.theme.colors.white
-                : props.theme.colors.primary};
+        props.theme.isDark
+            ? props.theme.colors.white
+            : props.theme.colors.primary};
           }
         }
       }
@@ -236,9 +250,9 @@ const ControlContainer = styled.div`
         color: #515e91;
         &.active {
           color: ${(props) =>
-            props.theme.isDark
-              ? props.theme.colors.white
-              : props.theme.colors.primary};
+        props.theme.isDark
+            ? props.theme.colors.white
+            : props.theme.colors.primary};
         }
       }
     }
@@ -253,9 +267,9 @@ const ControlContainer = styled.div`
   }
   .bg-btn-color {
     background: ${(props) =>
-      props.theme.isDark
-        ? props.theme.colors.secondary
-        : props.theme.colors.lightFailure};
+        props.theme.isDark
+            ? props.theme.colors.secondary
+            : props.theme.colors.lightFailure};
   }
   .connected-btn-padding {
     padding: 0px 0px 0px 2px !important;

@@ -16,6 +16,7 @@ import { GreenTick } from "components/Svg";
 import useAuth from "hooks/useAuth";
 interface WalletConnectProps {
     onClick?: (provider: string) => void;
+    onDismiss?: () => void;
 }
 const StyledWallet = styled.div`
   .width-47 {
@@ -66,19 +67,19 @@ const StyledWallet = styled.div`
 `;
 const WalletComponent: React.FC<WalletConnectProps> = (props) => {
 
-  const { onClick } = props;
-  const { theme } = useTheme();
-  const { colors, fonts } = theme;
-  const [teamAndCondition, setTermAndCondition] = useState(false);
+    const { onClick, onDismiss } = props;
+    const { theme } = useTheme();
+    const { colors, fonts } = theme;
+    const [teamAndCondition, setTermAndCondition] = useState(false);
 
-  //fetch login function
-  const { login } = useAuth();
-
-
+    //fetch login function
+    const { login } = useAuth();
 
 
-  //fetch current Wallet state
-  let walletState = useGetWalletState();
+
+
+    //fetch current Wallet state
+    let walletState = useGetWalletState();
 
     const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
 
@@ -109,7 +110,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
         Networks.map((item, index) => {
             if (+item.chainId === chainIdWeb3) {
                 setSelectedNetwork(item); // selected network detail hook
-            } 
+            }
         });
     }, [chainIdWeb3]);
 

@@ -11,8 +11,8 @@ import { getEndpoint } from "utils/getRpcUrl";
 import { SolanaWeb3Class } from "utils/solanaWeb3";
 
 const useAuth = () => {
-  const { activate, deactivate, account } = useWeb3React();
-
+  const context = useWeb3React();
+  const  { activate, deactivate, account } = context;
   // Fetch endpoint
   const endpoint = getEndpoint();
   let [wallet, setWallet] = useState<WalletAdapter | undefined>(undefined);
@@ -64,22 +64,25 @@ const useAuth = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log("accout", account);
 
   //Wallet Connector For Ethereum and Binance Blockchain wallet
   const login = useCallback(async (chainID) => {
     const hasSetup = await setupNetwork(chainID);
 
-    await activate(injected);
-    localStorage.setItem("connected", "true");
-    localStorage.setItem("wallet-status", "true");
-    localStorage.setItem("providerUrl", "www.metamask.com");
-    localStorage.setItem("endpoint", "www.metamask.com");
-    localStorage.setItem("publicKey", account);
-    setWalletState({
-      connected: true,
-      publicKey: account,
+    await activate(injected).then((res) =>{
+        localStorage.setItem("connected", "true");
+        localStorage.setItem("wallet-status", "true");
+        localStorage.setItem("providerUrl", "www.metamask.com");
+        localStorage.setItem("endpoint", "www.metamask.com");
+    
+        localStorage.setItem("publicKey", account);
+        setWalletState({
+          connected: true,
+          publicKey: account,
+        });
+        
     });
+
 
     // activate(injected, async (error: Error) => {
 
