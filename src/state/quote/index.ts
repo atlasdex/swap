@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { QuoteInitialState } from "state/types";
+import { QuoteState } from "state/types";
 
-const initialState: QuoteInitialState = {
+const initialState: QuoteState = {
     quotes: {}
 }
 const quoteSlice = createSlice({

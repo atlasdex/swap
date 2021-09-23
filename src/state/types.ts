@@ -32,19 +32,15 @@ export interface WalletInitialState {
     publicKey?: string
 
 }
-export interface TokenInitialState {
-    tokens?: IToken[],
-    selectedFromToken?: IToken,
-    selectedToToken?: IToken,
-    fromAmount?:number,
-    toAmount?:number,
+export interface TokenState {
+    tokens?: IToken[], 
     networkChain?:number
 }
-export interface RateInitialState {
+export interface RateState {
     rates: IRate[]
 }
 
-export interface QuoteInitialState {
+export interface QuoteState {
     fromToken?: any;
     protocols?: any;
     toToken?: any;

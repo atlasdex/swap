@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IRate } from "interfaces/IRate";
-import { RateInitialState } from "state/types";
-const initialState: RateInitialState = {
+import { RateState } from "state/types";
+const initialState: RateState = {
     rates: []
 }
 const rateSlice = createSlice({

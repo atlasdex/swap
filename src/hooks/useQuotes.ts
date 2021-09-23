@@ -2,20 +2,16 @@ import BigNumber from "bignumber.js";
 import { getQuote } from "gateways/TokenApis";
 import { IToken } from "interfaces/IToken";
 import { useEffect } from "react";
-import {
-    useGetFromAmountState,
-    useGetNetworkChainState,
-    useGetSelectedFromTokenState,
-    useGetSelectedToTokenState,
-    useGetToAmountState,
+import { 
+    useGetNetworkChainState, 
     useSetQuoteState,
-    useSetToAmountState,
+     
 } from "state/hooks";
 const useQuotes = () => {
-    let fromAmount = useGetFromAmountState() || 0;
-    let selectedFromToken: IToken = useGetSelectedFromTokenState();
-    let selectedToToken: IToken = useGetSelectedToTokenState();
-    const { setToAmountState } = useSetToAmountState();
+    let fromAmount =  0;
+    // let selectedFromToken: IToken = useGetSelectedFromTokenState();
+    // let selectedToToken: IToken = useGetSelectedToTokenState();
+    // const { setToAmountState } = useSetToAmountState();
     let chainId = useGetNetworkChainState();
     console.log(chainId);
 
@@ -32,38 +28,38 @@ const useQuotes = () => {
         );
     }
 
-    useEffect(() => {
-        const getQuotes = async () => {
-            try {
-                const amount = toPlainString(
-                    fromAmount * 10 ** selectedFromToken.decimals
-                );
-                const result = await getQuote(
-                    selectedFromToken.address,
-                    selectedToToken.address,
-                    amount,
-                    chainId
-                );
-                console.log("result", result);
-                let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
-                console.log("toamount", toamount);
+    // useEffect(() => {
+    //     const getQuotes = async () => {
+    //         try {
+    //             const amount = toPlainString(
+    //                 fromAmount * 10 ** selectedFromToken.decimals
+    //             );
+    //             const result = await getQuote(
+    //                 selectedFromToken.address,
+    //                 selectedToToken.address,
+    //                 amount,
+    //                 chainId
+    //             );
+    //             console.log("result", result);
+    //             let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
+    //             console.log("toamount", toamount);
 
-                toamount = isNaN(toamount) ? 0 : toamount
+    //             toamount = isNaN(toamount) ? 0 : toamount
 
-                setToAmountState({ toAmount: +toamount.toFixed(5) });
-                // console.log("quotes=>", result);
-                setQuoteState({ quotes: result });
-            } catch (error) {
-                console.log(error);
+    //             setToAmountState({ toAmount: +toamount.toFixed(5) });
+    //             // console.log("quotes=>", result);
+    //             setQuoteState({ quotes: result });
+    //         } catch (error) {
+    //             console.log(error);
 
-            }
+    //         }
 
-        };
-        if (fromAmount > 0) {
-            getQuotes();
-        }
+    //     };
+    //     if (fromAmount > 0) {
+    //         getQuotes();
+    //     }
 
-    }, [fromAmount, selectedFromToken, selectedToToken, chainId]);
+    // }, [fromAmount, selectedFromToken, selectedToToken, chainId]);
 };
 
 export default useQuotes;

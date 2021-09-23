@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { setBlock } from './actions'
-import { QuoteInitialState, RateInitialState, State, TokenInitialState } from './types'
+import { QuoteState, RateState, State, TokenState } from './types'
 import { useSelector } from 'react-redux'
 import { getWeb3NoAccount } from 'utils/web3'
 import { setNetworkModal, setWalletConnectModal } from "./actions"
 import { setWalletReducer } from './wallet'
-import { setFromAmount, setNetworkChainId, setSelectedFromToken, setSelectedToToken, setToAmount, setTokens } from './token'
+import {  setNetworkChainId, setTokens } from './token'
 import { WalletInitialState } from './types'
 import { setRates } from './rates'
 import { setQuotes } from './quote'
@@ -95,73 +95,14 @@ export const useGetTokenState = () => {
 export const useSetTokenState = () => {
     const dispatch = useAppDispatch();
 
-    const setTokenState = useCallback((token: TokenInitialState) => {
+    const setTokenState = useCallback((token: TokenState) => {
 
         dispatch(setTokens(token.tokens));
         // eslint-disable-next-line
     }, []);
 
     return { setTokenState }
-}
-export const useGetSelectedFromTokenState = () => {
-    const { selectedFromToken } = useSelector((state: any) => state.tokenReducer);
-    return selectedFromToken
-}
-export const useSetSelectedFromTokenState = () => {
-    const dispatch = useAppDispatch();
-
-    const setSelectedFromTokenState = useCallback((token: TokenInitialState) => {
-
-        dispatch(setSelectedFromToken(token.selectedFromToken));
-        // eslint-disable-next-line
-    }, []);
-
-    return { setSelectedFromTokenState }
-}
-export const useGetSelectedToTokenState = () => {
-    const { selectedToToken } = useSelector((state: any) => state.tokenReducer);
-    return selectedToToken
-}
-export const useSetSelectedToTokenState = () => {
-    const dispatch = useAppDispatch();
-
-    const setSelectedToTokenState = useCallback((token: TokenInitialState) => {
-
-        dispatch(setSelectedToToken(token.selectedToToken));
-        // eslint-disable-next-line
-    }, []);
-
-    return { setSelectedToTokenState }
-}
-export const useGetFromAmountState = () => {
-    const { fromAmount } = useSelector((state: any) => state.tokenReducer);
-    return fromAmount
-}
-export const useSetFromAmountState = () => {
-    const dispatch = useAppDispatch();
-    const setFromAmountState = useCallback((token: TokenInitialState) => {
-
-        dispatch(setFromAmount(token.fromAmount));
-        // eslint-disable-next-line
-    }, []);
-
-    return { setFromAmountState }
-}
-export const useGetToAmountState = () => {
-    const { toAmount } = useSelector((state: any) => state.tokenReducer);
-    return toAmount
-}
-export const useSetToAmountState = () => {
-    const dispatch = useAppDispatch();
-
-    const setToAmountState = useCallback((token: TokenInitialState) => {
-
-        dispatch(setToAmount(token.toAmount));
-        // eslint-disable-next-line
-    }, []);
-
-    return { setToAmountState }
-}
+} 
 export const useGetNetworkChainState = () => {
     const { networkChain } = useSelector((state: any) => state.tokenReducer);
     return networkChain
@@ -169,7 +110,7 @@ export const useGetNetworkChainState = () => {
 export const useSetNetworkChainState = () => {
     const dispatch = useAppDispatch();
 
-    const setNetworkChainState = useCallback((token: TokenInitialState) => {
+    const setNetworkChainState = useCallback((token: TokenState) => {
 
         dispatch(setNetworkChainId(token.networkChain));
         // eslint-disable-next-line
@@ -179,13 +120,13 @@ export const useSetNetworkChainState = () => {
 }
 //get Rates state 
 export const useGetRatesState = () => {
-    const { rates } = useSelector((state: RateInitialState) => state);
+    const { rates } = useSelector((state: RateState) => state);
     return rates
 }
 export const useSetRatesState = () => {
     const dispatch = useAppDispatch();
 
-    const setRateState = useCallback((rate: RateInitialState) => {
+    const setRateState = useCallback((rate: RateState) => {
 
         dispatch(setRates(rate.rates));
         // eslint-disable-next-line
@@ -201,7 +142,7 @@ export const useGetQuoteState = () => {
 export const useSetQuoteState = () => {
     const dispatch = useAppDispatch();
 
-    const setQuoteState = useCallback((quote: QuoteInitialState) => {
+    const setQuoteState = useCallback((quote: QuoteState) => {
 
         dispatch(setQuotes(quote.quotes));
         // eslint-disable-next-line
