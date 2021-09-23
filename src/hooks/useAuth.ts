@@ -70,7 +70,12 @@ const useAuth = () => {
   const login = useCallback(async (chainID) => {
     const hasSetup = await setupNetwork(chainID);
 
-    activate(injected);
+    await activate(injected);
+    localStorage.setItem("connected", "true");
+    localStorage.setItem("wallet-status", "true");
+    localStorage.setItem("providerUrl", "www.metamask.com");
+    localStorage.setItem("endpoint", "www.metamask.com");
+    localStorage.setItem("publicKey", account);
     setWalletState({
       connected: true,
       publicKey: account,
@@ -98,11 +103,11 @@ const useAuth = () => {
   //Disconnect Ethereum and Binance chain wallets
   const logout = useCallback(() => {
     deactivate();
+    localStorage.clear();
     setWalletState({
       connected: false,
-      publicKey: '',
+      publicKey: "",
     });
-
   }, [deactivate]);
 
   //Disconnect Solona wallets

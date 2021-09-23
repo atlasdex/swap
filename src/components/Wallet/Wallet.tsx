@@ -9,7 +9,11 @@ import Networks from "config/constants/network";
 import WalletList from "config/constants/walletProviders";
 import useTheme from "hooks/useTheme";
 import { useWeb3React } from "@web3-react/core";
-import { useGetNetworkChainState, useGetWalletState, useSetNetworkChainState } from "state/hooks";
+import {
+  useGetNetworkChainState,
+  useGetWalletState,
+  useSetNetworkChainState
+} from "state/hooks";
 import { NetworksType } from "config/constants/types";
 import { setupNetwork } from "utils/wallet";
 import { GreenTick } from "components/Svg";
@@ -65,13 +69,17 @@ const StyledWallet = styled.div`
   }
 `;
 const WalletComponent: React.FC<WalletConnectProps> = (props) => {
+
   const { onClick } = props;
   const { theme } = useTheme();
   const { colors, fonts } = theme;
   const [teamAndCondition, setTermAndCondition] = useState(false);
 
-  //fetch login function 
+  //fetch login function
   const { login } = useAuth();
+
+
+
 
   //fetch current Wallet state
   let walletState = useGetWalletState();
@@ -86,23 +94,21 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
   //Set Chain id state and call setup or switch network function
   useEffect(() => {
     function setChainId() {
-      
       setNetworkChainState({ networkChain: selectedNetwork?.chainId });
       walletState.connected && setupNetwork(selectedNetwork?.chainId);
     }
     setChainId();
   }, [selectedNetwork]);
 
-  //get selected chain id 
+  //get selected chain id
   let chainID = useGetNetworkChainState();
-
 
   //listening network switching from Metamask
   useEffect(() => {
     Networks.map((item, index) => {
       if (+item.chainId === chainId) {
         setSelectedNetwork(item); // selected network detail hook
-      }else{
+      } else {
         setSelectedNetwork(Networks[0]); // selected network detail hook
         setNetworkChainState({ networkChain: Networks[0]?.chainId });
       }
@@ -263,10 +269,10 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                 }`}
                 key={index}
                 onClick={() => {
-                  if(chainID === 0){
+                  if (chainID === 0) {
                     onClick(network.url);
-                  }else{
-                    login(chainID)
+                  } else {
+                    login(chainID);
                   }
                 }}
               >
@@ -289,5 +295,6 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
     </StyledWallet>
   );
 };
+
 
 export default WalletComponent;
