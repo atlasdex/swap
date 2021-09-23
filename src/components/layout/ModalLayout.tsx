@@ -34,7 +34,7 @@ export const ModalLayout = () => {
         ) : (
           <WalletComponent
             onClick={(url) => {
-              login();
+              login('1');
             }}
           />
         )}

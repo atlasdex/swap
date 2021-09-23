@@ -82,7 +82,7 @@ export function useLocalStorageState<T = any>(
  * @returns 
  */
 export const abbreviateAddress = (address : any, size = 4) => {
-  return address.slice(0, size) + '…' + address.slice(-size);
+  return address?.slice(0, size) + '…' + address?.slice(-size);
 }
 
 /**

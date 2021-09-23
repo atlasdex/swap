@@ -52,7 +52,7 @@ const Exchange: React.FC = () => {
         return (
             <Flex className={"d-flex align-items-center "}>
                 <Text
-                    text={solBalance + " SOL"}
+                    text={solBalance + " ETH"}
                     color={colors.white}
                     size={fonts.fontSize15}
                     classes={"btn-custom-padding width-110"}
@@ -61,7 +61,7 @@ const Exchange: React.FC = () => {
                     icon={<WalletIcon className="mr-3" />}
                     classes={"btn-custom-padding bg-btn-color"}
                     btnClasses="mb-md-0 mr-0 connected-btn-padding"
-                    title={`${walletState.publicKey.slice(0, 10)}...`}
+                    title={`${walletState?.publicKey?.slice(0, 10)}...`}
                     size={fonts.fontSize15}
                     weight={400}
                     width={"fit-content"}
@@ -243,7 +243,7 @@ const ControlContainer = styled.div`
   .bg-btn-color {
     background: ${(props) =>
         props.theme.isDark
-            ? props.theme.colors.plumb
+            ? props.theme.colors.secondary
             : props.theme.colors.lightFailure};
   }
   .connected-btn-padding {

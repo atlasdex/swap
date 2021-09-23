@@ -9,10 +9,11 @@ import Networks from "config/constants/network";
 import WalletList from "config/constants/walletProviders";
 import useTheme from "hooks/useTheme";
 import { useWeb3React } from "@web3-react/core";
-import { useSetNetworkChainState } from "state/hooks";
+import { useGetNetworkChainState, useGetWalletState, useSetNetworkChainState } from "state/hooks";
 import { NetworksType } from "config/constants/types";
 import { setupNetwork } from "utils/wallet";
 import { GreenTick } from "components/Svg";
+import useAuth from "hooks/useAuth";
 interface WalletConnectProps {
   onClick?: (provider: string) => void;
 }
@@ -69,6 +70,12 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
   const { colors, fonts } = theme;
   const [teamAndCondition, setTermAndCondition] = useState(false);
 
+  //fetch login function 
+  const { login } = useAuth();
+
+  //fetch current Wallet state
+  let walletState = useGetWalletState();
+
   const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
   //object destructuring of useWeb3React web3 for context fetching and cahinID
   const context = useWeb3React();
@@ -79,20 +86,30 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
   //Set Chain id state and call setup or switch network function
   useEffect(() => {
     function setChainId() {
+      
       setNetworkChainState({ networkChain: selectedNetwork?.chainId });
-      setupNetwork(selectedNetwork?.chainId);
+      walletState.connected && setupNetwork(selectedNetwork?.chainId);
     }
     setChainId();
   }, [selectedNetwork]);
+
+  //get selected chain id 
+  let chainID = useGetNetworkChainState();
+
 
   //listening network switching from Metamask
   useEffect(() => {
     Networks.map((item, index) => {
       if (+item.chainId === chainId) {
         setSelectedNetwork(item); // selected network detail hook
+      }else{
+        setSelectedNetwork(Networks[0]); // selected network detail hook
+        setNetworkChainState({ networkChain: Networks[0]?.chainId });
       }
     });
   }, [chainId]);
+
+  console.log("WalletList", WalletList);
 
   return (
     <StyledWallet>
@@ -193,9 +210,14 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                     setSelectedNetwork(network);
                   }}
                 >
-                  <Image src={network.icon} width="44px" height="44px" classes="mb-2"/>
+                  <Image
+                    src={network.icon}
+                    width="44px"
+                    height="44px"
+                    classes="mb-2"
+                  />
                   {network.name === selectedNetwork?.name && (
-                    <GreenTick className={"tick-icon"}  width={14}/>
+                    <GreenTick className={"tick-icon"} width={14} />
                   )}
                   <Text
                     text={network.name}
@@ -234,13 +256,19 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
         <Flex className={"d-flex"}>
           <Flex className={"width-47 mr-3 "}></Flex>
           <Flex className={"row w-100"}>
-            {WalletList.map((network, index) => (
+            {WalletList[chainID].map((network, index) => (
               <Flex
                 className={`padding-for-row text-center py-2 ${
                   !teamAndCondition && "disabled-with-opacity"
                 }`}
                 key={index}
-                onClick={() => onClick(network.url)}
+                onClick={() => {
+                  if(chainID === 0){
+                    onClick(network.url);
+                  }else{
+                    login(chainID)
+                  }
+                }}
               >
                 <Image
                   src={network.icon}

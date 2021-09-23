@@ -8,6 +8,7 @@ import Networks from "config/constants/network";
  * @returns {boolean} true if the setup succeeded, false otherwise
  */
 export const setupNetwork = async (chainID) => {
+
   const provider = (window as WindowChain).ethereum;
   const networkDetail = await fetchNetworkDetail(chainID); // network detail from dataUrl.ts file
   if (networkDetail !== undefined) {
@@ -18,6 +19,8 @@ export const setupNetwork = async (chainID) => {
           method: "wallet_switchEthereumChain",
           params: [{ chainId: `0x${chainId.toString(16)}` }],
         });
+        return false;
+
       } catch (switchError : any) {
         if (switchError?.code === 4902) {
           try {
