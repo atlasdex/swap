@@ -29,12 +29,13 @@ export interface WalletInitialState {
     wallet?: Wallet | null
     providerUrl?: string
     endpoint?: string
-    publicKey?: string
+    publicKey?: string,
+    chainId?:number
 
 }
 export interface TokenState {
-    tokens?: IToken[], 
-    networkChain?:number
+    tokens?: IToken[]
+    
 }
 export interface RateState {
     rates: IRate[]

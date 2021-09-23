@@ -1,15 +1,14 @@
 import { getTokens } from "gateways/TokenApis";
 import { IToken } from "interfaces/IToken";
 import { useEffect, useState } from "react";
-import { useGetNetworkChainState, useSetTokenState } from "state/hooks";
+import {useChainId, useSetTokenState } from "state/hooks";
 import useQuotes from "./useQuotes";
 
 const useTokens = async () => {
     const { setTokenState } = useSetTokenState();
     // const { setSelectedFromTokenState } = useSetSelectedFromTokenState();
     // const { setSelectedToTokenState } = useSetSelectedToTokenState();
-    let chainId = useGetNetworkChainState();
-    console.log("chainId=", chainId);
+    let chainId = useChainId();
 
     useQuotes()
     useEffect(() => {

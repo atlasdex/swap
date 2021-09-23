@@ -3,7 +3,7 @@ import { getQuote } from "gateways/TokenApis";
 import { IToken } from "interfaces/IToken";
 import { useEffect } from "react";
 import { 
-    useGetNetworkChainState, 
+    
     useSetQuoteState,
      
 } from "state/hooks";
@@ -12,8 +12,8 @@ const useQuotes = () => {
     // let selectedFromToken: IToken = useGetSelectedFromTokenState();
     // let selectedToToken: IToken = useGetSelectedToTokenState();
     // const { setToAmountState } = useSetToAmountState();
-    let chainId = useGetNetworkChainState();
-    console.log(chainId);
+    // let chainId = useGetNetworkChainState();
+    // console.log(chainId);
 
     const { setQuoteState } = useSetQuoteState();
 

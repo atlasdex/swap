@@ -1,4 +1,4 @@
-import { NetworksType } from "./types";
+import { NetworkChainId, NetworksType } from "./types";
 import SolanaIcon from "assets/images/Solana-Icon.svg";
 import BinanceIcon from "assets/images/binance.svg";
 import EthereumIcon from "assets/images/ethereum.svg";
@@ -19,7 +19,7 @@ const Networks: NetworksType[] = [
     icon: EthereumIcon,
     selectIcon: EthereumIcon,
     chainName: 'ethereum',
-    chainId: 1,
+    chainId: NetworkChainId.ETHEREUM,
     rpcUrls: [],
     nativeCurrency: {
       name: "ETH",
@@ -33,7 +33,7 @@ const Networks: NetworksType[] = [
     name: "Binance",
     icon: BinanceIcon,
     selectIcon: BinanceIcon,
-    chainId: 56,
+    chainId:  NetworkChainId.BINANCE,
     chainName: 'binance-smart-chain',
     nativeCurrency: {
         name: 'BNB',

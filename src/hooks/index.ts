@@ -4,8 +4,8 @@ import { Web3ReactContextInterface } from '@web3-react/core/dist/types'
 import { NetworkContextName } from 'config/constants'
 import { ChainId } from 'config/constants/types'
 import { useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
-import { useGetNetworkChainState } from 'state/hooks'
+import { isMobile } from 'react-device-detect' 
+import { useChainId } from 'state/hooks'
 import { setupNetwork } from 'utils/wallet'
 import { injected } from '../connectors'
 
@@ -18,7 +18,7 @@ export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & 
 export function useEagerConnect() {
   const { activate, active } = useWeb3ReactCore() // specifically using useWeb3ReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  const networkChain = useGetNetworkChainState()
+  const networkChain = useChainId()
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       if (isAuthorized) {

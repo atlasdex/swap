@@ -5,8 +5,8 @@ import { QuoteState, RateState, State, TokenState } from './types'
 import { useSelector } from 'react-redux'
 import { getWeb3NoAccount } from 'utils/web3'
 import { setNetworkModal, setWalletConnectModal } from "./actions"
-import { setWalletReducer } from './wallet'
-import {  setNetworkChainId, setTokens } from './token'
+import { setNetworkChainId, setWalletReducer } from './wallet'
+import { setTokens } from './token'
 import { WalletInitialState } from './types'
 import { setRates } from './rates'
 import { setQuotes } from './quote'
@@ -43,10 +43,12 @@ export const useWalletState = () => {
             publicKey: wallet?.publicKey
         }));
         // eslint-disable-next-line
+    }, []); 
+    const setChainId = useCallback((wallet: WalletInitialState) => {
+        dispatch(setNetworkChainId(wallet.chainId));
+        // eslint-disable-next-line
     }, []);
-
-
-    return { setWalletState }
+    return { setWalletState, setChainId }
 }
 
 //Model State 
@@ -86,7 +88,10 @@ export const useGetWalletState = () => {
     const wallet = useSelector((state: WalletInitialState) => state.wallet);
     return wallet
 }
-
+export const useChainId = () => {
+    const { chainId } = useSelector((state: WalletInitialState) => state.wallet);
+    return chainId
+}
 //get Token state 
 export const useGetTokenState = () => {
     const { tokens } = useSelector((state: any) => state.tokenReducer);
@@ -102,22 +107,8 @@ export const useSetTokenState = () => {
     }, []);
 
     return { setTokenState }
-} 
-export const useGetNetworkChainState = () => {
-    const { networkChain } = useSelector((state: any) => state.tokenReducer);
-    return networkChain
 }
-export const useSetNetworkChainState = () => {
-    const dispatch = useAppDispatch();
-
-    const setNetworkChainState = useCallback((token: TokenState) => {
-
-        dispatch(setNetworkChainId(token.networkChain));
-        // eslint-disable-next-line
-    }, []);
-
-    return { setNetworkChainState }
-}
+ 
 //get Rates state 
 export const useGetRatesState = () => {
     const { rates } = useSelector((state: RateState) => state);

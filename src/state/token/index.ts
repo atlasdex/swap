@@ -4,8 +4,7 @@ import { IToken } from "interfaces/IToken";
 import { useSetTokenState } from "state/hooks";
 import { TokenState } from "state/types";
 const initialState: TokenState = {
-    tokens: [], 
-    networkChain:NetworkChainId.ETHEREUM
+    tokens: [],  
 };
 
 export const tokenSlice = createSlice({
@@ -16,13 +15,13 @@ export const tokenSlice = createSlice({
             state.tokens = action.payload
         },
         
-        setNetworkChainId: (state, action: PayloadAction<number>) => {
-            state.networkChain = action.payload
-        }
+        // setNetworkChainId: (state, action: PayloadAction<number>) => {
+        //     state.networkChain = action.payload
+        // }
     }
 
 });
 
-export const { setTokens,setNetworkChainId } = tokenSlice.actions;
+export const { setTokens } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

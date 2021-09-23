@@ -1,7 +1,6 @@
-import { useGetNetworkChainState } from 'state/hooks';
+ 
 import HttpClient from './HttpClient'
-async function getTokens(chainId: number) {
-    // let chainId = useGetNetworkChainState();
+async function getTokens(chainId: number) { 
     try {
         const result = await HttpClient.get(`/tokens?chainId=${chainId}`);
         return result;

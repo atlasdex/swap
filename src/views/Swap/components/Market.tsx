@@ -5,7 +5,8 @@ import Text from "components/Text";
 import Input from "components/Input";
 import Button, { ButtonSeeGreen } from "components/Button";
 import useTheme from "hooks/useTheme";
-import { 
+import {
+    useChainId,
     useGetTokenState,
     useGetWalletState,
     useSetQuoteState,
@@ -24,7 +25,7 @@ import useQuotes from "hooks/useQuotes";
 import { IToken } from "interfaces/IToken";
 import { getQuote, getTokens } from "gateways/TokenApis";
 import { NetworkChainId } from "config/constants/types";
-  
+
 const StyledMarketingSection = styled.section`
   padding: 46px;
   .payment-row {
@@ -254,9 +255,11 @@ export const Market: React.FC = () => {
     const [fromAmountInput, setfromAmountInput] = useState(0);
     const [tokenOptions, setTokenOptions] = useState([]);
     const [searchQuery, setSearchQuery] = useState(0);
-    const [chainId, setChainId] = useState(NetworkChainId.ETHEREUM)
+    //const [chainId, setChainId] = useState(NetworkChainId.ETHEREUM)
+    const chainId = useChainId()
     const { setQuoteState } = useSetQuoteState();
     useEffect(() => {
+
         const GetToken = async () => {
             try {
                 const result = await getTokens(chainId);

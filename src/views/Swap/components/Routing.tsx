@@ -39,7 +39,7 @@ export const Routing: React.FC = () => {
                       <Flex className={`main-routing-coin-div`}>
                         {item.map((elment, index) => {
                           return (
-                            <Flex className={`inner-routing-coin-div`}>
+                            <Flex key={index} className={`inner-routing-coin-div`}>
                               <Flex className="d-flex align-items-center header">
                                 <Image
                                   src={`https://tokens.1inch.io/${elment[0].toTokenAddress}.png`}
