@@ -1,5 +1,3 @@
-
-
 import { useGetNetworkChainState } from 'state/hooks';
 import HttpClient from './HttpClient'
 async function getTokens(chainId: number) {
