@@ -8,12 +8,12 @@ import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 import { ModalProvider } from 'widgets/Modal'
 import { NetworkContextName } from 'config/constants'
+
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 const Providers: React.FC = ({ children }) => {
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
+    <Web3ReactProvider getLibrary={getLibrary}> 
       <Provider store={store}>
           <HelmetProvider>
             <ThemeContextProvider>
@@ -24,8 +24,7 @@ const Providers: React.FC = ({ children }) => {
                 </RefreshContextProvider>
             </ThemeContextProvider>
           </HelmetProvider>
-      </Provider>
-      </Web3ProviderNetwork>
+      </Provider> 
     </Web3ReactProvider>
   )
 }
