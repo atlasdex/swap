@@ -12,8 +12,6 @@ const initialState : WalletInitialState = {
     chainId: NetworkChainId.ETHEREUM
 };
 
-console.log('initialState' , initialState);
-
 export const walletState = createSlice({
     name: "walletState",
     initialState,

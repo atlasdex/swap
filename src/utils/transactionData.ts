@@ -5,9 +5,7 @@ export const getTransactionData = async (
     walletAddress: string,
     library: any
 ) => {
-    debugger
-    console.log('library', library);
-    
+        
     if (walletAddress && transaction && library) {
         const {
             to,
@@ -53,8 +51,10 @@ export const getTransactionData = async (
 
             if (createOnFailedDeposit || !gasLimit) {
                 transactionSend.gasLimit = 400000;
-                transactionSend.gasPrice = ethers.utils.parseUnits('20', 'gwei');
+                transactionSend.gasPrice = ethers.utils.parseUnits('40', 'gwei');
             }
+
+            
             return transactionSend;
         } else {
             return false;

@@ -23,7 +23,9 @@ const GlobalStyle = createGlobalStyle`
   {
     background: ${(props) => props.theme.colors.background};	
   }
-
+  .Toastify__toast-container--top-right{
+    min-width : min-content;
+  }
   body {
     background: ${({ theme }) => theme.colors.background};
     margin:0px;

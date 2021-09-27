@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import WALLET_PROVIDERS from 'config/constants/walletProviders';
+import { getWeb3NoAccount } from './web3';
 
 export function isValidPublicKey(key) {
   if (!key) {
@@ -112,3 +113,41 @@ export const stringToBoolean = string => {
       return Boolean(false)
   }
 }
+
+export function toHex(number: any, length = 32) {
+  const str =
+    number instanceof Buffer
+      ? number.toString('hex')
+      : BigInt(number).toString(16);
+  return '0x' + str.padStart(length * 2, '0');
+}
+
+/**
+ * Waits for transaction to be mined
+ * @param txHash Hash of transaction
+ * @param attempts
+ * @param delay
+ */
+ export const waitForTxReceipt = (
+  txHash: string,
+  attempts = 60,
+  delay = 1000
+) => {
+  const web3 = getWeb3NoAccount()
+
+  return new Promise((resolve, reject) => {
+    const checkForTx = async (txHash: any, retryAttempt = 0) => {
+      const result = await web3.eth.getTransactionReceipt(txHash);
+      if (!result || !result.blockNumber) {
+        if (retryAttempt <= attempts) {
+          setTimeout(() => checkForTx(txHash, retryAttempt + 1), delay);
+        } else {
+          reject(new Error('tx was not mined'));
+        }
+      } else {
+        resolve(result);
+      }
+    };
+    checkForTx(txHash);
+  });
+};
