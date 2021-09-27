@@ -8,30 +8,30 @@ import SuspenseWithChunkError from "./components/SuspenseWithChunkError";
 import Header from "components/Header";
 import Web3ReactManager from "components/Web3ReactManager";
 import { useFetchPublicData } from "state/hooks";
-import MainLayout from 'components/layout/MainLayout' 
+import MainLayout from "components/layout/MainLayout";
 
 const Swap = lazy(() => import("./views/Swap"));
 const PageNotFound = lazy(() => import("./views/PageNotFound"));
 
 const App: React.FC = () => {
-  useFetchPublicData(); 
+  useFetchPublicData();
   return (
-    <Router history={history}>
-      <GlobalStyle />
-      <SuspenseWithChunkError fallback={<PageLoader />}>
-        {/* <Header /> */}
-        <Web3ReactManager>
-          <MainLayout>
-            <Switch>
-              <Route path="/" exact>
-                <Swap />
-              </Route>
-              <Route component={PageNotFound} />
-            </Switch>
-          </MainLayout>
-        </Web3ReactManager>
-      </SuspenseWithChunkError>
-    </Router>
+      <Router history={history}>
+        <GlobalStyle />
+        <SuspenseWithChunkError fallback={<PageLoader />}>
+          {/* <Header /> */}
+          <Web3ReactManager>
+            <MainLayout>
+              <Switch>
+                <Route path="/" exact>
+                  <Swap />
+                </Route>
+                <Route component={PageNotFound} />
+              </Switch>
+            </MainLayout>
+          </Web3ReactManager>
+        </SuspenseWithChunkError>
+      </Router>
   );
 };
 

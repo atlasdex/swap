@@ -31,7 +31,7 @@ const Exchange: React.FC = () => {
 
     useEffect(() => {
         if (account !== undefined) {
-            localStorage.setItem("publicKey", account);
+            // localStorage.setItem("publicKey", account);
             setWalletState({
                 connected: true,
                 publicKey: account,
