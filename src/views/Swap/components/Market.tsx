@@ -298,9 +298,7 @@ export const Market: React.FC = () => {
                     amount,
                     chainId
                 );
-                console.log("result", result);
                 let toamount = result?.toTokenAmount / 10 ** selectedToToken.decimals;
-                console.log("toamount", toamount);
 
                 toamount = isNaN(toamount) ? 0 : toamount
 
@@ -320,7 +318,6 @@ export const Market: React.FC = () => {
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            console.log("searchQuery==>", searchQuery);
             setFromAmount(searchQuery);
         }, 200);
 

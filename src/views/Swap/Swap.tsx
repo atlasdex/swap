@@ -52,10 +52,6 @@ const Exchange: React.FC = () => {
 
     const { login, SolonaWalletConnect } = useAuth();
     let quotes = useGetQuoteState();
-    //   console.log("quotes123", JSON.stringify(quotes));
-    //   console.log(quotes.protocols);
-    console.log("walletState", walletState);
-    //console.log("walletState", );
 
     const [onPresentCallback, onDismiss] = useModal(
         walletState.connected ? (
