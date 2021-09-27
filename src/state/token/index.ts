@@ -13,11 +13,7 @@ export const tokenSlice = createSlice({
     reducers: {
         setTokens: (state: TokenState, action: PayloadAction<IToken[]>) => {
             state.tokens = action.payload
-        },
-        
-        // setNetworkChainId: (state, action: PayloadAction<number>) => {
-        //     state.networkChain = action.payload
-        // }
+        }, 
     }
 
 });

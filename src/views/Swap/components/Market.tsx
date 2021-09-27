@@ -23,8 +23,13 @@ import { useEffect } from "react";
 import useTokens from "hooks/useTokens";
 import useQuotes from "hooks/useQuotes";
 import { IToken } from "interfaces/IToken";
-import { getQuote, getTokens } from "gateways/TokenApis";
+import { getQuote, getTokens, tokenSwap } from "gateways/TokenApis";
 import { NetworkChainId } from "config/constants/types";
+import { WalletInitialState } from "state/types";
+import { useModal } from "widgets/Modal";
+import WalletComponent from "components/Wallet";
+import { useWeb3React } from "@web3-react/core";
+import { getTransactionData } from "utils/transactionData";
 
 const StyledMarketingSection = styled.section`
   padding: 46px;
@@ -243,7 +248,7 @@ export const Market: React.FC = () => {
     const { theme } = useTheme();
     const { colors, fonts, gradients, isDark } = theme;
     const { setWalletModalState } = useModalState();
-    const walletState = useGetWalletState();
+    const walletState: WalletInitialState = useGetWalletState();
     const [lowGas, setLowGas] = useState(false);
     const { setTokenState } = useSetTokenState();
     let tokens = useGetTokenState();
@@ -256,6 +261,11 @@ export const Market: React.FC = () => {
     const [tokenOptions, setTokenOptions] = useState([]);
     const [searchQuery, setSearchQuery] = useState(0);
     //const [chainId, setChainId] = useState(NetworkChainId.ETHEREUM)
+    const [timer, setTimer] = useState(0);
+
+    const { library } = useWeb3React();
+    
+    
     const chainId = useChainId()
     const { setQuoteState } = useSetQuoteState();
     useEffect(() => {
@@ -313,8 +323,75 @@ export const Market: React.FC = () => {
             getQuotes();
         }
 
-    }, [fromAmount, selectedFromToken, selectedToToken, chainId]);
+    }, [fromAmount, selectedFromToken, selectedToToken, chainId, timer]);
+    const onSwapClick = async () => {
+        walletState.connected ? swapCall() : onPresentCallback()
 
+    };
+
+    const [onPresentCallback, onDismiss] = useModal(
+
+        <WalletComponent
+            onClick={(url) => {
+                SolonaWalletConnect(url);
+
+            }}
+            onDismiss={() => {
+                onDismiss();
+            }} />,
+
+        true
+    );
+
+    //Code for signing transaction to connected wallet
+    const signProvider = async (transaction) => {
+        try {
+            const transactionSend = await getTransactionData(
+                transaction,
+                walletState.publicKey,
+                library
+            );
+            const trxHash = await library
+                .getSigner(walletState.publicKey)
+                .sendTransaction(transactionSend);
+            console.log('trxHash  => ', trxHash);
+        
+        } catch (error : any) {
+            console.log('error in txn siging ', error?.message);
+            
+        }
+    };
+
+    async function swapCall() {
+        try {
+            const amount = toPlainString(
+                fromAmount * 10 ** selectedFromToken.decimals
+            );
+            // console.log();
+
+            const result = await tokenSwap(
+                selectedFromToken.address,
+                selectedToToken.address,
+                amount,
+                chainId,
+                walletState.publicKey,
+                1
+            );
+            console.log("result", result);
+            signProvider(result.tx)
+
+        } catch (error) {
+
+        }
+    }
+    useEffect(() => {
+        const interval = setTimeout(() => {
+            //   console.log("calling timer=>", timer);
+
+            setTimer(timer + 1);
+        }, 2000)
+        return () => clearTimeout(interval)
+    });
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -328,6 +405,7 @@ export const Market: React.FC = () => {
         setSelectedFromToken(selectedToToken);
         setSelectedToToken(temp);
     };
+
 
     return (
         <StyledMarketingSection className="">
@@ -473,16 +551,28 @@ export const Market: React.FC = () => {
                         classes="px-2"
                     />
                 </Flex>
+
                 <Button
                     classes={"quote-btn-clr  justify-content-center p-3"}
                     btnClasses="mb-3 mb-md-0 quote-btn-clr"
-                    title={"Swap"}
+                    title={walletState.connected ? "Swap" : "Connect Wallet"}
                     size={fonts.fontSize15}
                     weight={400}
                     width={"100%"}
+                    onClick={() => {
+
+                        onSwapClick();
+
+                    }}
                 />
             </Flex>
         </StyledMarketingSection>
     );
 };
+
+
+
+function SolonaWalletConnect(url: string) {
+    throw new Error("Function not implemented.");
+}
 
