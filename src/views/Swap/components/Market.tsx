@@ -16,7 +16,7 @@ import { useModalState } from "state/hooks";
 import { useState } from "react";
 import CustomDropdown from "components/Dropdown";
 import { RiSwapFill } from "react-icons/ri";
-
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import SolanaIcon from "assets/images/Solana-Icon.svg";
 import RayIcon from "assets/images/R-Icon.svg";
 import { useEffect } from "react";
@@ -36,38 +36,43 @@ import useAuth from "hooks/useAuth";
 
 export const Market: React.FC = () => {
     const { theme } = useTheme();
-    const { colors, fonts, gradients, isDark } = theme;
-    const { setWalletModalState } = useModalState();
-    const walletState: WalletInitialState = useGetWalletState();
-    const [lowGas, setLowGas] = useState(false);
-    const { setTokenState } = useSetTokenState();
-    let tokens = useGetTokenState();
+    const { colors, fonts,  isDark } = theme; 
+    const walletState: WalletInitialState = useGetWalletState(); 
+    const { setTokenState } = useSetTokenState(); 
     const [selectedFromToken, setSelectedFromToken] = useState<IToken>();
     const [selectedToToken, setSelectedToToken] = useState<IToken>();
-    const [fromAmount, setFromAmount] = useState(0);
+    const [fromAmount, setFromAmount] = useState(1);
     const [toAmount, setToAmount] = useState(0);
 
-    const [fromAmountInput, setfromAmountInput] = useState(0);
+    const [fromAmountInput, setfromAmountInput] = useState(1);
     const [tokenOptions, setTokenOptions] = useState([]);
     const [searchQuery, setSearchQuery] = useState(0);
-    //const [chainId, setChainId] = useState(NetworkChainId.ETHEREUM)
+    const [isLoading, setLoading] = useState(false);
     const [timer, setTimer] = useState(0);
 
     const { library } = useWeb3React();
     const { SolonaWalletConnect } = useAuth();
-    
+
     const chainId = useChainId()
     const { setQuoteState } = useSetQuoteState();
     useEffect(() => {
 
         const GetToken = async () => {
             try {
+
                 const result = await getTokens(chainId);
                 const tokenList: IToken[] = Object.values(result.data);
                 setTokenOptions(tokenList);
                 setTokenState({ tokens: tokenList })
-                setSelectedFromToken(tokenList[0])
-                setSelectedToToken(tokenList[1])
+                if (chainId == NetworkChainId.ETHEREUM) {
+                    const defaultFrom: IToken = tokenList.find((item: IToken) => { return item.symbol == 'ETH' })
+                    setSelectedFromToken(defaultFrom)
+                    setSelectedToToken(tokenList.find((item: IToken) => { return item.symbol == 'DAI' }))
+                } else if (chainId == NetworkChainId.BINANCE) {
+                    const defaultFrom: IToken = tokenList.find((item: IToken) => { return item.symbol == 'BNB' })
+                    setSelectedFromToken(defaultFrom)
+                    setSelectedToToken(tokenList.find((item: IToken) => { return item.symbol == '1INCH' }))
+                } 
             } catch (error) {
                 console.log(error);
             }
@@ -89,6 +94,7 @@ export const Market: React.FC = () => {
     useEffect(() => {
         const getQuotes = async () => {
             try {
+                setLoading(true);
                 const amount = toPlainString(
                     fromAmount * 10 ** selectedFromToken.decimals
                 );
@@ -104,7 +110,9 @@ export const Market: React.FC = () => {
 
                 setToAmount(+toamount.toFixed(5));
                 setQuoteState({ quotes: result });
+                setLoading(false);
             } catch (error) {
+                setLoading(false);
                 console.log(error);
             }
 
@@ -141,14 +149,16 @@ export const Market: React.FC = () => {
                 walletState.publicKey,
                 library
             );
+
+
             const trxHash = await library
                 .getSigner(walletState.publicKey)
                 .sendTransaction(transactionSend);
             console.log('trxHash  => ', trxHash);
-        
-        } catch (error : any) {
+
+        } catch (error: any) {
             console.log('error in txn siging ', error?.message);
-            
+
         }
     };
 
@@ -198,165 +208,183 @@ export const Market: React.FC = () => {
 
 
     return (
-        <StyledMarketingSection className="">
-            <Flex className={"mx-0 payment-row mb-4"}>
-                <Flex className={"pay-div-parent"}>
-                    <Flex
-                        className={
-                            isDark ? `pay-card borderClass` : `pay-card backgroundClass`
-                        }
-                    >
-                        <Flex className="d-flex justify-content-between inner-pay-card">
-                            <Flex className={" pay-card-heading"}>
-                                <Text
-                                    text={"From"}
-                                    size={fonts.fontSize18}
-                                    weight={500}
-                                    color={colors.white}
-                                />
-                                <Input
-                                    placeholder={"0.0"}
-                                    size={fonts.fontSize20}
-                                    value={fromAmountInput.toString()}
-                                    weight={400}
-                                    handleChange={(value) => {
-                                        setfromAmountInput(value);
-                                        setSearchQuery(value);
-                                    }}
-                                />
-                            </Flex>
+        <SkeletonTheme color="#261a83" highlightColor="#fff">
+            <StyledMarketingSection className="">
+                <Flex className={"mx-0 payment-row mb-4"}>
+                    <Flex className={"pay-div-parent"}>
+                        <Flex
+                            className={
+                                isDark ? `pay-card borderClass` : `pay-card backgroundClass`
+                            }
+                        >
+                            <Flex className="d-flex justify-content-between inner-pay-card">
+                                <Flex className={" pay-card-heading"}>
+                                    <Text
+                                        text={"From"}
+                                        size={fonts.fontSize18}
+                                        weight={500}
+                                        color={colors.white}
+                                    />
+                                    <Input
+                                        placeholder={"0.0"}
+                                        size={fonts.fontSize20}
+                                        value={fromAmountInput.toString()}
+                                        weight={400}
+                                        handleChange={(value) => {
+                                            setfromAmountInput(value);
+                                            setSearchQuery(value);
+                                        }}
+                                    />
+                                </Flex>
 
-                            <Flex className={"d-flex align-items-center"}>
-                                <CustomDropdown
-                                    color={isDark ? colors.white : colors.primary}
-                                    weight={400}
-                                    options={tokenOptions}
-                                    selectedToken={selectedFromToken}
-                                    handleTokenChange={(token) => {
-                                        setSelectedFromToken(token);
-                                    }}
-                                />
+                                <Flex className={"d-flex align-items-center"}>
+                                    <CustomDropdown
+                                        color={isDark ? colors.white : colors.primary}
+                                        weight={400}
+                                        options={tokenOptions}
+                                        selectedToken={selectedFromToken}
+                                        handleTokenChange={(token) => {
+                                            setSelectedFromToken(token);
+                                        }}
+                                    />
+                                </Flex>
                             </Flex>
                         </Flex>
                     </Flex>
-                </Flex>
-                <Flex className={"convert-icon-div"}>
-                    <RiSwapFill
-                        style={{ fontSize: "35px", color: "rgba(255, 255, 255, 0.1)" }}
+                    <Flex className={"convert-icon-div"}>
+                        <RiSwapFill
+                            style={{ fontSize: "35px", color: "rgba(255, 255, 255, 0.1)" }}
+                            onClick={() => {
+                                revertTokenSelection();
+                            }}
+                        />
+                        {/* <Image src={ConvertedIcon} width="30px" /> */}
+                    </Flex>
+                    <Flex className={"receive-div-parent"}>
+                        <Flex
+                            className={
+                                isDark ? `pay-card borderClass` : `pay-card backgroundClass`
+                            }
+                        >
+
+
+                            <Flex className="d-flex justify-content-between inner-pay-card">
+
+                                <Flex className={"pay-card-heading"}>
+                                    <Text
+                                        text={"To (Estimate)"}
+                                        size={fonts.fontSize16}
+                                        weight={500}
+                                        color={colors.white}
+                                    />
+                                    <Input
+                                        placeholder={"0.0"}
+                                        value={toAmount.toFixed(5)}
+                                        size={fonts.fontSize20}
+                                        weight={400}
+                                        handleChange={(value) => { }}
+                                        disabled={true}
+                                    />
+                                </Flex>
+
+                                <Flex className={"d-flex align-items-center"}>
+                                    <CustomDropdown
+                                        color={isDark ? colors.white : colors.primary}
+                                        weight={400}
+                                        options={tokenOptions}
+                                        selectedToken={selectedToToken}
+                                        handleTokenChange={(token) => {
+                                            setSelectedToToken(token);
+                                        }}
+                                    />
+                                </Flex>
+
+                            </Flex>
+
+                        </Flex>
+                    </Flex>
+
+                    {/* currency rates section */}
+
+
+                    {isLoading ? <Flex className="d-flex justify-content-around my-3 mt-5">
+                        <Skeleton width={200} />
+                        <Skeleton width={200} />
+                    </Flex> :
+                        <Flex className="d-flex justify-content-around my-3 mt-5">
+
+
+                            <Text
+                                text={`1  ${selectedFromToken?.symbol} ~ ${(
+                                    toAmount / fromAmount
+                                ).toFixed(2)} ${selectedToToken?.symbol}`}
+                                size={fonts.fontSize16}
+                                weight={500}
+                                color={colors.white}
+                            />
+
+                            <Text
+                                text={`1  ${selectedToToken?.symbol} ~ ${(
+                                    1 /
+                                    (toAmount / fromAmount)
+                                ).toFixed(2)} ${selectedFromToken?.symbol}`}
+                                size={fonts.fontSize16}
+                                weight={500}
+                                color={colors.white}
+                            />
+
+                        </Flex>
+                    }
+
+                    {/* Tolerance and max received section */}
+                    <Flex className="d-flex justify-content-between my-3">
+                        <Text
+                            text={"Slippage Tolerance"}
+                            size={fonts.fontSize16}
+                            weight={500}
+                            color={colors.white}
+                        />
+                        <Text
+                            text={"0.5%"}
+                            size={fonts.fontSize16}
+                            color={colors.white}
+                            weight={500}
+                            classes="px-2"
+                        />
+                    </Flex>
+                    <Flex className="d-flex justify-content-between my-3 mb-4">
+                        <Text
+                            text={"Minimum Received"}
+                            size={fonts.fontSize16}
+                            weight={500}
+                            color={colors.white}
+                        />
+                        <Text
+                            text={`${toAmount.toFixed(2)} ${selectedToToken?.symbol}`}
+                            size={fonts.fontSize16}
+                            color={colors.white}
+                            weight={500}
+                            classes="px-2"
+                        />
+                    </Flex>
+
+                    <Button
+                        classes={"quote-btn-clr  justify-content-center p-3"}
+                        btnClasses="mb-3 mb-md-0 quote-btn-clr"
+                        title={walletState.connected ? "Swap" : "Connect Wallet"}
+                        size={fonts.fontSize15}
+                        weight={400}
+                        width={"100%"}
                         onClick={() => {
-                            revertTokenSelection();
+
+                            onSwapClick();
+
                         }}
                     />
-                    {/* <Image src={ConvertedIcon} width="30px" /> */}
+
                 </Flex>
-                <Flex className={"receive-div-parent"}>
-                    <Flex
-                        className={
-                            isDark ? `pay-card borderClass` : `pay-card backgroundClass`
-                        }
-                    >
-                        <Flex className="d-flex justify-content-between inner-pay-card">
-                            <Flex className={" pay-card-heading"}>
-                                <Text
-                                    text={"To (Estimate)"}
-                                    size={fonts.fontSize16}
-                                    weight={500}
-                                    color={colors.white}
-                                />
-                                <Input
-                                    placeholder={"0.0"}
-                                    value={toAmount.toFixed(5)}
-                                    size={fonts.fontSize20}
-                                    weight={400}
-                                    handleChange={(value) => { }}
-                                    disabled={true}
-                                />
-                            </Flex>
-
-                            <Flex className={"d-flex align-items-center"}>
-                                <CustomDropdown
-                                    color={isDark ? colors.white : colors.primary}
-                                    weight={400}
-                                    options={tokenOptions}
-                                    selectedToken={selectedToToken}
-                                    handleTokenChange={(token) => {
-                                        setSelectedToToken(token);
-                                    }}
-                                />
-                            </Flex>
-                        </Flex>
-                    </Flex>
-                </Flex>
-
-                {/* currency rates section */}
-                <Flex className="d-flex justify-content-around my-3 mt-5">
-                    <Text
-                        text={`1  ${selectedFromToken?.symbol} ~ ${(
-                            toAmount / fromAmount
-                        ).toFixed(2)} ${selectedToToken?.symbol}`}
-                        size={fonts.fontSize16}
-                        weight={500}
-                        color={colors.white}
-                    />
-
-                    <Text
-                        text={`1  ${selectedToToken?.symbol} ~ ${(
-                            1 /
-                            (toAmount / fromAmount)
-                        ).toFixed(2)} ${selectedFromToken?.symbol}`}
-                        size={fonts.fontSize16}
-                        weight={500}
-                        color={colors.white}
-                    />
-                </Flex>
-
-                {/* Tolerance and max received section */}
-                <Flex className="d-flex justify-content-between my-3">
-                    <Text
-                        text={"Slippage Tolerance"}
-                        size={fonts.fontSize16}
-                        weight={500}
-                        color={colors.white}
-                    />
-                    <Text
-                        text={"0.5%"}
-                        size={fonts.fontSize16}
-                        color={colors.white}
-                        weight={500}
-                        classes="px-2"
-                    />
-                </Flex>
-                <Flex className="d-flex justify-content-between my-3 mb-4">
-                    <Text
-                        text={"Minimum Received"}
-                        size={fonts.fontSize16}
-                        weight={500}
-                        color={colors.white}
-                    />
-                    <Text
-                        text={`${toAmount.toFixed(2)} ${selectedToToken?.symbol}`}
-                        size={fonts.fontSize16}
-                        color={colors.white}
-                        weight={500}
-                        classes="px-2"
-                    />
-                </Flex>
-
-                <Button
-                    classes={"quote-btn-clr  justify-content-center p-3"}
-                    btnClasses="mb-3 mb-md-0 quote-btn-clr"
-                    title={walletState.connected ? "Swap" : "Connect Wallet"}
-                    size={fonts.fontSize15}
-                    weight={400}
-                    width={"100%"}
-                    onClick={() => {
-
-                        onSwapClick();
-
-                    }}
-                />
-            </Flex>
-        </StyledMarketingSection>
+            </StyledMarketingSection>
+        </SkeletonTheme>
     );
 };
 
