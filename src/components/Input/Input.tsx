@@ -10,6 +10,7 @@ export interface InputProps {
     weight?: number,
     classes?: string,
     disabled?  : boolean
+    type? : string
 }
 
 interface StyledInputProps {
@@ -22,12 +23,12 @@ const Input: React.FC<InputProps> = ({
     handleChange,
     placeholder,
     value, size,
-    classes, weight, disabled
+    classes, weight, disabled , type
 }) => {
     return (
         <StyledInputWrapper>
             {!!icon && icon}
-            <StyledInput placeholder={placeholder} value={value} onChange={(e) => {
+            <StyledInput type={type} placeholder={placeholder} value={value} onChange={(e) => {
                 handleChange(e.target.value)
             }} className={classes} size={size} weight={weight} disabled={disabled} />
             {!!icon && icon}

@@ -26,6 +26,17 @@ const GlobalStyle = createGlobalStyle`
   .Toastify__toast-container--top-right{
     min-width : min-content;
   }
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
   body {
     background: ${({ theme }) => theme.colors.background};
     margin:0px;

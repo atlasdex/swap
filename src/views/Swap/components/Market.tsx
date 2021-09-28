@@ -174,6 +174,7 @@ export const Market: React.FC = () => {
       if (confimedTxDetails?.status === true) {
         successMessage("Transaction Confirmed");
         //set loading to false
+        setLoading(false);
       } else {
         setLoading(false);
 
@@ -183,9 +184,11 @@ export const Market: React.FC = () => {
     } catch (error: any) {
       setLoading(false);
 
-      console.log("error in txn siging ", error?.message);
+      console.log("error in txn siging ", error);
       if (error.code === 4001) {
         ErrorMessage(error?.message);
+      }else if(error.code === 'INSUFFICIENT_FUNDS'){
+        ErrorMessage('Insufficient Funds');
       }
     }
   };
@@ -259,6 +262,7 @@ export const Market: React.FC = () => {
                   />
                   <Input
                     placeholder={"0.0"}
+                    type={'number'}
                     size={fonts.fontSize20}
                     value={fromAmountInput.toString()}
                     weight={400}
