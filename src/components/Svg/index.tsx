@@ -28,3 +28,6 @@ export { default as SwapIcon } from "./Icons/swap/Swap";
 export { default as WalletIcon } from "./Icons/swap/Wallet";
 export { default as SolonaIcon } from "./Icons/swap/Solana";
 export { default as GreenTick } from "./Icons/GreenTick";
+
+export { default as AdvancedSetting } from "./Icons/AdvancedSetting";
+

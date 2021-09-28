@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Flex } from "components/Box";
 import Text from "components/Text";
+import { AdvancedSetting, ClockAtlas, ColorAdvannceSetting, ColorClock, ColorRefresh, RefreshIcon } from "components/Svg";
 
 import Input from "components/Input";
 import Button, { ButtonSeeGreen } from "components/Button";
@@ -13,7 +14,7 @@ import {
   useSetTokenState,
 } from "state/hooks";
 import { useModalState } from "state/hooks";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CustomDropdown from "components/Dropdown";
 import { RiSwapFill } from "react-icons/ri";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -36,6 +37,7 @@ import { toast } from "react-toastify";
 import { ErrorMessage, InfoMessage, successMessage } from "utils/notification";
 import Loader from "components/Loader";
 
+
 export const Market: React.FC = () => {
   const { theme } = useTheme();
   const { colors, fonts, isDark } = theme;
@@ -43,16 +45,19 @@ export const Market: React.FC = () => {
   const { setTokenState } = useSetTokenState();
   const [selectedFromToken, setSelectedFromToken] = useState<IToken>();
   const [selectedToToken, setSelectedToToken] = useState<IToken>();
-  const [fromAmount, setFromAmount] = useState(1);
+  const [fromAmount, setFromAmount] = useState(0);
   const [toAmount, setToAmount] = useState(0);
 
-  const [fromAmountInput, setfromAmountInput] = useState(1);
+  const [fromAmountInput, setfromAmountInput] = useState(0);
   const [tokenOptions, setTokenOptions] = useState([]);
   const [searchQuery, setSearchQuery] = useState(0);
+
+  const on_setSearchQuery = useCallback((value) => setSearchQuery(value), []);
+
   const [isLoading, setLoading] = useState(false);
   const [amountloader, setAmountLoader] = useState(false);
 
-  const [timer, setTimer] = useState(0);
+  const [isRefresh, setRefresh] = useState(false);
 
   const { library } = useWeb3React();
   const { SolonaWalletConnect } = useAuth();
@@ -66,6 +71,9 @@ export const Market: React.FC = () => {
         const tokenList: IToken[] = Object.values(result.data);
         setTokenOptions(tokenList);
         setTokenState({ tokens: tokenList });
+        setfromAmountInput(1)
+        setFromAmount(1)
+
         if (chainId == NetworkChainId.ETHEREUM) {
           const defaultFrom: IToken = tokenList.find((item: IToken) => {
             return item.symbol == "ETH";
@@ -105,9 +113,10 @@ export const Market: React.FC = () => {
     );
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const getQuotes = async () => {
       try {
+       
         setAmountLoader(true);
         const amount = toPlainString(
           fromAmount * 10 ** selectedFromToken.decimals
@@ -130,10 +139,10 @@ export const Market: React.FC = () => {
         console.log(error);
       }
     };
-    if (fromAmount > 0) {
+   
       getQuotes();
-    }
-  }, [fromAmount, selectedFromToken, selectedToToken, chainId, timer]);
+    
+  }, [fromAmount, selectedFromToken, selectedToToken, chainId, isRefresh]);
   const onSwapClick = async () => {
     walletState.connected ? swapCall() : onPresentCallback();
   };
@@ -187,7 +196,7 @@ export const Market: React.FC = () => {
       console.log("error in txn siging ", error);
       if (error.code === 4001) {
         ErrorMessage(error?.message);
-      }else if(error.code === 'INSUFFICIENT_FUNDS'){
+      } else if (error.code === 'INSUFFICIENT_FUNDS') {
         ErrorMessage('Insufficient Funds');
       }
     }
@@ -222,11 +231,13 @@ export const Market: React.FC = () => {
   }
   useEffect(() => {
     const interval = setTimeout(() => {
-      //   console.log("calling timer=>", timer);
-
-      setTimer(timer + 1);
-    }, 2000);
-    return () => clearTimeout(interval);
+         console.log("calling isReFresh=>", isRefresh); 
+      setRefresh(!isRefresh);
+    }, 5000);
+    return () => {
+   
+      clearTimeout(interval)
+    };
   });
 
   useEffect(() => {
@@ -245,6 +256,17 @@ export const Market: React.FC = () => {
   return (
     <SkeletonTheme color="#261a83" highlightColor="#fff">
       <StyledMarketingSection className="">
+        <Flex className="pb-3 d-block d-md-flex justify-content-end">
+          <Flex className="btns-div d-flex mt-3 mt-md-0">
+            <Button icon={isDark ? <ClockAtlas width={18} /> : <ColorClock width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            <Button onClick={()=>{
+              setRefresh(!isRefresh)
+            }}  icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            <Button onClick={()=>{
+             // setRefresh(!isRefresh)
+            }} icon={isDark ? <AdvancedSetting width={18} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+          </Flex>
+        </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
           <Flex className={"pay-div-parent"}>
             <Flex
@@ -268,7 +290,7 @@ export const Market: React.FC = () => {
                     weight={400}
                     handleChange={(value) => {
                       setfromAmountInput(value);
-                      setSearchQuery(value);
+                      on_setSearchQuery(value);
                     }}
                   />
                 </Flex>
@@ -315,7 +337,7 @@ export const Market: React.FC = () => {
                     value={toAmount.toFixed(5)}
                     size={fonts.fontSize20}
                     weight={400}
-                    handleChange={(value) => {}}
+                    handleChange={(value) => { }}
                     disabled={true}
                   />
                 </Flex>
@@ -336,33 +358,34 @@ export const Market: React.FC = () => {
           </Flex>
 
           {/* currency rates section */}
-          {amountloader ? (
+          {/* {amountloader ? (
             <Flex className="d-flex justify-content-around my-3 mt-5">
               <Skeleton width={200} />
               <Skeleton width={200} />
             </Flex>
-          ) : (
-            <Flex className="d-flex justify-content-around my-3 mt-5">
-              <Text
-                text={`1  ${selectedFromToken?.symbol} ~ ${(
-                  toAmount / fromAmount
-                ).toFixed(2)} ${selectedToToken?.symbol}`}
-                size={fonts.fontSize16}
-                weight={500}
-                color={colors.white}
-              />
+          ) : ( */}
 
-              <Text
-                text={`1  ${selectedToToken?.symbol} ~ ${(
-                  1 /
-                  (toAmount / fromAmount)
-                ).toFixed(2)} ${selectedFromToken?.symbol}`}
-                size={fonts.fontSize16}
-                weight={500}
-                color={colors.white}
-              />
-            </Flex>
-          )}
+          <Flex className="d-flex justify-content-around my-3 mt-5">  
+            <Text
+              text={`1  ${selectedFromToken?.symbol} ~ ${(
+                toAmount / fromAmount
+              ).toFixed(2)} ${selectedToToken?.symbol}`}
+              size={fonts.fontSize16}
+              weight={500}
+              color={colors.white}
+            />
+
+            <Text
+              text={`1  ${selectedToToken?.symbol} ~ ${(
+                1 /
+                (toAmount / fromAmount)
+              ).toFixed(2)} ${selectedFromToken?.symbol}`}
+              size={fonts.fontSize16}
+              weight={500}
+              color={colors.white}
+            />
+          </Flex>
+          {/* )} */}
 
           {/* Tolerance and max received section */}
           <Flex className="d-flex justify-content-between my-3">
@@ -425,6 +448,10 @@ export const Market: React.FC = () => {
 
 const StyledMarketingSection = styled.section`
   padding: 46px;
+  padding-top: 20px;
+  .btn-box-padding {
+    padding: 4px 6px;
+  }
   .payment-row {
     .quote-btn-clr {
       background: linear-gradient(281.69deg, #ac32d8 5.12%, #1d2957 95.61%);
@@ -449,9 +476,9 @@ const StyledMarketingSection = styled.section`
   .pay-card {
     &.backgroundClass {
       background: ${(props) =>
-        props.theme.isDark
-          ? "rgba(196, 196, 196, 0.5)"
-          : props.theme.gradients.multiColor3};
+    props.theme.isDark
+      ? "rgba(196, 196, 196, 0.5)"
+      : props.theme.gradients.multiColor3};
     }
     box-sizing: border-box;
     border-radius: 13.2692px;
@@ -460,9 +487,9 @@ const StyledMarketingSection = styled.section`
       padding: 14px 22px;
       border-radius: 12.2692px;
       background: ${(props) =>
-        props.theme.isDark
-          ? props.theme.gradients.marketCard
-          : props.theme.gradients.whiteGrayGradient};
+    props.theme.isDark
+      ? props.theme.gradients.marketCard
+      : props.theme.gradients.whiteGrayGradient};
     }
     .pay-card-heading {
       margin-bottom: 10px;
@@ -470,19 +497,19 @@ const StyledMarketingSection = styled.section`
   }
   .payment-data {
     /* border: 1.99px solid ${(props) =>
-      !props.theme.isDark && props.theme.colors.gray}; */
+    !props.theme.isDark && props.theme.colors.gray}; */
     background: ${(props) =>
-      props.theme.isDark
-        ? props.theme.gradients.multiColor2
-        : props.theme.gradients.buttonBorderDark};
+    props.theme.isDark
+      ? props.theme.gradients.multiColor2
+      : props.theme.gradients.buttonBorderDark};
     border-radius: 13.2692px;
     padding: 1px;
     .inner-payment-data {
       padding: 30px 20px;
       background: ${(props) =>
-        props.theme.isDark
-          ? props.theme.gradients.blue
-          : props.theme.gradients.garyWhiteGradinet};
+    props.theme.isDark
+      ? props.theme.gradients.blue
+      : props.theme.gradients.garyWhiteGradinet};
       border-radius: 12.2692px;
     }
     .text1 {
@@ -510,9 +537,9 @@ const StyledMarketingSection = styled.section`
     }
     .active {
       background: ${(props) =>
-        props.theme.isDark
-          ? props.theme.colors.plumb
-          : props.theme.colors.lightFailure};
+    props.theme.isDark
+      ? props.theme.colors.plumb
+      : props.theme.colors.lightFailure};
       color: ${(props) => props.theme.colors.white} !important;
     }
   }
