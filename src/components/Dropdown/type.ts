@@ -8,5 +8,4 @@ export interface DropdownBoxProps {
     weight?: number;
     color?: string;
     selectedToken?: IToken;
-
 }

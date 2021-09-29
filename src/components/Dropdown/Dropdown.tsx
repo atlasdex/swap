@@ -78,7 +78,7 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
     const FilterData = () => {
       let newArray = [];
       if (options.length > 0) {
-         newArray = options.filter((item, index) => {
+        newArray = options.filter((item, index) => {
           if (item.symbol.toUpperCase().includes(search)) {
             return item;
           }
@@ -89,7 +89,12 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
     FilterData();
   }, [search]);
 
+
+
+
   return (
+    <>
+
     <StyleDropDown>
       <Dropdown>
         <Dropdown.Toggle
@@ -133,6 +138,7 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
           <SearchInput
             type="text"
             value={search}
+            placeholder="Search.."
             autoFocus={true}
             name=""
             onChange={(e) => {
@@ -168,6 +174,7 @@ const CustomDropdown: React.FC<DropdownBoxProps> = (props) => {
         </Dropdown.Menu>
       </Dropdown>
     </StyleDropDown>
+    </>
   );
 };
 

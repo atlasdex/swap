@@ -164,6 +164,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                                 type="checkbox"
                                 className={"mr-2 cursor-class"}
                                 checked={teamAndCondition}
+                                readOnly
                             />
                             <Text
                                 text={"I read and accept"}
