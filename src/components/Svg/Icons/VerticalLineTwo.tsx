@@ -22,7 +22,7 @@ const Icon: React.FC<SvgProps> = (props) => {
           y2="0.939758"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="1" stop-color="#C4C4C4" />
+          <stop offset="1" stopColor="#C4C4C4" />
         </linearGradient>
       </defs>{" "}
     </Svg>

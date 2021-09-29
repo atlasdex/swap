@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Flex } from "components/Box";
 import Text from "components/Text";
+import Select from "react-select";
+import Image from "components/Image";
 
 import Input from "components/Input";
 import Button, { ButtonSeeGreen } from "components/Button";
@@ -130,8 +132,10 @@ export const Market: React.FC = () => {
         console.log(error);
       }
     };
-    if (fromAmount > 0) {
+    if(fromAmount > 0 && selectedFromToken && selectedToToken){
+      
       getQuotes();
+
     }
   }, [fromAmount, selectedFromToken, selectedToToken, chainId, timer]);
   const onSwapClick = async () => {
@@ -187,8 +191,8 @@ export const Market: React.FC = () => {
       console.log("error in txn siging ", error);
       if (error.code === 4001) {
         ErrorMessage(error?.message);
-      }else if(error.code === 'INSUFFICIENT_FUNDS'){
-        ErrorMessage('Insufficient Funds');
+      } else if (error.code === "INSUFFICIENT_FUNDS") {
+        ErrorMessage("Insufficient Funds");
       }
     }
   };
@@ -225,22 +229,43 @@ export const Market: React.FC = () => {
       //   console.log("calling timer=>", timer);
 
       setTimer(timer + 1);
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(interval);
   });
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setFromAmount(searchQuery);
-    }, 200);
+    if(searchQuery !== 0){
+      const delayDebounceFn = setTimeout(() => {
+        setFromAmount(searchQuery);
+      }, 200);
+  
+      return () => clearTimeout(delayDebounceFn);
+    }
 
-    return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
   const revertTokenSelection = () => {
     let temp = selectedFromToken;
     setSelectedFromToken(selectedToToken);
     setSelectedToToken(temp);
   };
+  const optionsss = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
+  const IconOption = (props) => (
+    <div>
+      <Image src={props?.logoURI} classes="mr-2" width="37" height="37" />
+      <Text
+            text={props?.symbol}
+            // color={color}
+            // weight={weight}
+            // size={size}
+            classes="dropdown-text"
+          />
+    </div>
+  );
 
   return (
     <SkeletonTheme color="#261a83" highlightColor="#fff">
@@ -262,7 +287,7 @@ export const Market: React.FC = () => {
                   />
                   <Input
                     placeholder={"0.0"}
-                    type={'number'}
+                    type={"number"}
                     size={fonts.fontSize20}
                     value={fromAmountInput.toString()}
                     weight={400}
@@ -272,6 +297,16 @@ export const Market: React.FC = () => {
                     }}
                   />
                 </Flex>
+
+                {/* <Select
+                  isSearchable={true}
+                  className={"w-100"}
+                  options={tokenOptions}
+                  components={{
+                    DropdownIndicator: () => null,
+                    Option: IconOption,
+                  }}
+                /> */}
 
                 <Flex className={"d-flex align-items-center"}>
                   <CustomDropdown
@@ -346,7 +381,7 @@ export const Market: React.FC = () => {
               <Text
                 text={`1  ${selectedFromToken?.symbol} ~ ${(
                   toAmount / fromAmount
-                ).toFixed(2)} ${selectedToToken?.symbol}`}
+                ).toFixed(4)} ${selectedToToken?.symbol}`}
                 size={fonts.fontSize16}
                 weight={500}
                 color={colors.white}
@@ -356,7 +391,7 @@ export const Market: React.FC = () => {
                 text={`1  ${selectedToToken?.symbol} ~ ${(
                   1 /
                   (toAmount / fromAmount)
-                ).toFixed(2)} ${selectedFromToken?.symbol}`}
+                ).toFixed(4)} ${selectedFromToken?.symbol}`}
                 size={fonts.fontSize16}
                 weight={500}
                 color={colors.white}

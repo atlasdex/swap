@@ -22,8 +22,8 @@ const Icon: React.FC<SvgProps> = (props) => {
           y2="35.0795"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA06FB" stop-opacity="0.3" />
-          <stop offset="1" stop-color="#00FFF0" stop-opacity="0.3" />
+          <stop stopColor="#BA06FB" stopOpacity="0.3" />
+          <stop offset="1" stopColor="#00FFF0" stopOpacity="0.3" />
         </linearGradient>
         <linearGradient
           id="paint1_linear"
@@ -33,9 +33,9 @@ const Icon: React.FC<SvgProps> = (props) => {
           y2="31.0167"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#BA06FB" stop-opacity="0.3" />
-          <stop offset="0.9999" stop-color="#00FFF0" />
-          <stop offset="1" stop-color="white" stop-opacity="0" />
+          <stop stopColor="#BA06FB" stopOpacity="0.3" />
+          <stop offset="0.9999" stopColor="#00FFF0" />
+          <stop offset="1" stopColor="white" stopOpacity="0" />
         </linearGradient>
       </defs>
     </Svg>

@@ -40,8 +40,8 @@ const Icon: React.FC<SvgProps> = (props) => {
           y2="20.0623"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#00A69C" />
-          <stop offset="0.8384" stop-color="#BA06FB" />
+          <stop stopColor="#00A69C" />
+          <stop offset="0.8384" stopColor="#BA06FB" />
         </linearGradient>
         <clipPath id="clip0">
           <rect
