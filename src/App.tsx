@@ -12,8 +12,8 @@ import MainLayout from "components/layout/MainLayout";
 
 const Swap = lazy(() => import("./views/Swap"));
 const PageNotFound = lazy(() => import("./views/PageNotFound"));
-
 const App: React.FC = () => {
+  
   useFetchPublicData();
   return (
       <Router history={history}>

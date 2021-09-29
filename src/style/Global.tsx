@@ -32,6 +32,9 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.CircularProgressbar .CircularProgressbar-path{
+  stroke : #004fd9 !important;
+}
 
 /* Firefox */
 input[type=number] {

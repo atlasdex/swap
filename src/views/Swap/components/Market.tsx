@@ -41,7 +41,7 @@ import { ErrorMessage, InfoMessage, successMessage } from "utils/notification";
 import Loader from "components/Loader";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { height } from "styled-system";
+import { BarComponent } from "./bar";
 
 export const Market: React.FC = () => {
   const { theme } = useTheme();
@@ -212,8 +212,7 @@ export const Market: React.FC = () => {
       const amount = toPlainString(
         fromAmount * 10 ** selectedFromToken.decimals
       );
-      // console.log();
-
+      
       const result = await tokenSwap(
         selectedFromToken.address,
         selectedToToken.address,
@@ -282,22 +281,17 @@ export const Market: React.FC = () => {
     </div>
   );
 
+  const onRefreshClick = () =>{
+    setRefresh(!isRefresh);
+    setRefreshTimer(100);
+  }
+
+
   return (
     <SkeletonTheme color="#261a83" highlightColor="#fff">
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
-          <Flex className="btns-div d-flex mt-3 mt-md-0">
-            <Button classes={'btn-box-padding d-flex justify-content-center'} width={"40px"} height={"40px"} icon={<CircularProgressbar value={refreshTimer} />} />
-
-            <Button onClick={() => {
-
-              setRefresh(!isRefresh)
-              setRefreshTimer(100)
-            }} width={"40px"} height={"40px"} icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-            <Button onClick={() => {
-              // setRefresh(!isRefresh)
-            }} width={"40px"} height={"40px"} icon={isDark ? <AdvancedSetting width={18} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-          </Flex>
+           <BarComponent onRefreshClick={onRefreshClick} refreshTimer={refreshTimer}/>
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
           <Flex className={"pay-div-parent"}>
@@ -494,7 +488,7 @@ const StyledMarketingSection = styled.section`
   padding: 46px;
   padding-top: 20px;
   .btn-box-padding {
-    padding: 4px 6px;
+    padding: 3px 7px;
   }
   .payment-row {
     .quote-btn-clr {
