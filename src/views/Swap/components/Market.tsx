@@ -41,7 +41,7 @@ import { ErrorMessage, InfoMessage, successMessage } from "utils/notification";
 import Loader from "components/Loader";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { height } from "styled-system";
+import { BarComponent } from "./bar";
 
 export const Market: React.FC = () => {
   const { theme } = useTheme();
@@ -233,7 +233,6 @@ export const Market: React.FC = () => {
   useEffect(() => {
     var seconds = ((2*1000)/100);
     const interval = setTimeout(() => {
-      console.log("calling isReFresh=>", isRefresh);
       setRefreshTimer(refreshTimer - 1)
       if (refreshTimer <0) {
         setRefresh(!isRefresh);
@@ -280,22 +279,17 @@ export const Market: React.FC = () => {
     </div>
   );
 
+  const onRefreshClick = () =>{
+    setRefresh(!isRefresh);
+    setRefreshTimer(100);
+  }
+
+
   return (
     <SkeletonTheme color="#261a83" highlightColor="#fff">
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
-          <Flex className="btns-div d-flex mt-3 mt-md-0">
-            <Button classes={'btn-box-padding d-flex justify-content-center'} width={"32px"} height={"32px"} icon={<CircularProgressbar value={refreshTimer}  />}/> 
-             
-            <Button onClick={() => {
-              
-              setRefresh(!isRefresh)
-              setRefreshTimer(100)
-            }}  width={"32px"} height={"32px"}  icon={isDark ? <RefreshIcon width={13} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-            <Button onClick={() => {
-              // setRefresh(!isRefresh)
-            }}  width={"32px"} height={"32px"}  icon={isDark ? <AdvancedSetting width={13} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-          </Flex>
+           <BarComponent onRefreshClick={onRefreshClick} refreshTimer={refreshTimer}/>
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
           <Flex className={"pay-div-parent"}>
