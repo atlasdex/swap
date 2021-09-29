@@ -59,9 +59,8 @@ export const Market: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [amountloader, setAmountLoader] = useState(false);
   const [isRefresh, setRefresh] = useState(false);
-  const [refreshTimer, setRefreshTimer] = useState(0);
-
-  const [timer, setTimer] = useState(0);
+  const [refreshTimer, setRefreshTimer] = useState(100);
+ 
 
   const { library } = useWeb3React();
   const { SolonaWalletConnect } = useAuth();
@@ -144,7 +143,7 @@ export const Market: React.FC = () => {
       getQuotes();
 
     }
-  }, [fromAmount, selectedFromToken, selectedToToken, chainId, timer , isRefresh]);
+  }, [fromAmount, selectedFromToken, selectedToToken, chainId , isRefresh]);
   const onSwapClick = async () => {
     walletState.connected ? swapCall() : onPresentCallback();
   };
@@ -235,10 +234,10 @@ export const Market: React.FC = () => {
     var seconds = ((2*1000)/100);
     const interval = setTimeout(() => {
       console.log("calling isReFresh=>", isRefresh);
-      setRefreshTimer(refreshTimer + 1)
-      if (refreshTimer > 100 * 1) {
+      setRefreshTimer(refreshTimer - 1)
+      if (refreshTimer <0) {
         setRefresh(!isRefresh);
-        setRefreshTimer(0)
+        setRefreshTimer(100)
       } 
     }, seconds);
     return () => {
@@ -291,6 +290,7 @@ export const Market: React.FC = () => {
             <Button onClick={() => {
               
               setRefresh(!isRefresh)
+              setRefreshTimer(100)
             }}  width={"40px"} height={"40px"}  icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
             <Button onClick={() => {
               // setRefresh(!isRefresh)
