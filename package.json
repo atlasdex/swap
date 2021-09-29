@@ -46,6 +46,7 @@
     "netlify-cli": "^6.9.9",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.3",
+    "react-circular-progressbar": "^2.0.4",
     "react-device-detect": "^1.17.0",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",

@@ -38,6 +38,9 @@ import { toHex, waitForTxReceipt } from "utils/utils";
 import { toast } from "react-toastify";
 import { ErrorMessage, InfoMessage, successMessage } from "utils/notification";
 import Loader from "components/Loader";
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { height } from "styled-system";
 
 
 export const Market: React.FC = () => {
@@ -60,6 +63,7 @@ export const Market: React.FC = () => {
   const [amountloader, setAmountLoader] = useState(false);
 
   const [isRefresh, setRefresh] = useState(false);
+  const [refreshTimer, setRefreshTimer] = useState(0);
 
   const { library } = useWeb3React();
   const { SolonaWalletConnect } = useAuth();
@@ -118,7 +122,7 @@ export const Market: React.FC = () => {
   useMemo(() => {
     const getQuotes = async () => {
       try {
-       
+
         setAmountLoader(true);
         const amount = toPlainString(
           fromAmount * 10 ** selectedFromToken.decimals
@@ -141,8 +145,8 @@ export const Market: React.FC = () => {
         console.log(error);
       }
     };
-    if(fromAmount > 0 && selectedFromToken && selectedToToken){
-      
+    if ( selectedFromToken && selectedToToken) {
+
       getQuotes();
 
     }
@@ -234,22 +238,27 @@ export const Market: React.FC = () => {
     }
   }
   useEffect(() => {
+    var seconds = ((2*1000)/100);
     const interval = setTimeout(() => {
-         console.log("calling isReFresh=>", isRefresh); 
-      setRefresh(!isRefresh);
-    }, 5000);
+      console.log("calling isReFresh=>", isRefresh);
+      setRefreshTimer(refreshTimer + 1)
+      if (refreshTimer > 100 * 1) {
+        setRefresh(!isRefresh);
+        setRefreshTimer(0)
+      } 
+    }, seconds);
     return () => {
-   
+
       clearTimeout(interval)
     };
   });
 
   useEffect(() => {
-    if(searchQuery !== 0){
+    if (searchQuery !== 0) {
       const delayDebounceFn = setTimeout(() => {
         setFromAmount(searchQuery);
       }, 200);
-  
+
       return () => clearTimeout(delayDebounceFn);
     }
 
@@ -269,12 +278,12 @@ export const Market: React.FC = () => {
     <div>
       <Image src={props?.logoURI} classes="mr-2" width="37" height="37" />
       <Text
-            text={props?.symbol}
-            // color={color}
-            // weight={weight}
-            // size={size}
-            classes="dropdown-text"
-          />
+        text={props?.symbol}
+        // color={color}
+        // weight={weight}
+        // size={size}
+        classes="dropdown-text"
+      />
     </div>
   );
 
@@ -283,13 +292,15 @@ export const Market: React.FC = () => {
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
           <Flex className="btns-div d-flex mt-3 mt-md-0">
-            <Button icon={isDark ? <ClockAtlas width={18} /> : <ColorClock width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-            <Button onClick={()=>{
+            <Button classes={'btn-box-padding d-flex justify-content-center'} width={"40px"} height={"40px"} icon={<CircularProgressbar value={refreshTimer}  />}/> 
+             
+            <Button onClick={() => {
+              
               setRefresh(!isRefresh)
-            }}  icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
-            <Button onClick={()=>{
-             // setRefresh(!isRefresh)
-            }} icon={isDark ? <AdvancedSetting width={18} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            }}  width={"40px"} height={"40px"}  icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            <Button onClick={() => {
+              // setRefresh(!isRefresh)
+            }}  width={"40px"} height={"40px"}  icon={isDark ? <AdvancedSetting width={18} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
           </Flex>
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
