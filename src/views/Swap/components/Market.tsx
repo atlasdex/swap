@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Flex } from "components/Box";
 import Text from "components/Text";
 import { AdvancedSetting, ClockAtlas, ColorAdvannceSetting, ColorClock, ColorRefresh, RefreshIcon } from "components/Svg";
+
 import Select from "react-select";
 import Image from "components/Image";
 
@@ -16,7 +17,7 @@ import {
   useSetTokenState,
 } from "state/hooks";
 import { useModalState } from "state/hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useState } from "react";
 import CustomDropdown from "components/Dropdown";
 import { RiSwapFill } from "react-icons/ri";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -42,7 +43,6 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { height } from "styled-system";
 
-
 export const Market: React.FC = () => {
   const { theme } = useTheme();
   const { colors, fonts, isDark } = theme;
@@ -50,20 +50,18 @@ export const Market: React.FC = () => {
   const { setTokenState } = useSetTokenState();
   const [selectedFromToken, setSelectedFromToken] = useState<IToken>();
   const [selectedToToken, setSelectedToToken] = useState<IToken>();
-  const [fromAmount, setFromAmount] = useState(0);
+  const [fromAmount, setFromAmount] = useState(1);
   const [toAmount, setToAmount] = useState(0);
 
-  const [fromAmountInput, setfromAmountInput] = useState(0);
+  const [fromAmountInput, setfromAmountInput] = useState(1);
   const [tokenOptions, setTokenOptions] = useState([]);
   const [searchQuery, setSearchQuery] = useState(0);
-
-  const on_setSearchQuery = useCallback((value) => setSearchQuery(value), []);
-
   const [isLoading, setLoading] = useState(false);
   const [amountloader, setAmountLoader] = useState(false);
-
   const [isRefresh, setRefresh] = useState(false);
   const [refreshTimer, setRefreshTimer] = useState(0);
+
+  const [timer, setTimer] = useState(0);
 
   const { library } = useWeb3React();
   const { SolonaWalletConnect } = useAuth();
@@ -77,9 +75,6 @@ export const Market: React.FC = () => {
         const tokenList: IToken[] = Object.values(result.data);
         setTokenOptions(tokenList);
         setTokenState({ tokens: tokenList });
-        setfromAmountInput(1)
-        setFromAmount(1)
-
         if (chainId == NetworkChainId.ETHEREUM) {
           const defaultFrom: IToken = tokenList.find((item: IToken) => {
             return item.symbol == "ETH";
@@ -119,10 +114,9 @@ export const Market: React.FC = () => {
     );
   }
 
-  useMemo(() => {
+  useEffect(() => {
     const getQuotes = async () => {
       try {
-
         setAmountLoader(true);
         const amount = toPlainString(
           fromAmount * 10 ** selectedFromToken.decimals
@@ -150,7 +144,7 @@ export const Market: React.FC = () => {
       getQuotes();
 
     }
-  }, [fromAmount, selectedFromToken, selectedToToken, chainId, isRefresh]);
+  }, [fromAmount, selectedFromToken, selectedToToken, chainId, timer , isRefresh]);
   const onSwapClick = async () => {
     walletState.connected ? swapCall() : onPresentCallback();
   };
@@ -326,7 +320,7 @@ export const Market: React.FC = () => {
                     weight={400}
                     handleChange={(value) => {
                       setfromAmountInput(value);
-                      on_setSearchQuery(value);
+                      setSearchQuery(value);
                     }}
                   />
                 </Flex>
@@ -383,7 +377,7 @@ export const Market: React.FC = () => {
                     value={toAmount.toFixed(5)}
                     size={fonts.fontSize20}
                     weight={400}
-                    handleChange={(value) => { }}
+                    handleChange={(value) => {}}
                     disabled={true}
                   />
                 </Flex>
@@ -404,7 +398,7 @@ export const Market: React.FC = () => {
           </Flex>
 
           {/* currency rates section */}
-          {/* {amountloader ? (
+          {amountloader ? (
             <Flex className="d-flex justify-content-around my-3 mt-5">
               <Skeleton width={200} />
               <Skeleton width={200} />
@@ -521,9 +515,9 @@ const StyledMarketingSection = styled.section`
   .pay-card {
     &.backgroundClass {
       background: ${(props) =>
-    props.theme.isDark
-      ? "rgba(196, 196, 196, 0.5)"
-      : props.theme.gradients.multiColor3};
+        props.theme.isDark
+          ? "rgba(196, 196, 196, 0.5)"
+          : props.theme.gradients.multiColor3};
     }
     box-sizing: border-box;
     border-radius: 13.2692px;
@@ -532,9 +526,9 @@ const StyledMarketingSection = styled.section`
       padding: 14px 22px;
       border-radius: 12.2692px;
       background: ${(props) =>
-    props.theme.isDark
-      ? props.theme.gradients.marketCard
-      : props.theme.gradients.whiteGrayGradient};
+        props.theme.isDark
+          ? props.theme.gradients.marketCard
+          : props.theme.gradients.whiteGrayGradient};
     }
     .pay-card-heading {
       margin-bottom: 10px;
@@ -542,19 +536,19 @@ const StyledMarketingSection = styled.section`
   }
   .payment-data {
     /* border: 1.99px solid ${(props) =>
-    !props.theme.isDark && props.theme.colors.gray}; */
+      !props.theme.isDark && props.theme.colors.gray}; */
     background: ${(props) =>
-    props.theme.isDark
-      ? props.theme.gradients.multiColor2
-      : props.theme.gradients.buttonBorderDark};
+      props.theme.isDark
+        ? props.theme.gradients.multiColor2
+        : props.theme.gradients.buttonBorderDark};
     border-radius: 13.2692px;
     padding: 1px;
     .inner-payment-data {
       padding: 30px 20px;
       background: ${(props) =>
-    props.theme.isDark
-      ? props.theme.gradients.blue
-      : props.theme.gradients.garyWhiteGradinet};
+        props.theme.isDark
+          ? props.theme.gradients.blue
+          : props.theme.gradients.garyWhiteGradinet};
       border-radius: 12.2692px;
     }
     .text1 {
@@ -582,9 +576,9 @@ const StyledMarketingSection = styled.section`
     }
     .active {
       background: ${(props) =>
-    props.theme.isDark
-      ? props.theme.colors.plumb
-      : props.theme.colors.lightFailure};
+        props.theme.isDark
+          ? props.theme.colors.plumb
+          : props.theme.colors.lightFailure};
       color: ${(props) => props.theme.colors.white} !important;
     }
   }
