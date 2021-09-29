@@ -75,7 +75,7 @@ const StyledButton = styled.button<ButtonProps>`
   font-weight :  ${(props) => props.weight ? props.weight : `normal`}
 }
 .btn-bg-gradient {
-  background:  ${(props) => props.theme.isDark ? 'black' : props.theme.gradients.buttonLight};
+  background:  ${(props) => props.theme.isDark ? 'linear-gradient(281.69deg, #ac32d8 5.12%, #1d2957 95.61%)' : props.theme.gradients.buttonLight};
 }
 `;
 

@@ -285,16 +285,16 @@ export const Market: React.FC = () => {
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
           <Flex className="btns-div d-flex mt-3 mt-md-0">
-            <Button classes={'btn-box-padding d-flex justify-content-center'} width={"40px"} height={"40px"} icon={<CircularProgressbar value={refreshTimer}  />}/> 
+            <Button classes={'btn-box-padding d-flex justify-content-center'} width={"32px"} height={"32px"} icon={<CircularProgressbar value={refreshTimer}  />}/> 
              
             <Button onClick={() => {
               
               setRefresh(!isRefresh)
               setRefreshTimer(100)
-            }}  width={"40px"} height={"40px"}  icon={isDark ? <RefreshIcon width={18} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            }}  width={"32px"} height={"32px"}  icon={isDark ? <RefreshIcon width={13} /> : <ColorRefresh width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
             <Button onClick={() => {
               // setRefresh(!isRefresh)
-            }}  width={"40px"} height={"40px"}  icon={isDark ? <AdvancedSetting width={18} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
+            }}  width={"32px"} height={"32px"}  icon={isDark ? <AdvancedSetting width={13} /> : <ColorAdvannceSetting width={18} />} classes={'btn-box-padding d-flex justify-content-center'} />
           </Flex>
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
@@ -489,7 +489,7 @@ const StyledMarketingSection = styled.section`
   padding: 46px;
   padding-top: 20px;
   .btn-box-padding {
-    padding: 4px 6px;
+    padding: 3px 7px;
   }
   .payment-row {
     .quote-btn-clr {
