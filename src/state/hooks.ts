@@ -9,7 +9,7 @@ import { setNetworkChainId, setWalletReducer } from './wallet'
 import { setTokens } from './token'
 import { WalletInitialState } from './types'
 import { setRates } from './rates'
-import { setQuotes } from './quote'
+import { setQuotes, setSlippagetolerance } from './quote'
 
 export const useFetchPublicData = () => {
     const dispatch = useAppDispatch()
@@ -140,4 +140,21 @@ export const useSetQuoteState = () => {
     }, []);
 
     return { setQuoteState }
+}
+//Slippage Tolerance
+
+export const useGetSlippageTolerancestate = () => {
+    const { slippageTolerance } = useSelector((state: any) => state.quoteReducer);
+    return slippageTolerance
+}
+export const useSetSlippageTolerancestate = () => {
+    const dispatch = useAppDispatch();
+
+    const setSlippageToleranceState = useCallback((quote: QuoteState) => {
+
+        dispatch(setSlippagetolerance(quote.slippageTolerance));
+        // eslint-disable-next-line
+    }, []);
+
+    return { setSlippageToleranceState }
 }

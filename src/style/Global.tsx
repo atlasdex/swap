@@ -33,7 +33,12 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 .CircularProgressbar .CircularProgressbar-path{
-  stroke : #004fd9 !important;
+  stroke : blue !important;
+  
+}
+.CircularProgressbar .CircularProgressbar-trail{
+  stroke : transparent !important;
+
 }
 
 /* Firefox */

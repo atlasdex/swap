@@ -1,7 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NetworkChainId } from "config/constants/types";
-import { IToken } from "interfaces/IToken";
-import { useSetTokenState } from "state/hooks";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"; 
+import { IToken } from "interfaces/IToken"; 
 import { TokenState } from "state/types";
 const initialState: TokenState = {
     tokens: [],  

@@ -41,9 +41,7 @@ export interface RateState {
     rates: IRate[]
 }
 
-export interface QuoteState {
-    fromToken?: any;
-    protocols?: any;
-    toToken?: any;
-    quotes: any
+export interface QuoteState { 
+    quotes?: any,
+    slippageTolerance?:number
 }

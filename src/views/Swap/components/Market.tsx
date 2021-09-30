@@ -1,31 +1,23 @@
 import styled from "styled-components";
 import { Flex } from "components/Box";
 import Text from "components/Text";
-import { AdvancedSetting, ClockAtlas, ColorAdvannceSetting, ColorClock, ColorRefresh, RefreshIcon } from "components/Svg";
-
-import Select from "react-select";
 import Image from "components/Image";
 
 import Input from "components/Input";
-import Button, { ButtonSeeGreen } from "components/Button";
+import Button from "components/Button";
 import useTheme from "hooks/useTheme";
 import {
   useChainId,
-  useGetTokenState,
+  useGetSlippageTolerancestate,
   useGetWalletState,
   useSetQuoteState,
   useSetTokenState,
 } from "state/hooks";
-import { useModalState } from "state/hooks";
 import { useState } from "react";
 import CustomDropdown from "components/Dropdown";
 import { RiSwapFill } from "react-icons/ri";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import SolanaIcon from "assets/images/Solana-Icon.svg";
-import RayIcon from "assets/images/R-Icon.svg";
 import { useEffect } from "react";
-import useTokens from "hooks/useTokens";
-import useQuotes from "hooks/useQuotes";
 import { IToken } from "interfaces/IToken";
 import { getQuote, getTokens, tokenSwap } from "gateways/TokenApis";
 import { NetworkChainId } from "config/constants/types";
@@ -36,13 +28,10 @@ import { useWeb3React } from "@web3-react/core";
 import { getTransactionData } from "utils/transactionData";
 import useAuth from "hooks/useAuth";
 import { toHex, waitForTxReceipt } from "utils/utils";
-import { toast } from "react-toastify";
 import { ErrorMessage, InfoMessage, successMessage } from "utils/notification";
 import Loader from "components/Loader";
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { BarComponent } from "./bar";
-
 export const Market: React.FC = () => {
   const { theme } = useTheme();
   const { colors, fonts, isDark } = theme;
@@ -61,6 +50,7 @@ export const Market: React.FC = () => {
   const [isRefresh, setRefresh] = useState(false);
   const [refreshTimer, setRefreshTimer] = useState(100);
 
+  const slippageValue=useGetSlippageTolerancestate();
   const [refreshOnce, setRefreshOnce] = useState(false);
 
 
@@ -212,14 +202,14 @@ export const Market: React.FC = () => {
       const amount = toPlainString(
         fromAmount * 10 ** selectedFromToken.decimals
       );
-      
+
       const result = await tokenSwap(
         selectedFromToken.address,
         selectedToToken.address,
         amount,
         chainId,
         walletState.publicKey,
-        1
+        slippageValue
       );
       console.log("result", result);
       signProvider(result.data.tx);
@@ -238,7 +228,7 @@ export const Market: React.FC = () => {
       refreshOnce == false && setRefreshTimer(refreshTimer - 1)
       if (refreshTimer < 0) {
         setRefresh(!isRefresh);
-        setRefreshTimer(100)
+        setRefreshTimer(104)
       }
     }, seconds);
     return () => {
@@ -281,17 +271,17 @@ export const Market: React.FC = () => {
     </div>
   );
 
-  const onRefreshClick = () =>{
+  const onRefreshClick = () => {
     setRefresh(!isRefresh);
-    setRefreshTimer(100);
+    setRefreshTimer(104);
   }
 
 
   return (
-    <SkeletonTheme color="#261a83" highlightColor="#fff">
+    <SkeletonTheme color="#0f153d90" highlightColor="#19226c50">
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
-           <BarComponent onRefreshClick={onRefreshClick} refreshTimer={refreshTimer}/>
+          <BarComponent onRefreshClick={onRefreshClick} refreshTimer={refreshTimer} />
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
           <Flex className={"pay-div-parent"}>
@@ -434,7 +424,7 @@ export const Market: React.FC = () => {
               color={colors.white}
             />
             <Text
-              text={"0.5%"}
+              text={slippageValue+"%"}
               size={fonts.fontSize16}
               color={colors.white}
               weight={500}
