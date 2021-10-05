@@ -48,6 +48,21 @@ const Networks: NetworksType[] = [
       blockExplorerUrls: ['https://bscscan.com/'],
       address: '0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
   },
+  {
+    name: "Solana",
+    icon: SolanaIcon,
+    selectIcon: SolanaIcon,
+    chainName: 'solana',
+    chainId: NetworkChainId.SOLANA,
+    rpcUrls: [],
+    nativeCurrency: {
+      name: "SOL",
+      symbol: "sol",
+      decimals: 18,
+    },
+    blockExplorerUrls: ['https://etherscan.io'],
+    address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+  },
 ];
 
 

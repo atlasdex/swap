@@ -48,14 +48,12 @@ export const Market: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [amountloader, setAmountLoader] = useState(false);
   const [isRefresh, setRefresh] = useState(false);
-  const [refreshTimer, setRefreshTimer] = useState(100);
-
-  const slippageValue=useGetSlippageTolerancestate();
+  const slippageValue = useGetSlippageTolerancestate();
   const [refreshOnce, setRefreshOnce] = useState(false);
 
 
   const { library } = useWeb3React();
-  const { SolonaWalletConnect } = useAuth();
+  const { SolonaWalletConnect, login } = useAuth();
 
   const chainId = useChainId();
   const { setQuoteState } = useSetQuoteState();
@@ -142,11 +140,8 @@ export const Market: React.FC = () => {
   };
 
   const [onPresentCallback, onDismiss] = useModal(
-    <WalletComponent
-      onClick={(url) => {
-        SolonaWalletConnect(url);
-      }}
-      onDismiss={() => {
+    <WalletComponent 
+      onDismissPopUp={() => {
         onDismiss();
       }}
     />,
@@ -222,20 +217,7 @@ export const Market: React.FC = () => {
       setLoading(false);
     }
   }
-  useEffect(() => {
-    var seconds = ((2 * 1000) / 100);
-    const interval = setTimeout(() => {
-      refreshOnce == false && setRefreshTimer(refreshTimer - 1)
-      if (refreshTimer < 0) {
-        setRefresh(!isRefresh);
-        setRefreshTimer(104)
-      }
-    }, seconds);
-    return () => {
 
-      clearTimeout(interval)
-    };
-  });
 
   useEffect(() => {
     if (searchQuery !== 0) {
@@ -273,7 +255,6 @@ export const Market: React.FC = () => {
 
   const onRefreshClick = () => {
     setRefresh(!isRefresh);
-    setRefreshTimer(104);
   }
 
 
@@ -281,7 +262,7 @@ export const Market: React.FC = () => {
     <SkeletonTheme color="#0f153d90" highlightColor="#19226c50">
       <StyledMarketingSection className="">
         <Flex className="pb-3 d-block d-md-flex justify-content-end">
-          <BarComponent onRefreshClick={onRefreshClick} refreshTimer={refreshTimer} />
+          <BarComponent onRefreshClick={onRefreshClick} refreshOnce={refreshOnce} />
         </Flex>
         <Flex className={"mx-0 payment-row mb-4"}>
           <Flex className={"pay-div-parent"}>
@@ -424,7 +405,7 @@ export const Market: React.FC = () => {
               color={colors.white}
             />
             <Text
-              text={slippageValue+"%"}
+              text={slippageValue + "%"}
               size={fonts.fontSize16}
               color={colors.white}
               weight={500}

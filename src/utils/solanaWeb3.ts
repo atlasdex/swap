@@ -43,7 +43,7 @@ export class SolanaWeb3Class {
 
 
 export const solanaWeb3 = () => {
-    const provider =  getProvider('https://www.mathwallet.org')
+    const provider =  getProvider('https://www.mathwallet.org' , 4)
     return  new (provider.adapter || Wallet)(
         provider?.url,
         getEndpoint(),

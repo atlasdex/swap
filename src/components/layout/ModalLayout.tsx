@@ -33,8 +33,8 @@ export const ModalLayout = () => {
           <AccountInfo />
         ) : (
           <WalletComponent
-            onClick={(url) => {
-              login('1');
+            onDismissPopUp={() => {
+            
             }}
           />
         )}

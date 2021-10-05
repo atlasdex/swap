@@ -15,8 +15,7 @@ import { setupNetwork } from "utils/wallet";
 import { GreenTick } from "components/Svg";
 import useAuth from "hooks/useAuth";
 interface WalletConnectProps {
-    onClick?: (provider: string) => void;
-    onDismiss?: () => void;
+    onDismissPopUp?: () => void;
 }
 const StyledWallet = styled.div`
   .width-47 {
@@ -67,26 +66,29 @@ const StyledWallet = styled.div`
 `;
 const WalletComponent: React.FC<WalletConnectProps> = (props) => {
 
-    const { onClick, onDismiss } = props;
+    const { onDismissPopUp } = props;
     const { theme } = useTheme();
     const { colors, fonts } = theme;
     const [teamAndCondition, setTermAndCondition] = useState(false);
 
+    const { connectWallet } = useAuth();
+
     //fetch login function
-    const { login } = useAuth();
 
 
 
 
     //fetch current Wallet state
     let walletState = useGetWalletState();
-
-    const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
+    const chainId = useChainId();
+    const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>(Networks.find(item=>item.chainId==chainId));
 
     //object destructuring of useWeb3React web3 for context fetching and cahinID
     const context = useWeb3React();
     const { chainId: chainIdWeb3 } = context;
-    const chainId = useChainId();
+    
+    console.log("wallet Model chainId==",chainId+" "+chainIdWeb3);
+    
 
     //getting setnetworkChain method to set chain id in redux
     const { setChainId } = useWalletState();
@@ -94,9 +96,8 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
 
     //Set Chain id state and call setup or switch network function
     useEffect(() => {
-        function setNetworkChainId() {
-            setChainId({ chainId: selectedNetwork?.chainId });
-            walletState.connected && setupNetwork(selectedNetwork?.chainId);
+        function setNetworkChainId() { 
+            setChainId({ chainId: selectedNetwork?.chainId }); 
         }
         setNetworkChainId();
     }, [selectedNetwork]);
@@ -107,12 +108,19 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
 
     //listening network switching from Metamask
     useEffect(() => {
-        Networks.map((item, index) => {
-            if (+item.chainId === chainIdWeb3) {
-                setSelectedNetwork(item); // selected network detail hook
-            }
-        });
-    }, [chainIdWeb3]);
+        function setWalletChainId() {
+            Networks.map((item, index) => {
+                if (+item.chainId === chainIdWeb3) {
+                    setSelectedNetwork(item); // selected network detail hook
+                   // setChainId({ chainId: item.chainId });
+                }
+            });
+        }
+        if (walletState.connected) {
+            console.log("walletState.connected=",walletState.connected); 
+            setWalletChainId();
+        }
+    }, [chainIdWeb3,walletState]);
 
 
     return (
@@ -211,6 +219,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                                         }`}
                                     key={index}
                                     onClick={() => {
+                                        console.log("network=>", network);
                                         setSelectedNetwork(network);
                                     }}
                                 >
@@ -265,13 +274,9 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                                 className={`padding-for-row text-center py-2 ${!teamAndCondition && "disabled-with-opacity"
                                     }`}
                                 key={index}
-                                onClick={async() => {
-                                    if (chainId === NetworkChainId.SOLANA) {
-                                        onClick(network.url);
-                                    } else {
-                                       await login(chainId)
-                                       onDismiss()
-                                    }
+                                onClick={async () => { 
+                                    await connectWallet(index);
+                                    onDismissPopUp() 
                                 }}
                             >
                                 <Image

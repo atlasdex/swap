@@ -13,7 +13,7 @@ export declare enum ChainId {
 export enum NetworkChainId {
     ETHEREUM = 1,
     BINANCE = 56,
-    SOLANA = 0
+    SOLANA = 4
 }
 export interface Address {
     97?: string;

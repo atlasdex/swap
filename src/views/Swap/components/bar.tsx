@@ -7,7 +7,7 @@ import {
   RefreshIcon,
 } from "components/Svg";
 import useTheme from "hooks/useTheme";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import styled from "styled-components";
 import { useModal } from "widgets/Modal";
@@ -15,10 +15,27 @@ import SettingSlippage from "../modal/SettingSlippage";
 
 
 export const BarComponent = (props) => {
-  const { onRefreshClick, refreshTimer } = props;
-
+  const { onRefreshClick,refreshOnce } = props;
+  const [refreshTimer, setRefreshTimer] = useState(100);
   const { theme } = useTheme();
   const { isDark } = theme;
+
+  useEffect(() => {
+    var seconds = ((2 * 1000) / 100);
+    const interval = setTimeout(() => {
+      refreshOnce == false && setRefreshTimer(refreshTimer - 5)
+      if (refreshTimer < 0) {
+       
+        onRefreshClick();
+        setRefreshTimer(100)
+      }
+    }, 300);
+    return () => { 
+      clearTimeout(interval)
+    };
+  });
+
+  
   const [onPresentCallback, onDismiss] = useModal(
     <SettingSlippage
       onDismiss={() => {
@@ -28,6 +45,8 @@ export const BarComponent = (props) => {
     ,
     false
   );
+
+
   return (
     <StyledbarButton>
       <Flex className="btns-div d-flex mt-3 mt-md-0">
@@ -39,6 +58,7 @@ export const BarComponent = (props) => {
 
         <Box
           onClick={() => {
+            setRefreshTimer(100);
             onRefreshClick();
           }}
           className={"box-border d-flex justify-content-center"}

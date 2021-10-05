@@ -29,13 +29,13 @@ const StyledNetworkSection = styled.section`
 export const NetworkSelection: React.FC = () => {
     //fetch current Wallet state
     let walletState = useGetWalletState();
-
-    const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>();
+    const chainId = useChainId();
+    const [selectedNetwork, setSelectedNetwork] = useState<NetworksType>(Networks.find(item => item.chainId == chainId));
     //object destructuring of useWeb3React web3 for context fetching and cahinID
     const context = useWeb3React();
     const { chainId: chainIdWeb3 } = context;
-    const chainId = useChainId();
-  //  console.log("Network chainIdWeb3", chainIdWeb3);
+
+    //  console.log("Network chainIdWeb3", chainIdWeb3);
 
     //getting setnetworkChain method to set chain id in redux
     const { setChainId } = useWalletState();
@@ -43,23 +43,31 @@ export const NetworkSelection: React.FC = () => {
     //Set Chain id state and call setup or switch network function
     useEffect(() => {
         function setNetworkChainId() {
+            console.log("chainId==", chainId);
+
             setChainId({ chainId: selectedNetwork?.chainId });
             walletState.connected && setupNetwork(selectedNetwork?.chainId);
         }
         setNetworkChainId();
     }, [selectedNetwork]);
- 
+
     //listening network switching from Metamask
     useEffect(() => {
-        Networks.map((item, index) => {
 
-            //console.log("chainIdddd=", chainIdWeb3);
+        function setWalletChainId() {
+            Networks.map((item, index) => {
+                if (+item.chainId === chainIdWeb3) {
+                    setSelectedNetwork(item); // selected network detail hook
+                    setChainId({ chainId: item.chainId });
+                }
+            });
+        }
+        if (walletState.connected) {
+            console.log("walletState.connected=",walletState.connected);
+            
+            setWalletChainId();
+        }
 
-            if (+item.chainId === chainIdWeb3) {
-                setSelectedNetwork(item); // selected network detail hook
-                setChainId({ chainId: item.chainId });
-            }
-        });
     }, [chainIdWeb3]);
 
     return (

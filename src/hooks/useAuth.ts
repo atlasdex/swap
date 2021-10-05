@@ -5,22 +5,26 @@ import { setupNetwork } from "utils/wallet";
 import { injected } from "../connectors";
 import { WalletAdapter } from "wallet-adapters";
 import Wallet from "@project-serum/sol-wallet-adapter";
-import { useWalletState } from "state/hooks";
+import { useChainId, useWalletState } from "state/hooks";
 import { getProvider } from "utils/utils";
 import { getEndpoint } from "utils/getRpcUrl";
 import { SolanaWeb3Class } from "utils/solanaWeb3";
 
+import WalletList from "config/constants/walletProviders";
+import { NetworkChainId } from "config/constants/types";
+
 const useAuth = () => {
   const context = useWeb3React();
-  const  { activate, deactivate, account } = context;
+  const { activate, deactivate, account } = context;
   // Fetch endpoint
   const endpoint = getEndpoint();
   let [wallet, setWallet] = useState<WalletAdapter | undefined>(undefined);
   const { setWalletState } = useWalletState();
+  const chainId = useChainId();
 
   //wallet connect code For solana wallet connection
-  const SolonaWalletConnect = useCallback((providerUrl: string) => {
-    const provider = getProvider(providerUrl);
+  const SolonaWalletConnect = useCallback((providerUrl: string) => { 
+    const provider = getProvider(providerUrl, chainId);
     if (provider) {
       const updateWallet = () => {
         // hack to also update wallet synchronously in case it disconnects
@@ -69,18 +73,18 @@ const useAuth = () => {
   const login = useCallback(async (chainID) => {
     const hasSetup = await setupNetwork(chainID);
 
-    await activate(injected).then((res) =>{
-        localStorage.setItem("connected", "true");
-        localStorage.setItem("wallet-status", "true");
-        localStorage.setItem("providerUrl", "www.metamask.com");
-        localStorage.setItem("endpoint", "www.metamask.com");
-    
-        localStorage.setItem("publicKey", account);
-        setWalletState({
-          connected: true,
-          publicKey: account,
-        });
-        
+    await activate(injected).then((res) => {
+      localStorage.setItem("connected", "true");
+      localStorage.setItem("wallet-status", "true");
+      localStorage.setItem("providerUrl", "www.metamask.com");
+      localStorage.setItem("endpoint", "www.metamask.com");
+
+      localStorage.setItem("publicKey", account);
+      setWalletState({
+        connected: true,
+        publicKey: account,
+      });
+
     });
 
 
@@ -125,7 +129,13 @@ const useAuth = () => {
     // eslint-disable-next-line
   }, [wallet]);
 
-  return { login, logout, SolonaWalletConnect, disconnectWallet };
+  const connectWallet = useCallback(async (selectedWalletIndex) => {
+
+    const networkItem = await WalletList[chainId][selectedWalletIndex]; 
+    chainId==NetworkChainId.SOLANA?SolonaWalletConnect(networkItem.url):login(chainId) 
+      
+  }, [chainId]);
+  return { login, logout, SolonaWalletConnect, disconnectWallet, connectWallet };
 };
 
 export default useAuth;

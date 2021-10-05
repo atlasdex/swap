@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import WALLET_PROVIDERS from 'config/constants/walletProviders';
 import { getWeb3NoAccount } from './web3';
+import { useChainId } from 'state/hooks';
 
 export function isValidPublicKey(key) {
   if (!key) {
@@ -91,8 +92,8 @@ export const abbreviateAddress = (address : any, size = 4) => {
  * @param providerUrl 
  * @returns 
  */
-export const getProvider = (providerUrl :string) =>{
-  const provider = WALLET_PROVIDERS.find(({ url }) => url === providerUrl)
+export const getProvider = (providerUrl :string , chainId : number) =>{
+  const provider = WALLET_PROVIDERS[chainId].find(({ url }) => url === providerUrl)
   return provider;
 }
 

@@ -9,6 +9,7 @@ import Networks from "config/constants/network";
  */
 export const setupNetwork = async (chainID) => {
   
+  
   const provider = (window as WindowChain).ethereum;
   const networkDetail = await fetchNetworkDetail(chainID); // network detail from dataUrl.ts file
   if (networkDetail !== undefined) {

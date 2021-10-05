@@ -60,11 +60,8 @@ const Exchange: React.FC = () => {
         }}
       />
     ) : (
-      <WalletComponent
-        onClick={(url) => {
-          SolonaWalletConnect(url);
-        }}
-        onDismiss={() => {
+      <WalletComponent 
+        onDismissPopUp={() => {
           onDismiss();
         }}
       />
@@ -197,17 +194,17 @@ const ControlContainer = styled.div`
   .historyBorderGradient {
     padding: 1px;
     background: ${(props) =>
-      props.theme.isDark
-        ? props.theme.gradients.multiColor
-        : props.theme.gradients.buttonBorderDark};
+    props.theme.isDark
+      ? props.theme.gradients.multiColor
+      : props.theme.gradients.buttonBorderDark};
     border-radius: 10.7692px !important;
     border: none !important;
     height: 100%;
     .table-parent-div {
       background: ${(props) =>
-        props.theme.isDark
-          ? props.theme.gradients.blue
-          : props.theme.gradients.whiteGrayGradient};
+    props.theme.isDark
+      ? props.theme.gradients.blue
+      : props.theme.gradients.whiteGrayGradient};
       border-radius: 10.2px;
       height: 100%;
 
@@ -221,9 +218,9 @@ const ControlContainer = styled.div`
           color: rgba(170, 170, 170, 1);
           &.active {
             color: ${(props) =>
-              props.theme.isDark
-                ? props.theme.colors.white
-                : props.theme.colors.primary};
+    props.theme.isDark
+      ? props.theme.colors.white
+      : props.theme.colors.primary};
           }
         }
       }
@@ -245,9 +242,9 @@ const ControlContainer = styled.div`
         color: #515e91;
         &.active {
           color: ${(props) =>
-            props.theme.isDark
-              ? props.theme.colors.white
-              : props.theme.colors.primary};
+    props.theme.isDark
+      ? props.theme.colors.white
+      : props.theme.colors.primary};
         }
       }
     }
@@ -262,9 +259,9 @@ const ControlContainer = styled.div`
   }
   .bg-btn-color {
     background: ${(props) =>
-      props.theme.isDark
-        ? props.theme.colors.secondary
-        : props.theme.colors.lightFailure};
+    props.theme.isDark
+      ? props.theme.colors.secondary
+      : props.theme.colors.lightFailure};
   }
   .connected-btn-padding {
     padding: 0px 0px 0px 2px !important;
