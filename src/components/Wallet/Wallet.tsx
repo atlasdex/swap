@@ -271,7 +271,7 @@ const WalletComponent: React.FC<WalletConnectProps> = (props) => {
                     <Flex className={"row w-100"}>
                         {WalletList[chainId].map((network, index) => (
                             <Flex
-                                className={`padding-for-row text-center py-2 ${!teamAndCondition && "disabled-with-opacity"
+                                className={`padding-for-row  text-center py-2 ${!teamAndCondition && "disabled-with-opacity"
                                     }`}
                                 key={index}
                                 onClick={async () => { 
